@@ -32,7 +32,7 @@ void devinetteMot(char *mot) {
 
     // Tant que l'on a pas perdu
     while (nombreEssais > 0) {
-        printf("il te reste %d essais\n", nombreEssais);
+        printf("Il te reste %d essais\n", nombreEssais);
         printf("%s\n", devinette);
 
         // On demande à l'utilisateur d'entrer une lettre
