@@ -23,11 +23,17 @@
 
 #include "raylib.h"
 
+//------------------------------------------------------------------------------------------
+// Types and Structures Definition
+//------------------------------------------------------------------------------------------
+typedef enum GameScreen {
+    TITLE, GAMEPLAY, CREDITS
+} GameScreen;
+
 //------------------------------------------------------------------------------------
 // Program main entry point
 //------------------------------------------------------------------------------------
-void fenetreRaylib()
-{
+void fenetreRaylib() {
     // Initialization
     //--------------------------------------------------------------------------------------
     const int screenWidth = 800;
@@ -35,25 +41,75 @@ void fenetreRaylib()
 
     InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
 
+    GameScreen currentScreen = TITLE;
+
     SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
 
     // Main game loop
     while (!WindowShouldClose())    // Detect window close button or ESC key
     {
+
         // Update
         //----------------------------------------------------------------------------------
-        // TODO: Update your variables here
-        //----------------------------------------------------------------------------------
+        switch (currentScreen) {
+            case TITLE: {
+                // Press enter to change to GAMEPLAY screen
+                if (IsKeyPressed(KEY_ENTER) || IsGestureDetected(GESTURE_TAP)) {
+                    currentScreen = GAMEPLAY;
+                }
+            }
+                break;
+            case GAMEPLAY: {
+                // Press enter to return to TITLE screen
+                if (IsKeyPressed(KEY_ENTER) || IsGestureDetected(GESTURE_TAP)) {
+                    currentScreen = CREDITS;
+                }
+            }
+                break;
+            case CREDITS: {
+                // Press enter to return to TITLE screen
+                if (IsKeyPressed(KEY_ENTER) || IsGestureDetected(GESTURE_TAP)) {
+                    currentScreen = TITLE;
+                }
+            }
+                break;
 
+            default:
+                break;
+                //----------------------------------------------------------------------------------
+        }
         // Draw
         //----------------------------------------------------------------------------------
         BeginDrawing();
 
         ClearBackground(RAYWHITE);
+        switch (currentScreen) {
 
-        DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
+            // Titre du jeu
+            case TITLE: {
+                DrawText("Jeu du pendu", 190, 200, 20, LIGHTGRAY);
+            }
+                break;
 
+                // Boutons
+            case GAMEPLAY: {
+                DrawText("Nouvelle partie", screenWidth / 2, screenHeight / 2, 10, BLACK);
+                DrawRectangle(screenWidth / 2, screenHeight / 2, 100, 50, Fade(GREEN, 0.5f));
+                DrawRectangleLines(screenWidth / 2, screenHeight / 2, 100, 50, Fade(GREEN, 0.8f));
+            }
+                break;
+
+                // Crédits
+            case CREDITS: {
+                DrawText("Crédits", 10, 10, 10, BLACK);
+                DrawRectangle(10, 10, 100, 50, Fade(SKYBLUE, 0.5f));
+                DrawRectangleLines(10, 10, 100, 50, Fade(BLUE, 0.8f));
+            }
+                break;
+            default:
+                break;
+        } // switch
         EndDrawing();
         //----------------------------------------------------------------------------------
     }
