@@ -55,6 +55,8 @@ const int coordonnesNouvellePartieY = (screenHeight/2);
 const int coordonnesNouvellePartieTexteY = coordonnesNouvellePartieY + hauteurRectangle/2;
 const int coordonnesNouvellePartieTexteX = coordonnesNouvellePartieX + longueurRectangle/8;
 
+Rectangle rectangleNouvellePartie = {coordonnesNouvellePartieX, coordonnesNouvellePartieY, longueurRectangle, hauteurRectangle};
+
 // Case crédits
   const int coordonnesCreditsX = coordonnesNouvellePartieX + espaceEntreCases;
 const int coordonnesCreditsY = (screenHeight/2);
@@ -69,6 +71,8 @@ const int coordonnesQuitterY = (screenHeight/2);
 const int coordonnesQuitterTexteY = coordonnesQuitterY + hauteurRectangle/2;
 const int coordonnesQuitterTexteX = coordonnesQuitterX + longueurRectangle/3;
 
+Rectangle rectangleQuitter = {coordonnesQuitterX, coordonnesQuitterY, longueurRectangle, hauteurRectangle};
+
 
     // Ecran Credits
     //--------------------------------------------------------------------------------------
@@ -81,23 +85,50 @@ Rectangle rectangleCredits = {coordonnesCreditsX, coordonnesCreditsY, longueurRe
     InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
 
     GameScreen currentScreen = TITLE;
+    
+        bool exitWindow = false;    // Flag to set window to exit
 
     SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
+    
+    // Music
+    //----------
+      InitAudioDevice();              // Initialize audio device
+
+    Music musicCredits = LoadMusicStream("resources/country.mp3");
+            
     //--------------------------------------------------------------------------------------
 
     // Main game loop
-    while (!WindowShouldClose())    // Detect window close button or ESC key
+    while (!exitWindow) 
     {
 
         // Update
         //----------------------------------------------------------------------------------
+                UpdateMusicStream(musicCredits);   // Update music buffer with new stream data
+        
         switch (currentScreen) {
             case TITLE: {
-                if ( IsGestureDetected(GESTURE_TAP) && CheckCollisionPointRec(GetMousePosition(), rectangleCredits) ){
+                if ( IsGestureDetected(GESTURE_TAP) ){
+					
+					// Le rectangle des crédits
+					if( CheckCollisionPointRec(GetMousePosition(), rectangleCredits) ){
+                    currentScreen = CREDITS;
+                        PlayMusicStream(musicCredits);
+					}
+					
+							// Le rectangle Nouvelle Partie
+					if( CheckCollisionPointRec(GetMousePosition(), rectangleNouvellePartie) ){
                     currentScreen = NOUVELLE_PARTIE;
+					}
+					
+												// Le rectangle Quitter
+					if( CheckCollisionPointRec(GetMousePosition(), rectangleQuitter) ){
+                    exitWindow = true;
+					}
                 }
             }
                 break;
+                
             case NOUVELLE_PARTIE: {
                 // Si on veut revenir au menu
                 if(IsGestureDetected(GESTURE_TAP)){
@@ -106,9 +137,10 @@ Rectangle rectangleCredits = {coordonnesCreditsX, coordonnesCreditsY, longueurRe
             }
                 break;
             case CREDITS: {
-                // Si on appuie sur la touche "Q", on revient sur le menu
-                if (IsKeyPressed(KEY_Q)) {
+				                // Si on veut revenir au menu
+                if ( IsGestureDetected(GESTURE_TAP) ) {
                     currentScreen = TITLE;
+                                StopMusicStream(musicCredits);
                 }
             }
                 break;
@@ -130,7 +162,7 @@ Rectangle rectangleCredits = {coordonnesCreditsX, coordonnesCreditsY, longueurRe
 
                 // Nouvelle partie
                 DrawText("Nouvelle partie", coordonnesNouvellePartieTexteX, coordonnesNouvellePartieTexteY, 10, BLACK);
-                DrawRectangle(coordonnesNouvellePartieX, coordonnesNouvellePartieY, longueurRectangle, hauteurRectangle, Fade(GREEN, 0.5f));
+                DrawRectangleRec(rectangleNouvellePartie, Fade(GREEN, 0.5f));
                 DrawRectangleLines(coordonnesNouvellePartieX, coordonnesNouvellePartieY, 100, 50, Fade(GREEN, 0.8f));
 
                 // Crédits
@@ -140,14 +172,14 @@ Rectangle rectangleCredits = {coordonnesCreditsX, coordonnesCreditsY, longueurRe
 
                 // Quitter
                 DrawText("Quitter", coordonnesQuitterTexteX, coordonnesQuitterTexteY, 10, RED);
-                DrawRectangle(coordonnesQuitterX, coordonnesQuitterY, longueurRectangle, hauteurRectangle, Fade(BLACK, 0.5f));
+                DrawRectangleRec(rectangleQuitter, Fade(BLACK, 0.5f));
                 DrawRectangleLines(coordonnesQuitterX, coordonnesQuitterY, longueurRectangle, hauteurRectangle, Fade(RED, 0.8f));
             }
                 break;
 
             case NOUVELLE_PARTIE:{
-               
-            }
+                               DrawText("La partie commence !", 190, 200, 20, LIGHTGRAY);
+            } break;
 
             // Crédits
             case CREDITS:{
