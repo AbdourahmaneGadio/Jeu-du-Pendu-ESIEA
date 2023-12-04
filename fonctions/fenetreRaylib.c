@@ -34,10 +34,49 @@ typedef enum GameScreen {
 // Program main entry point
 //------------------------------------------------------------------------------------
 void fenetreRaylib() {
+	
     // Initialization
     //--------------------------------------------------------------------------------------
     const int screenWidth = 800;
     const int screenHeight = 450;
+    
+    const int espaceEntreCases = 150;
+    
+    const int longueurRectangle = 100;
+    const int hauteurRectangle = 52;
+    
+    // Ecran TITRE
+    //--------------------------------------------------------------------------------------
+    
+    // Case Nouvelle Partie
+  const int coordonnesNouvellePartieX = 200;
+const int coordonnesNouvellePartieY = (screenHeight/2);
+
+const int coordonnesNouvellePartieTexteY = coordonnesNouvellePartieY + hauteurRectangle/2;
+const int coordonnesNouvellePartieTexteX = coordonnesNouvellePartieX + longueurRectangle/8;
+
+// Case crédits
+  const int coordonnesCreditsX = coordonnesNouvellePartieX + espaceEntreCases;
+const int coordonnesCreditsY = (screenHeight/2);
+
+const int coordonnesCreditsTexteY = coordonnesCreditsY + hauteurRectangle/2;
+const int coordonnesCreditsTexteX = coordonnesCreditsX + longueurRectangle/3;
+
+// Case quitter
+  const int coordonnesQuitterX = coordonnesCreditsX + espaceEntreCases;
+const int coordonnesQuitterY = (screenHeight/2);
+
+const int coordonnesQuitterTexteY = coordonnesQuitterY + hauteurRectangle/2;
+const int coordonnesQuitterTexteX = coordonnesQuitterX + longueurRectangle/3;
+
+
+    // Ecran Credits
+    //--------------------------------------------------------------------------------------
+  const int coordonnesEcranCreditsX = (screenWidth/4) + 50;
+const int coordonnesEcranCreditsY = (screenHeight/2);
+
+Rectangle rectangleCredits = {coordonnesCreditsX, coordonnesCreditsY, longueurRectangle, hauteurRectangle};
+
 
     InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
 
@@ -54,7 +93,7 @@ void fenetreRaylib() {
         //----------------------------------------------------------------------------------
         switch (currentScreen) {
             case TITLE: {
-                if (IsKeyPressed(KEY_ENTER) || IsGestureDetected(GESTURE_TAP)) {
+                if ( IsGestureDetected(GESTURE_TAP) && CheckCollisionPointRec(GetMousePosition(), rectangleCredits) ){
                     currentScreen = NOUVELLE_PARTIE;
                 }
             }
@@ -90,46 +129,30 @@ void fenetreRaylib() {
                 DrawText("Jeu du pendu", 190, 200, 20, LIGHTGRAY);
 
                 // Nouvelle partie
-                DrawText("Nouvelle partie", screenWidth / 2, screenHeight / 2, 10, BLACK);
-                DrawRectangle(screenWidth / 2, screenHeight / 2, 100, 50, Fade(GREEN, 0.5f));
-                DrawRectangleLines(screenWidth / 2, screenHeight / 2, 100, 50, Fade(GREEN, 0.8f));
+                DrawText("Nouvelle partie", coordonnesNouvellePartieTexteX, coordonnesNouvellePartieTexteY, 10, BLACK);
+                DrawRectangle(coordonnesNouvellePartieX, coordonnesNouvellePartieY, longueurRectangle, hauteurRectangle, Fade(GREEN, 0.5f));
+                DrawRectangleLines(coordonnesNouvellePartieX, coordonnesNouvellePartieY, 100, 50, Fade(GREEN, 0.8f));
 
                 // Crédits
-                DrawText("Crédits", 10, 10, 10, BLACK);
-                DrawRectangle(10, 10, 100, 50, Fade(SKYBLUE, 0.5f));
-                DrawRectangleLines(10, 10, 100, 50, Fade(BLUE, 0.8f));
+                DrawText("Crédits", coordonnesCreditsTexteX, coordonnesCreditsTexteY, 10, BLACK);
+                DrawRectangleRec(rectangleCredits, Fade(SKYBLUE, 0.5f));
+                DrawRectangleLines(coordonnesCreditsX, coordonnesCreditsY, longueurRectangle, hauteurRectangle, Fade(BLUE, 0.8f));
 
-                // Crédits
-                DrawText("Quitter", 10, 10, 10, WHITE);
-                DrawRectangle(80, 80, 100, 50, Fade(BLACK, 0.5f));
-                DrawRectangleLines(80, 80, 100, 50, Fade(RED, 0.8f));
+                // Quitter
+                DrawText("Quitter", coordonnesQuitterTexteX, coordonnesQuitterTexteY, 10, RED);
+                DrawRectangle(coordonnesQuitterX, coordonnesQuitterY, longueurRectangle, hauteurRectangle, Fade(BLACK, 0.5f));
+                DrawRectangleLines(coordonnesQuitterX, coordonnesQuitterY, longueurRectangle, hauteurRectangle, Fade(RED, 0.8f));
             }
                 break;
 
             case NOUVELLE_PARTIE:{
-                DrawText("Jeu en cours...", screenWidth / 2, screenHeight / 2, 10, RED);
-
-                // Mot à deviner
-                DrawText("Mot à deviner", 10, 10, 10, BLACK);
-                DrawText("_____", 10, 10, 10, BLACK);
-                DrawRectangle(10, 100, 100, 50, Fade(SKYBLUE, 0.5f));
-                DrawRectangleLines(10, 100, 100, 50, Fade(BLUE, 0.8f));
-
-                // Nombre d'essais
-                DrawText("Nombre d'essais : 3", 10, 10, 10, BLACK);
-                DrawRectangle(200, 10, 100, 50, Fade(SKYBLUE, 0.5f));
-                DrawRectangleLines(2000, 10, 100, 50, Fade(BLUE, 0.8f));
-
-                // Retour au menu
-                DrawText("Revenir au menu", 10, 10, 10, BLACK);
-                DrawRectangle(10, 10, 100, 50, Fade(SKYBLUE, 0.5f));
-                DrawRectangleLines(10, 10, 100, 50, Fade(BLUE, 0.8f));
+               
             }
 
             // Crédits
             case CREDITS:{
-                DrawText("Equipe: GADIO Abdourahmane, KADOUCHIM David, LEVY Ilona", screenWidth / 2, screenHeight / 2, 10, LIGHTGRAY);
-                DrawText("https://github.com/AbdourahmaneGadio/Jeu-du-Pendu-ESIEA", (screenWidth + 50) / 2, (screenHeight + 50) / 2, 10, LIGHTGRAY);
+                DrawText("Equipe: GADIO Abdourahmane, KADOUCHIM David, LEVY Ilona", coordonnesEcranCreditsX, coordonnesEcranCreditsY, 10, LIGHTGRAY);
+                DrawText("https://github.com/AbdourahmaneGadio/Jeu-du-Pendu-ESIEA", coordonnesEcranCreditsX, coordonnesEcranCreditsY + 30, 10, LIGHTGRAY);
             }
 
             default:
