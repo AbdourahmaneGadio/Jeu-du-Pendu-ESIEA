@@ -10,10 +10,10 @@ int main() {
     fenetreRaylib();
 
     // On prend un mot au hasard à trouver
-    char *mot = choixMot();
+    //char *mot = choixMot();
 
     // Le pendu en lui-même
-    devinetteMot(mot);
+    //devinetteMot(mot);
 
 
 }

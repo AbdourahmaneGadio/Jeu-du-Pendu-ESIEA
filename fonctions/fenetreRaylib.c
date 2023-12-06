@@ -27,7 +27,7 @@
 // Types and Structures Definition
 //------------------------------------------------------------------------------------------
 typedef enum GameScreen {
-    TITLE, NOUVELLE_PARTIE, CREDITS
+    TITLE, NOUVELLE_PARTIE, CREDITS, JEU_EN_COURS
 } GameScreen;
 
 //------------------------------------------------------------------------------------
@@ -40,7 +40,7 @@ void fenetreRaylib() {
     const int screenWidth = 800;
     const int screenHeight = 450;
 
-    const int espaceEntreCases = 150;
+    const int espaceEntreCases = 100;
 
     const int longueurRectangle = 100;
     const int hauteurRectangle = 52;
@@ -49,14 +49,26 @@ void fenetreRaylib() {
     //--------------------------------------------------------------------------------------
 
     // Case Nouvelle Partie
-    const int coordonnesNouvellePartieX = 200;
-    const int coordonnesNouvellePartieY = (screenHeight / 2);
+    const int coordonnesNouvellePartieX = (screenWidth/2) - longueurRectangle - espaceEntreCases/2;
+    const int coordonnesNouvellePartieY = (screenHeight / 2) + hauteurRectangle / 2;
 
     const int coordonnesNouvellePartieTexteY = coordonnesNouvellePartieY + hauteurRectangle / 2;
     const int coordonnesNouvellePartieTexteX = coordonnesNouvellePartieX + longueurRectangle / 8;
 
     Rectangle rectangleNouvellePartie = {coordonnesNouvellePartieX, coordonnesNouvellePartieY, longueurRectangle,
                                          hauteurRectangle};
+
+// Ecran jeu en cours
+ const int coordonnesQuitterJeuEnCoursX = (screenWidth / 2) - (longueurRectangle/2);
+    const int coordonnesQuitterJeuEnCoursY= (screenHeight) - hauteurRectangle * 2;
+
+    const int coordonnesQuitterJeuEnCoursTexteX = coordonnesQuitterJeuEnCoursX  +  longueurRectangle / 12;
+    const int coordonnesQuitterJeuEnCoursTexteY = coordonnesQuitterJeuEnCoursY  +hauteurRectangle / 2;
+
+    Rectangle rectangleQuitterJeuEnCours = {coordonnesQuitterJeuEnCoursX, coordonnesQuitterJeuEnCoursY, longueurRectangle,
+                                         hauteurRectangle};
+
+char mot_a_trouver[] = "_ _ _ _ _";
 
 // Case crédits
     const int coordonnesCreditsX = coordonnesNouvellePartieX + espaceEntreCases;
@@ -67,7 +79,7 @@ void fenetreRaylib() {
 
 // Case quitter
     const int coordonnesQuitterX = coordonnesCreditsX + espaceEntreCases;
-    const int coordonnesQuitterY = (screenHeight / 2);
+    const int coordonnesQuitterY = coordonnesNouvellePartieY;
 
     const int coordonnesQuitterTexteY = coordonnesQuitterY + hauteurRectangle / 2;
     const int coordonnesQuitterTexteX = coordonnesQuitterX + longueurRectangle / 3;
@@ -79,8 +91,6 @@ void fenetreRaylib() {
     //--------------------------------------------------------------------------------------
     const int coordonnesEcranCreditsX = (screenWidth / 4) + 50;
     const int coordonnesEcranCreditsY = (screenHeight / 2);
-
-    Rectangle rectangleCredits = {coordonnesCreditsX, coordonnesCreditsY, longueurRectangle, hauteurRectangle};
 
 
     InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
@@ -117,12 +127,7 @@ void fenetreRaylib() {
 
                 if (IsGestureDetected(GESTURE_TAP)) {
 
-                    // Le rectangle des crédits
-                    if (CheckCollisionPointRec(GetMousePosition(), rectangleCredits)) {
-                        currentScreen = CREDITS;
-                        StopMusicStream(musicMainMenu);
-
-                    }
+                    
 
                     // Le rectangle Nouvelle Partie
                     if (CheckCollisionPointRec(GetMousePosition(), rectangleNouvellePartie)) {
@@ -134,7 +139,9 @@ void fenetreRaylib() {
 
                     // Le rectangle Quitter
                     if (CheckCollisionPointRec(GetMousePosition(), rectangleQuitter)) {
-                        exitWindow = true;
+                                                StopMusicStream(musicMainMenu);
+
+                        currentScreen = CREDITS;
                     }
                 }
             }
@@ -151,18 +158,43 @@ void fenetreRaylib() {
             // Sinon
         else {
             StopMusicStream(musicGetReady);
-            currentScreen = TITLE; // L'écran du jeu du pendu
+            currentScreen = JEU_EN_COURS; // L'écran du jeu du pendu
             timePlayedGetReady = 1.0f; // On réinitialise le chargement
         }
             }
                 break;
+
+// Le jeu du pendu en lui-même
+        case JEU_EN_COURS:{
+                if (IsGestureDetected(GESTURE_TAP)) {
+
+                    // Retour au menu
+                                        if (CheckCollisionPointRec(GetMousePosition(), rectangleQuitterJeuEnCours)) {
+                        currentScreen = TITLE;
+                    }
+                }
+
+                      // Get char pressed (unicode character) on the queue
+            int key = GetCharPressed();
+
+// De A à Z en MAJUSCULE, et de a à z en MINUSCULE
+// Source : https://www.ascii-code.com/
+                if ((key >= 65) && (key <= 90) || (key >= 97) && (key <= 122) )
+                {
+                 
+                 //mot_a_trouver[0] = (char) key;
+                }
+
+        } break;
+
             case CREDITS: {
                 PlayMusicStream(musicCredits);
 
                 // Si on veut revenir au menu
                 if (IsGestureDetected(GESTURE_TAP)) {
                     StopMusicStream(musicCredits);
-                    currentScreen = TITLE;
+                                            exitWindow = true;
+
                 }
             }
                 break;
@@ -189,11 +221,7 @@ void fenetreRaylib() {
                 DrawRectangleRec(rectangleNouvellePartie, Fade(GREEN, 0.5f));
                 DrawRectangleLines(coordonnesNouvellePartieX, coordonnesNouvellePartieY, 100, 50, Fade(GREEN, 0.8f));
 
-                // Crédits
-                DrawText("Crédits", coordonnesCreditsTexteX, coordonnesCreditsTexteY, 10, BLACK);
-                DrawRectangleRec(rectangleCredits, Fade(SKYBLUE, 0.5f));
-                DrawRectangleLines(coordonnesCreditsX, coordonnesCreditsY, longueurRectangle, hauteurRectangle,
-                                   Fade(BLUE, 0.8f));
+             
 
                 // Quitter
                 DrawText("Quitter", coordonnesQuitterTexteX, coordonnesQuitterTexteY, 10, RED);
@@ -210,12 +238,24 @@ void fenetreRaylib() {
             }
                 break;
 
+// Le jeu du pendu en lui-même
+                           case JEU_EN_COURS: {
+                            // Le mot à trouver
+                DrawText(mot_a_trouver, 190, 200, 20, LIGHTGRAY);
+                // Quitter
+                DrawText("Quitter la partie", coordonnesQuitterJeuEnCoursTexteX, coordonnesQuitterJeuEnCoursTexteY, 10, RED);
+                DrawRectangleRec(rectangleQuitterJeuEnCours, Fade(BLACK, 0.5f));
+                DrawRectangleLines(coordonnesQuitterJeuEnCoursX, coordonnesQuitterJeuEnCoursY, longueurRectangle, hauteurRectangle,
+                                   Fade(RED, 0.8f));
+            }
+                break;
+
                 // Crédits
             case CREDITS: {
                 DrawText("Equipe: GADIO Abdourahmane, KADOUCHIM David, LEVY Ilona", coordonnesEcranCreditsX,
-                         coordonnesEcranCreditsY, 10, LIGHTGRAY);
+                         coordonnesEcranCreditsY, 10, BLACK);
                 DrawText("https://github.com/AbdourahmaneGadio/Jeu-du-Pendu-ESIEA", coordonnesEcranCreditsX,
-                         coordonnesEcranCreditsY + 30, 10, LIGHTGRAY);
+                         coordonnesEcranCreditsY + 30, 10, RED);
             }
 
             default:
