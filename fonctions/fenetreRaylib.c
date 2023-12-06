@@ -110,20 +110,6 @@ void fenetreRaylib() {
         UpdateMusicStream(musicMainMenu);
         UpdateMusicStream(musicGetReady);
 
-        // Temps de chargement pour nouvelle partie
-        // Si la musique n'est pas finie
-        if (timePlayedGetReady < 0.99f) {
-            timePlayedGetReady = GetMusicTimePlayed(musicGetReady) / GetMusicTimeLength(musicGetReady);
-        }
-
-            // Sinon
-        else {
-            StopMusicStream(musicGetReady);
-            currentScreen = TITLE; // L'écran du jeu du pendu
-            timePlayedGetReady = 0.0f; // On réinitialise le chargement
-        }
-
-
         switch (currentScreen) {
             case TITLE: {
 
@@ -156,11 +142,18 @@ void fenetreRaylib() {
 
             case NOUVELLE_PARTIE: {
                 PlayMusicStream(musicGetReady);
+                        // Temps de chargement pour nouvelle partie
+        // Si la musique n'est pas finie
+        if (timePlayedGetReady < 0.9f) {
+            timePlayedGetReady = GetMusicTimePlayed(musicGetReady) / GetMusicTimeLength(musicGetReady);
+        }
 
-                // Si on veut revenir au menu
-                if (IsGestureDetected(GESTURE_TAP)) {
-                    currentScreen = TITLE;
-                }
+            // Sinon
+        else {
+            StopMusicStream(musicGetReady);
+            currentScreen = TITLE; // L'écran du jeu du pendu
+            timePlayedGetReady = 1.0f; // On réinitialise le chargement
+        }
             }
                 break;
             case CREDITS: {
@@ -232,9 +225,15 @@ void fenetreRaylib() {
         //----------------------------------------------------------------------------------
     }
 
-    // De-Initialization
+ // De-Initialization
     //--------------------------------------------------------------------------------------
-    CloseWindow();        // Close window and OpenGL context
+    UnloadMusicStream(musicCredits);   // Unload music stream buffers from RAM
+    UnloadMusicStream(musicMainMenu);
+    UnloadMusicStream(musicGetReady);
+    
+    CloseAudioDevice();         // Close audio device (music streaming is automatically stopped)
+
+    CloseWindow();              // Close window and OpenGL context
     //--------------------------------------------------------------------------------------
 
 }
