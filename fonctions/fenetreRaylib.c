@@ -133,6 +133,7 @@ void fenetreRaylib() {
     Music musicCredits = LoadMusicStream("music/Daft Punk - Motherboard.mp3");
     Music musicMainMenu = LoadMusicStream("music/Arcade Player - Racing Menu (From -Mario Kart Wii-).mp3");
     Music musicGetReady = LoadMusicStream("music/get-ready.mp3");
+    Music musicPartiePerdue = LoadMusicStream("music/Daft Punk - Motherboard.mp3");
     float timePlayedGetReady = 1.0f;
 
     // Main game loop
@@ -143,6 +144,7 @@ void fenetreRaylib() {
         UpdateMusicStream(musicCredits);   // Update music buffer with new stream data
         UpdateMusicStream(musicMainMenu);
         UpdateMusicStream(musicGetReady);
+              UpdateMusicStream(musicPartiePerdue);
 
         switch (currentScreen) {
             case TITLE: {
@@ -249,6 +251,10 @@ void fenetreRaylib() {
             break;
         }
 
+                } // nombreEssais > 0
+
+                else{
+                    PlayMusicStream(musicPartiePerdue);
                 }
 
 
@@ -345,7 +351,8 @@ void fenetreRaylib() {
     UnloadMusicStream(musicCredits);   // Unload music stream buffers from RAM
     UnloadMusicStream(musicMainMenu);
     UnloadMusicStream(musicGetReady);
-    
+    UnloadMusicStream(musicPartiePerdue);
+
     CloseAudioDevice();         // Close audio device (music streaming is automatically stopped)
 
     CloseWindow();              // Close window and OpenGL context
