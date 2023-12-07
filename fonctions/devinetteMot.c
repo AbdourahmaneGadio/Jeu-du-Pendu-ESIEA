@@ -65,7 +65,7 @@ void devinetteMot(char *mot) {
         }
 
         // Si on n'a pas trouvé la lettre
-        if(lettreTrouvee == 1){
+        if (lettreTrouvee == 1) {
             nombreEssais--;
         }
 
@@ -75,7 +75,7 @@ void devinetteMot(char *mot) {
         int resultat = strcmp(devinette, mot);
 
         // Si on a tout trouvé
-       if (resultat == 0) {
+        if (resultat == 0) {
             printf(mot);
             printf("\nBravo, vous avez gagné !\n");
 
@@ -85,7 +85,7 @@ void devinetteMot(char *mot) {
     }
 
     // Si on a perdu, on affiche le mot qu'il fallait deviner
-    if(nombreEssais == 0){
-    printf("\nPerdu...\nLe mot à deviner était : %s\n", mot);
+    if (nombreEssais == 0) {
+        printf("\nPerdu...\nLe mot à deviner était : %s\n", mot);
     }
 }

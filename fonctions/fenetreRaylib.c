@@ -27,54 +27,273 @@
 // Types and Structures Definition
 //------------------------------------------------------------------------------------------
 typedef enum GameScreen {
-    TITLE, NOUVELLE_PARTIE, CREDITS
+    TITLE, NOUVELLE_PARTIE, CREDITS, JEU_EN_COURS
 } GameScreen;
 
 //------------------------------------------------------------------------------------
 // Program main entry point
 //------------------------------------------------------------------------------------
 void fenetreRaylib() {
+
     // Initialization
     //--------------------------------------------------------------------------------------
     const int screenWidth = 800;
     const int screenHeight = 450;
 
-    InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
+    const int espaceEntreCases = 100;
+
+    const int longueurRectangle = 100;
+    const int hauteurRectangle = 52;
+
+    // Ecran TITRE
+    //--------------------------------------------------------------------------------------
+    
+    const int coordonnesNouvellePartieX = (screenWidth / 2) - longueurRectangle - espaceEntreCases / 2;
+    const int coordonnesNouvellePartieY = (screenHeight / 2) + hauteurRectangle / 2;
+
+    const int coordonnesNouvellePartieTexteY = coordonnesNouvellePartieY + hauteurRectangle / 2;
+    const int coordonnesNouvellePartieTexteX = coordonnesNouvellePartieX + longueurRectangle / 8;
+
+    Rectangle rectangleNouvellePartie = {coordonnesNouvellePartieX, coordonnesNouvellePartieY, longueurRectangle,
+                                         hauteurRectangle};
+
+    //-------------------------------
+    // Ecran jeu en cours
+
+    const int coordonnesQuitterJeuEnCoursX = (screenWidth / 2) - (longueurRectangle / 2);
+    const int coordonnesQuitterJeuEnCoursY = (screenHeight) - hauteurRectangle * 2;
+
+    const int coordonnesQuitterJeuEnCoursTexteX = coordonnesQuitterJeuEnCoursX + longueurRectangle / 12;
+    const int coordonnesQuitterJeuEnCoursTexteY = coordonnesQuitterJeuEnCoursY + hauteurRectangle / 2;
+
+    Rectangle rectangleQuitterJeuEnCours = {coordonnesQuitterJeuEnCoursX, coordonnesQuitterJeuEnCoursY,
+                                            longueurRectangle,
+                                            hauteurRectangle};
+
+    //-------------------------------
+    // Lignes copiées du fichier main.c principal, et de la fonction devinetteMot
+
+    // On prend un mot au hasard à trouver
+    char *mot = choixMot();
+
+    // On prend le mot, et on donne la longueur de celui-ci
+    size_t longueur = strlen(mot);
+    char devinette[longueur - 1];
+
+    int nombreEssais = 6;
+    int lettreTrouvee = 1; // 0 si on la trouve, 1 si on ne la trouve pas
+
+    /*
+     * On ajout des tirets au mot à deviner
+     * Ex : ____ pour un mot à 4 caractères
+     */
+    for (int i = 0; i < longueur; i++) {
+        devinette[i] = '-';
+    }
+
+    devinette[longueur] = '\0';
+
+    // Case crédits
+    const int coordonnesCreditsX = coordonnesNouvellePartieX + espaceEntreCases;
+    const int coordonnesCreditsY = (screenHeight / 2);
+
+    const int coordonnesCreditsTexteY = coordonnesCreditsY + hauteurRectangle / 2;
+    const int coordonnesCreditsTexteX = coordonnesCreditsX + longueurRectangle / 3;
+
+    // Case quitter
+    const int coordonnesQuitterX = coordonnesCreditsX + espaceEntreCases;
+    const int coordonnesQuitterY = coordonnesNouvellePartieY;
+
+    const int coordonnesQuitterTexteY = coordonnesQuitterY + hauteurRectangle / 2;
+    const int coordonnesQuitterTexteX = coordonnesQuitterX + longueurRectangle / 3;
+
+    Rectangle rectangleQuitter = {coordonnesQuitterX, coordonnesQuitterY, longueurRectangle, hauteurRectangle};
+
+
+    // Ecran Credits
+    //--------------------------------------------------------------------------------------
+    const int coordonnesEcranCreditsX = (screenWidth / 4) + 50;
+    const int coordonnesEcranCreditsY = (screenHeight / 2);
+
+    // Paramètres de la fenêtre
+    //--------------------------------------------------------------------------------------
+    InitWindow(screenWidth, screenHeight, "Jeu Du Pendu ESIEA v1.0");
 
     GameScreen currentScreen = TITLE;
 
+    bool exitWindow = false;    // Flag to set window to exit
+
     SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
-    //--------------------------------------------------------------------------------------
+
+    // Music
+    //----------
+    InitAudioDevice();              // Initialize audio device
+
+    // Les musiques utilisées
+    Music musicCredits = LoadMusicStream("music/Daft Punk - Motherboard.mp3");
+    Music musicMainMenu = LoadMusicStream("music/Arcade Player - Racing Menu (From -Mario Kart Wii-).mp3");
+
+    Music musicGetReady = LoadMusicStream("music/get-ready.mp3");
+    float timePlayedGetReady = 0.0f;
+
+    Music musicPartieJeuEnCours = LoadMusicStream("music/Arcade Player - Racing Menu (From -Mario Kart Wii-).mp3");
+    Music musicPartiePerdue = LoadMusicStream("music/Daft Punk - Motherboard.mp3");
+
 
     // Main game loop
-    while (!WindowShouldClose())    // Detect window close button or ESC key
-    {
+    while (!exitWindow) {
 
         // Update
         //----------------------------------------------------------------------------------
+        UpdateMusicStream(musicCredits);   // Update music buffer with new stream data
+        UpdateMusicStream(musicMainMenu);
+        UpdateMusicStream(musicGetReady);
+        UpdateMusicStream(musicPartiePerdue);
+        UpdateMusicStream(musicPartieJeuEnCours);
+
         switch (currentScreen) {
             case TITLE: {
-                if (IsKeyPressed(KEY_ENTER) || IsGestureDetected(GESTURE_TAP)) {
-                    currentScreen = NOUVELLE_PARTIE;
+
+                // La musique du menu principal
+                PlayMusicStream(musicMainMenu);
+
+                if (IsGestureDetected(GESTURE_TAP)) {
+
+                    // Si on clique sur le rectangle Nouvelle Partie
+                    if (CheckCollisionPointRec(GetMousePosition(), rectangleNouvellePartie)) {
+                        currentScreen = NOUVELLE_PARTIE;
+                        StopMusicStream(musicMainMenu);
+
+
+                    }
+
+                    // Si on clique sur le rectangle Quitter
+                    if (CheckCollisionPointRec(GetMousePosition(), rectangleQuitter)) {
+                        StopMusicStream(musicMainMenu);
+
+                        currentScreen = CREDITS;
+                    }
                 }
             }
                 break;
+
             case NOUVELLE_PARTIE: {
-                // Si on veut revenir au menu
-                if(IsGestureDetected(GESTURE_TAP)){
-                    currentScreen = TITLE;
+
+                // La musique de la nouvelle partie
+                PlayMusicStream(musicGetReady);
+
+                // Si la musique n'est pas finie
+                // Temps de chargement pour nouvelle partie
+                if (timePlayedGetReady < 0.9f) {
+                    timePlayedGetReady = GetMusicTimePlayed(musicGetReady) / GetMusicTimeLength(musicGetReady);
+                }
+
+                // Si la musique est finie
+                else {
+                    StopMusicStream(musicGetReady);
+                    currentScreen = JEU_EN_COURS; // L'écran du jeu du pendu
+                    timePlayedGetReady = 1.0f; // On réinitialise le chargement
                 }
             }
                 break;
+
+            // La partie du jeu en cours
+            case JEU_EN_COURS: {
+
+                // La musique du jeu du pendu
+                PlayMusicStream(musicPartieJeuEnCours);
+
+                if (IsGestureDetected(GESTURE_TAP)) {
+
+                    // Retour au menu
+                    if (CheckCollisionPointRec(GetMousePosition(), rectangleQuitterJeuEnCours)) {
+                        StopMusicStream(musicPartieJeuEnCours);
+                        StopMusicStream(musicPartiePerdue);
+                        currentScreen = TITLE;
+                    }
+                }
+
+                // Tant que l'on a pas perdu
+                if (nombreEssais > 0) {
+
+                    // Get char pressed (unicode character) on the queue
+                    int key = GetCharPressed();
+
+                    // De A à Z en MAJUSCULE, et de a à z en MINUSCULE
+                    // Source : https://www.ascii-code.com/
+                    if ((key >= 65) && (key <= 90) || (key >= 97) && (key <= 122)) {
+
+                        // On convertit la lettre en MAJUSCULE
+                        char majuscule = toupper((char) key);
+
+                        // Pour chaque lettre du mot
+                        for (int j = 0; j < longueur; j++) {
+
+                            // Si on trouve la lettre
+                            if (majuscule == mot[j]) {
+
+                                /*
+                                 * On met celle-ci dans le mot à deviner
+                                 * Ex:
+                                 * si le mot est "Java" et qu'on entre la lettre "a",
+                                 * alors le mot deviné sera "_a_a"
+                                 */
+                                devinette[j] = majuscule;
+                                lettreTrouvee = 0;
+
+                            }
+
+                        }
+
+                        // Si on n'a pas trouvé la lettre
+                        if (lettreTrouvee == 1) {
+                            nombreEssais--;
+                        }
+
+                        // On réinitialise l'état de la lettre trouvée
+                        lettreTrouvee = 1;
+
+                        int resultat = strcmp(devinette, mot);
+
+                        // Si on a tout trouvé
+                        if (resultat == 0) {
+
+                            // On sort de la boucle
+                            break;
+                        }
+
+                    }
+
+
+                } // nombreEssais > 0
+
+                // Si on a perdu
+                else {
+                    StopMusicStream(musicPartieJeuEnCours);
+                    PlayMusicStream(musicPartiePerdue);
+                }
+
+
+            }
+                break;
+
             case CREDITS: {
-                // Si on appuie sur la touche "Q", on revient sur le menu
-                if (IsKeyPressed(KEY_Q)) {
-                    currentScreen = TITLE;
+
+                // La musique des crédits
+                PlayMusicStream(musicCredits);
+
+                // Si on veut revenir au menu
+                if (IsGestureDetected(GESTURE_TAP)) {
+                    StopMusicStream(musicCredits);
+                    exitWindow = true;
+
                 }
             }
                 break;
 
             default:
+
+
                 break;
                 //----------------------------------------------------------------------------------
         }
@@ -90,46 +309,52 @@ void fenetreRaylib() {
                 DrawText("Jeu du pendu", 190, 200, 20, LIGHTGRAY);
 
                 // Nouvelle partie
-                DrawText("Nouvelle partie", screenWidth / 2, screenHeight / 2, 10, BLACK);
-                DrawRectangle(screenWidth / 2, screenHeight / 2, 100, 50, Fade(GREEN, 0.5f));
-                DrawRectangleLines(screenWidth / 2, screenHeight / 2, 100, 50, Fade(GREEN, 0.8f));
+                DrawText("Nouvelle partie", coordonnesNouvellePartieTexteX, coordonnesNouvellePartieTexteY, 10, BLACK);
+                DrawRectangleRec(rectangleNouvellePartie, Fade(GREEN, 0.5f));
+                DrawRectangleLines(coordonnesNouvellePartieX, coordonnesNouvellePartieY, 100, 50, Fade(GREEN, 0.8f));
 
-                // Crédits
-                DrawText("Crédits", 10, 10, 10, BLACK);
-                DrawRectangle(10, 10, 100, 50, Fade(SKYBLUE, 0.5f));
-                DrawRectangleLines(10, 10, 100, 50, Fade(BLUE, 0.8f));
 
-                // Crédits
-                DrawText("Quitter", 10, 10, 10, WHITE);
-                DrawRectangle(80, 80, 100, 50, Fade(BLACK, 0.5f));
-                DrawRectangleLines(80, 80, 100, 50, Fade(RED, 0.8f));
+
+                // Quitter
+                DrawText("Quitter", coordonnesQuitterTexteX, coordonnesQuitterTexteY, 10, RED);
+                DrawRectangleRec(rectangleQuitter, Fade(BLACK, 0.5f));
+                DrawRectangleLines(coordonnesQuitterX, coordonnesQuitterY, longueurRectangle, hauteurRectangle,
+                                   Fade(RED, 0.8f));
             }
                 break;
 
-            case NOUVELLE_PARTIE:{
-                DrawText("Jeu en cours...", screenWidth / 2, screenHeight / 2, 10, RED);
-
-                // Mot à deviner
-                DrawText("Mot à deviner", 10, 10, 10, BLACK);
-                DrawText("_____", 10, 10, 10, BLACK);
-                DrawRectangle(10, 100, 100, 50, Fade(SKYBLUE, 0.5f));
-                DrawRectangleLines(10, 100, 100, 50, Fade(BLUE, 0.8f));
-
-                // Nombre d'essais
-                DrawText("Nombre d'essais : 3", 10, 10, 10, BLACK);
-                DrawRectangle(200, 10, 100, 50, Fade(SKYBLUE, 0.5f));
-                DrawRectangleLines(2000, 10, 100, 50, Fade(BLUE, 0.8f));
-
-                // Retour au menu
-                DrawText("Revenir au menu", 10, 10, 10, BLACK);
-                DrawRectangle(10, 10, 100, 50, Fade(SKYBLUE, 0.5f));
-                DrawRectangleLines(10, 10, 100, 50, Fade(BLUE, 0.8f));
+            case NOUVELLE_PARTIE: {
+                DrawText("La partie commence !", 190, 200, 20, LIGHTGRAY);
+                DrawRectangle(200, 250, (int) (timePlayedGetReady * 400.0f), 12, MAROON);
+                DrawRectangleLines(200, 250, 400, 12, GRAY);
             }
+                break;
 
-            // Crédits
-            case CREDITS:{
-                DrawText("Equipe: GADIO Abdourahmane, KADOUCHIM David, LEVY Ilona", screenWidth / 2, screenHeight / 2, 10, LIGHTGRAY);
-                DrawText("https://github.com/AbdourahmaneGadio/Jeu-du-Pendu-ESIEA", (screenWidth + 50) / 2, (screenHeight + 50) / 2, 10, LIGHTGRAY);
+            // Le jeu du pendu en lui-même
+            case JEU_EN_COURS: {
+
+                // Le mot à trouver
+                DrawText(devinette, 190, 200, 20, LIGHTGRAY);
+
+                // Le nombre d'essais
+                DrawText(TextFormat("Il te reste %01i essais", nombreEssais), 190, 220, 20, RED);
+
+                // Quitter
+                DrawText("Quitter la partie", coordonnesQuitterJeuEnCoursTexteX, coordonnesQuitterJeuEnCoursTexteY, 10,
+                         RED);
+                DrawRectangleRec(rectangleQuitterJeuEnCours, Fade(BLACK, 0.5f));
+                DrawRectangleLines(coordonnesQuitterJeuEnCoursX, coordonnesQuitterJeuEnCoursY, longueurRectangle,
+                                   hauteurRectangle,
+                                   Fade(RED, 0.8f));
+            }
+                break;
+
+                // Crédits
+            case CREDITS: {
+                DrawText("Equipe: GADIO Abdourahmane, KADOUCHIM David, LEVY Ilona", coordonnesEcranCreditsX,
+                         coordonnesEcranCreditsY, 10, BLACK);
+                DrawText("https://github.com/AbdourahmaneGadio/Jeu-du-Pendu-ESIEA", coordonnesEcranCreditsX,
+                         coordonnesEcranCreditsY + 30, 10, RED);
             }
 
             default:
@@ -141,7 +366,15 @@ void fenetreRaylib() {
 
     // De-Initialization
     //--------------------------------------------------------------------------------------
-    CloseWindow();        // Close window and OpenGL context
+    UnloadMusicStream(musicCredits);   // Unload music stream buffers from RAM
+    UnloadMusicStream(musicMainMenu);
+    UnloadMusicStream(musicGetReady);
+    UnloadMusicStream(musicPartieJeuEnCours);
+    UnloadMusicStream(musicPartiePerdue);
+
+    CloseAudioDevice();         // Close audio device (music streaming is automatically stopped)
+
+    CloseWindow();              // Close window and OpenGL context
     //--------------------------------------------------------------------------------------
 
 }
