@@ -59,6 +59,7 @@ void fenetreRaylib() {
                                          hauteurRectangle};
 
 // Ecran jeu en cours
+
  const int coordonnesQuitterJeuEnCoursX = (screenWidth / 2) - (longueurRectangle/2);
     const int coordonnesQuitterJeuEnCoursY= (screenHeight) - hauteurRectangle * 2;
 
@@ -68,7 +69,30 @@ void fenetreRaylib() {
     Rectangle rectangleQuitterJeuEnCours = {coordonnesQuitterJeuEnCoursX, coordonnesQuitterJeuEnCoursY, longueurRectangle,
                                          hauteurRectangle};
 
-char mot_a_trouver[] = "_ _ _ _ _";
+ // On prend un mot au hasard à trouver
+    char *mot = choixMot();
+
+//-------------------------------
+// Lignes copiées de la fonction devinetteMot
+
+        // On prend le mot, et on donne la longueur de celui-ci
+    size_t longueur = strlen(mot);
+    char devinette[longueur - 1];
+
+    int nombreEssais = 6;
+    int lettreTrouvee = 1; // 0 si on la trouve, 1 si on ne la trouve pas
+
+    char motus;
+
+    /*
+     * On ajout des tirets au mot à deviner
+     * Ex : ____ pour un mot à 4 caractères
+     */
+    for (int i = 0; i < longueur; i++) {
+        devinette[i] = '-';
+    }
+
+    devinette[longueur] = '\0';
 
 // Case crédits
     const int coordonnesCreditsX = coordonnesNouvellePartieX + espaceEntreCases;
@@ -109,7 +133,7 @@ char mot_a_trouver[] = "_ _ _ _ _";
     Music musicCredits = LoadMusicStream("music/Daft Punk - Motherboard.mp3");
     Music musicMainMenu = LoadMusicStream("music/Arcade Player - Racing Menu (From -Mario Kart Wii-).mp3");
     Music musicGetReady = LoadMusicStream("music/get-ready.mp3");
-    float timePlayedGetReady = 0.0f;
+    float timePlayedGetReady = 1.0f;
 
     // Main game loop
     while (!exitWindow) {
@@ -166,6 +190,8 @@ char mot_a_trouver[] = "_ _ _ _ _";
 
 // Le jeu du pendu en lui-même
         case JEU_EN_COURS:{
+
+
                 if (IsGestureDetected(GESTURE_TAP)) {
 
                     // Retour au menu
@@ -174,16 +200,60 @@ char mot_a_trouver[] = "_ _ _ _ _";
                     }
                 }
 
-                      // Get char pressed (unicode character) on the queue
+                // Tant que l'on a pas perdu
+    if (nombreEssais > 0) {
+
+                              // Get char pressed (unicode character) on the queue
             int key = GetCharPressed();
 
 // De A à Z en MAJUSCULE, et de a à z en MINUSCULE
 // Source : https://www.ascii-code.com/
                 if ((key >= 65) && (key <= 90) || (key >= 97) && (key <= 122) )
                 {
-                 
-                 //mot_a_trouver[0] = (char) key;
+                      // On convertit la lettre en MAJUSCULE
+        char majuscule = toupper((char)key);
+
+                  // Pour chaque lettre du mot
+        for (int j = 0; j < longueur; j++) {
+
+            // Si on trouve la lettre
+            if (majuscule == mot[j]) {
+
+                /*
+                 * On met celle-ci dans le mot à deviner
+                 * Ex:
+                 * si le mot est "Java" et qu'on entre la lettre "a",
+                 * alors le mot deviné sera "_a_a"
+                 */
+                devinette[j] = majuscule;
+                lettreTrouvee = 0;
+
+            }
+
+        }
+
+        // Si on n'a pas trouvé la lettre
+        if(lettreTrouvee == 1){
+            nombreEssais--;
+        }
+
+        // On réinitialise l'état de la lettre trouvée
+        lettreTrouvee = 1;
+
+        int resultat = strcmp(devinette, mot);
+
+        // Si on a tout trouvé
+       if (resultat == 0) {
+
+            // On sort de la boucle
+            break;
+        }
+
                 }
+
+
+       
+    }
 
         } break;
 
@@ -240,8 +310,13 @@ char mot_a_trouver[] = "_ _ _ _ _";
 
 // Le jeu du pendu en lui-même
                            case JEU_EN_COURS: {
+    
                             // Le mot à trouver
-                DrawText(mot_a_trouver, 190, 200, 20, LIGHTGRAY);
+                DrawText(devinette, 190, 200, 20, LIGHTGRAY);
+
+                // Le nombre d'essais
+                   DrawText(TextFormat("Il te reste %01i essais", nombreEssais), 190, 220, 20, RED);
+    
                 // Quitter
                 DrawText("Quitter la partie", coordonnesQuitterJeuEnCoursTexteX, coordonnesQuitterJeuEnCoursTexteY, 10, RED);
                 DrawRectangleRec(rectangleQuitterJeuEnCours, Fade(BLACK, 0.5f));
