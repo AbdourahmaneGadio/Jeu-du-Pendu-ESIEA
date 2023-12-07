@@ -1,7 +1,8 @@
 # Jeu du Pendu ESIEA
- Projet du jeu du pendu dans le cadre d'un projet scolaire
 
- ## Requis
+Projet du jeu du pendu dans le cadre d'un projet scolaire
+
+## Requis
 
 Vous avez besoin d'avoir la librarie Raylib pour jouer au jeu.
 

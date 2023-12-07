@@ -8,7 +8,7 @@
  * ENTREE : rien
  * SORTIE : le mot choisi au hasard
  */
-char* choixMot(){
+char *choixMot() {
 
     // Les mots que l'on a défini pour le jeu
     char *capitaine[] = {"BYAKUYA", "KYORAKU", "MAYURI"};
@@ -40,7 +40,7 @@ char* choixMot(){
     // Variable pour stocker le mot
     char *motPourLeJeu = malloc(tailleMot);
 
-    for(int i = 0; i < tailleMot; ++i) {
+    for (int i = 0; i < tailleMot; ++i) {
         motPourLeJeu[i] = mot[i];
     }
 

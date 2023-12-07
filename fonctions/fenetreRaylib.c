@@ -49,7 +49,7 @@ void fenetreRaylib() {
     //--------------------------------------------------------------------------------------
 
     // Case Nouvelle Partie
-    const int coordonnesNouvellePartieX = (screenWidth/2) - longueurRectangle - espaceEntreCases/2;
+    const int coordonnesNouvellePartieX = (screenWidth / 2) - longueurRectangle - espaceEntreCases / 2;
     const int coordonnesNouvellePartieY = (screenHeight / 2) + hauteurRectangle / 2;
 
     const int coordonnesNouvellePartieTexteY = coordonnesNouvellePartieY + hauteurRectangle / 2;
@@ -60,22 +60,23 @@ void fenetreRaylib() {
 
 // Ecran jeu en cours
 
- const int coordonnesQuitterJeuEnCoursX = (screenWidth / 2) - (longueurRectangle/2);
-    const int coordonnesQuitterJeuEnCoursY= (screenHeight) - hauteurRectangle * 2;
+    const int coordonnesQuitterJeuEnCoursX = (screenWidth / 2) - (longueurRectangle / 2);
+    const int coordonnesQuitterJeuEnCoursY = (screenHeight) - hauteurRectangle * 2;
 
-    const int coordonnesQuitterJeuEnCoursTexteX = coordonnesQuitterJeuEnCoursX  +  longueurRectangle / 12;
-    const int coordonnesQuitterJeuEnCoursTexteY = coordonnesQuitterJeuEnCoursY  +hauteurRectangle / 2;
+    const int coordonnesQuitterJeuEnCoursTexteX = coordonnesQuitterJeuEnCoursX + longueurRectangle / 12;
+    const int coordonnesQuitterJeuEnCoursTexteY = coordonnesQuitterJeuEnCoursY + hauteurRectangle / 2;
 
-    Rectangle rectangleQuitterJeuEnCours = {coordonnesQuitterJeuEnCoursX, coordonnesQuitterJeuEnCoursY, longueurRectangle,
-                                         hauteurRectangle};
+    Rectangle rectangleQuitterJeuEnCours = {coordonnesQuitterJeuEnCoursX, coordonnesQuitterJeuEnCoursY,
+                                            longueurRectangle,
+                                            hauteurRectangle};
 
- // On prend un mot au hasard à trouver
+    // On prend un mot au hasard à trouver
     char *mot = choixMot();
 
 //-------------------------------
 // Lignes copiées de la fonction devinetteMot
 
-        // On prend le mot, et on donne la longueur de celui-ci
+    // On prend le mot, et on donne la longueur de celui-ci
     size_t longueur = strlen(mot);
     char devinette[longueur - 1];
 
@@ -144,7 +145,7 @@ void fenetreRaylib() {
         UpdateMusicStream(musicCredits);   // Update music buffer with new stream data
         UpdateMusicStream(musicMainMenu);
         UpdateMusicStream(musicGetReady);
-              UpdateMusicStream(musicPartiePerdue);
+        UpdateMusicStream(musicPartiePerdue);
 
         switch (currentScreen) {
             case TITLE: {
@@ -153,7 +154,7 @@ void fenetreRaylib() {
 
                 if (IsGestureDetected(GESTURE_TAP)) {
 
-                    
+
 
                     // Le rectangle Nouvelle Partie
                     if (CheckCollisionPointRec(GetMousePosition(), rectangleNouvellePartie)) {
@@ -165,7 +166,7 @@ void fenetreRaylib() {
 
                     // Le rectangle Quitter
                     if (CheckCollisionPointRec(GetMousePosition(), rectangleQuitter)) {
-                                                StopMusicStream(musicMainMenu);
+                        StopMusicStream(musicMainMenu);
 
                         currentScreen = CREDITS;
                     }
@@ -175,93 +176,94 @@ void fenetreRaylib() {
 
             case NOUVELLE_PARTIE: {
                 PlayMusicStream(musicGetReady);
-                        // Temps de chargement pour nouvelle partie
-        // Si la musique n'est pas finie
-        if (timePlayedGetReady < 0.9f) {
-            timePlayedGetReady = GetMusicTimePlayed(musicGetReady) / GetMusicTimeLength(musicGetReady);
-        }
+                // Temps de chargement pour nouvelle partie
+                // Si la musique n'est pas finie
+                if (timePlayedGetReady < 0.9f) {
+                    timePlayedGetReady = GetMusicTimePlayed(musicGetReady) / GetMusicTimeLength(musicGetReady);
+                }
 
-            // Sinon
-        else {
-            StopMusicStream(musicGetReady);
-            currentScreen = JEU_EN_COURS; // L'écran du jeu du pendu
-            timePlayedGetReady = 1.0f; // On réinitialise le chargement
-        }
+                    // Sinon
+                else {
+                    StopMusicStream(musicGetReady);
+                    currentScreen = JEU_EN_COURS; // L'écran du jeu du pendu
+                    timePlayedGetReady = 1.0f; // On réinitialise le chargement
+                }
             }
                 break;
 
 // Le jeu du pendu en lui-même
-        case JEU_EN_COURS:{
+            case JEU_EN_COURS: {
 
 
                 if (IsGestureDetected(GESTURE_TAP)) {
 
                     // Retour au menu
-                                        if (CheckCollisionPointRec(GetMousePosition(), rectangleQuitterJeuEnCours)) {
+                    if (CheckCollisionPointRec(GetMousePosition(), rectangleQuitterJeuEnCours)) {
                         currentScreen = TITLE;
                     }
                 }
 
                 // Tant que l'on a pas perdu
-    if (nombreEssais > 0) {
+                if (nombreEssais > 0) {
 
-                              // Get char pressed (unicode character) on the queue
-            int key = GetCharPressed();
+                    // Get char pressed (unicode character) on the queue
+                    int key = GetCharPressed();
 
 // De A à Z en MAJUSCULE, et de a à z en MINUSCULE
 // Source : https://www.ascii-code.com/
-                if ((key >= 65) && (key <= 90) || (key >= 97) && (key <= 122) )
-                {
-                      // On convertit la lettre en MAJUSCULE
-        char majuscule = toupper((char)key);
+                    if ((key >= 65) && (key <= 90) || (key >= 97) && (key <= 122)) {
+                        // On convertit la lettre en MAJUSCULE
+                        char majuscule = toupper((char) key);
 
-                  // Pour chaque lettre du mot
-        for (int j = 0; j < longueur; j++) {
+                        // Pour chaque lettre du mot
+                        for (int j = 0; j < longueur; j++) {
 
-            // Si on trouve la lettre
-            if (majuscule == mot[j]) {
+                            // Si on trouve la lettre
+                            if (majuscule == mot[j]) {
 
-                /*
-                 * On met celle-ci dans le mot à deviner
-                 * Ex:
-                 * si le mot est "Java" et qu'on entre la lettre "a",
-                 * alors le mot deviné sera "_a_a"
-                 */
-                devinette[j] = majuscule;
-                lettreTrouvee = 0;
+                                /*
+                                 * On met celle-ci dans le mot à deviner
+                                 * Ex:
+                                 * si le mot est "Java" et qu'on entre la lettre "a",
+                                 * alors le mot deviné sera "_a_a"
+                                 */
+                                devinette[j] = majuscule;
+                                lettreTrouvee = 0;
 
-            }
+                            }
 
-        }
+                        }
 
-        // Si on n'a pas trouvé la lettre
-        if(lettreTrouvee == 1){
-            nombreEssais--;
-        }
+                        // Si on n'a pas trouvé la lettre
+                        if (lettreTrouvee == 1) {
+                            nombreEssais--;
+                        }
 
-        // On réinitialise l'état de la lettre trouvée
-        lettreTrouvee = 1;
+                        // On réinitialise l'état de la lettre trouvée
+                        lettreTrouvee = 1;
 
-        int resultat = strcmp(devinette, mot);
+                        int resultat = strcmp(devinette, mot);
 
-        // Si on a tout trouvé
-       if (resultat == 0) {
+                        // Si on a tout trouvé
+                        if (resultat == 0) {
 
-            // On sort de la boucle
-            break;
-        }
+                            // On sort de la boucle
+                            break;
+                        }
+
+                    }
+
 
                 } // nombreEssais > 0
 
-                else{
+                    // Si on a perdu
+                else {
                     PlayMusicStream(musicPartiePerdue);
                 }
 
 
-       
-    }
-
-        } break;
+            }
+                break;
 
             case CREDITS: {
                 PlayMusicStream(musicCredits);
@@ -269,7 +271,7 @@ void fenetreRaylib() {
                 // Si on veut revenir au menu
                 if (IsGestureDetected(GESTURE_TAP)) {
                     StopMusicStream(musicCredits);
-                                            exitWindow = true;
+                    exitWindow = true;
 
                 }
             }
@@ -297,7 +299,7 @@ void fenetreRaylib() {
                 DrawRectangleRec(rectangleNouvellePartie, Fade(GREEN, 0.5f));
                 DrawRectangleLines(coordonnesNouvellePartieX, coordonnesNouvellePartieY, 100, 50, Fade(GREEN, 0.8f));
 
-             
+
 
                 // Quitter
                 DrawText("Quitter", coordonnesQuitterTexteX, coordonnesQuitterTexteY, 10, RED);
@@ -315,18 +317,20 @@ void fenetreRaylib() {
                 break;
 
 // Le jeu du pendu en lui-même
-                           case JEU_EN_COURS: {
-    
-                            // Le mot à trouver
+            case JEU_EN_COURS: {
+
+                // Le mot à trouver
                 DrawText(devinette, 190, 200, 20, LIGHTGRAY);
 
                 // Le nombre d'essais
-                   DrawText(TextFormat("Il te reste %01i essais", nombreEssais), 190, 220, 20, RED);
-    
+                DrawText(TextFormat("Il te reste %01i essais", nombreEssais), 190, 220, 20, RED);
+
                 // Quitter
-                DrawText("Quitter la partie", coordonnesQuitterJeuEnCoursTexteX, coordonnesQuitterJeuEnCoursTexteY, 10, RED);
+                DrawText("Quitter la partie", coordonnesQuitterJeuEnCoursTexteX, coordonnesQuitterJeuEnCoursTexteY, 10,
+                         RED);
                 DrawRectangleRec(rectangleQuitterJeuEnCours, Fade(BLACK, 0.5f));
-                DrawRectangleLines(coordonnesQuitterJeuEnCoursX, coordonnesQuitterJeuEnCoursY, longueurRectangle, hauteurRectangle,
+                DrawRectangleLines(coordonnesQuitterJeuEnCoursX, coordonnesQuitterJeuEnCoursY, longueurRectangle,
+                                   hauteurRectangle,
                                    Fade(RED, 0.8f));
             }
                 break;
@@ -346,7 +350,7 @@ void fenetreRaylib() {
         //----------------------------------------------------------------------------------
     }
 
- // De-Initialization
+    // De-Initialization
     //--------------------------------------------------------------------------------------
     UnloadMusicStream(musicCredits);   // Unload music stream buffers from RAM
     UnloadMusicStream(musicMainMenu);
