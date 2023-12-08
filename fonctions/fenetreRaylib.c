@@ -340,8 +340,12 @@ void fenetreRaylib() {
                 DrawText(devinette, 190, 200, 20, LIGHTGRAY);
 
                 // Le nombre d'essais
-                DrawText(TextFormat("Il te reste %01i essais", nombreEssais), 190, 220, 20, RED);
-
+                if(nombreEssais > 0){
+                DrawText(TextFormat("Il te reste %01i essais", nombreEssais), 190, 220, 20, RED);}
+else{
+                DrawText(TextFormat("Perdu... Le mot à deviner était :"), 190, 230, 20, RED);
+            DrawText(mot, 190, 270, 20, BLUE);
+ }
                 // Quitter
                 DrawText("Quitter la partie", coordonnesQuitterJeuEnCoursTexteX, coordonnesQuitterJeuEnCoursTexteY, 10,
                          RED);
