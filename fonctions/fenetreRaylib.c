@@ -209,6 +209,9 @@ void fenetreRaylib() {
                     if (CheckCollisionPointRec(GetMousePosition(), rectangleQuitterJeuEnCours)) {
                         StopMusicStream(musicPartieJeuEnCours);
                         StopMusicStream(musicPartiePerdue);
+                        
+                        // On réinitialise le nombre d'essais et le
+                        nombreEssais = 6;
                         currentScreen = TITLE;
                     }
                 }
