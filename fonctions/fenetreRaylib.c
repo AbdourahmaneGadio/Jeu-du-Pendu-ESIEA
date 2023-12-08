@@ -27,7 +27,7 @@
 // Types and Structures Definition
 //------------------------------------------------------------------------------------------
 typedef enum GameScreen {
-    TITLE, NOUVELLE_PARTIE, CREDITS, JEU_EN_COURS
+    TITLE, NOUVELLE_PARTIE, CLASSEMENTS, CREDITS, JEU_EN_COURS
 } GameScreen;
 
 //------------------------------------------------------------------------------------
@@ -48,7 +48,7 @@ void fenetreRaylib() {
     // Ecran TITRE
     //--------------------------------------------------------------------------------------
     
-    const int coordonnesNouvellePartieX = (screenWidth / 2) - longueurRectangle - espaceEntreCases / 2;
+    const int coordonnesNouvellePartieX = (screenWidth/3) - longueurRectangle;
     const int coordonnesNouvellePartieY = (screenHeight / 2) + hauteurRectangle / 2;
 
     const int coordonnesNouvellePartieTexteY = coordonnesNouvellePartieY + hauteurRectangle / 2;
@@ -100,8 +100,29 @@ void fenetreRaylib() {
     const int coordonnesCreditsTexteY = coordonnesCreditsY + hauteurRectangle / 2;
     const int coordonnesCreditsTexteX = coordonnesCreditsX + longueurRectangle / 3;
 
+// Case classements
+    const int coordonnesClassementX = coordonnesNouvellePartieX + longueurRectangle + espaceEntreCases;
+    const int coordonnesClassementY = coordonnesNouvellePartieY;
+
+    const int coordonnesClassementTexteY = coordonnesClassementY + hauteurRectangle / 2;
+    const int coordonnesClassementTexteX = coordonnesClassementX + longueurRectangle / 5;
+
+    Rectangle rectangleClassement = {coordonnesClassementX, coordonnesClassementY, longueurRectangle, hauteurRectangle};
+
+    // Retour au menu
+        const int coordonnesRetourMenuX = (screenWidth / 2) - (longueurRectangle / 2);
+    const int coordonnesRetourMenuY = (screenHeight) - hauteurRectangle * 2;
+
+    const int coordonnesRetourMenuTexteX = coordonnesRetourMenuX + longueurRectangle / 12;
+    const int coordonnesRetourMenuTexteY = coordonnesRetourMenuY + hauteurRectangle / 2;
+
+    Rectangle rectangleRetourMenu = {coordonnesRetourMenuX, coordonnesRetourMenuY,
+                                            longueurRectangle,
+                                            hauteurRectangle};
+
+
     // Case quitter
-    const int coordonnesQuitterX = coordonnesCreditsX + espaceEntreCases;
+    const int coordonnesQuitterX = coordonnesClassementX + longueurRectangle + espaceEntreCases;
     const int coordonnesQuitterY = coordonnesNouvellePartieY;
 
     const int coordonnesQuitterTexteY = coordonnesQuitterY + hauteurRectangle / 2;
@@ -165,6 +186,11 @@ void fenetreRaylib() {
                         StopMusicStream(musicMainMenu);
 
 
+                    }
+
+                                        // Si on clique sur le rectangle Classements
+                    if (CheckCollisionPointRec(GetMousePosition(), rectangleClassement)) {
+                        currentScreen = CLASSEMENTS;
                     }
 
                     // Si on clique sur le rectangle Quitter
@@ -280,6 +306,17 @@ void fenetreRaylib() {
             }
                 break;
 
+                // Classement
+                case CLASSEMENTS:{
+                     if (IsGestureDetected(GESTURE_TAP)) {
+
+                    // Retour au menu
+                    if (CheckCollisionPointRec(GetMousePosition(), rectangleRetourMenu)) {
+                        currentScreen = TITLE;
+                    }
+                }
+                } break;
+
             case CREDITS: {
 
                 // La musique des crédits
@@ -317,6 +354,11 @@ void fenetreRaylib() {
                 DrawRectangleLines(coordonnesNouvellePartieX, coordonnesNouvellePartieY, 100, 50, Fade(GREEN, 0.8f));
 
 
+                // Classements
+                DrawText("Classements", coordonnesClassementTexteX, coordonnesClassementTexteY, 10, RED);
+                DrawRectangleRec(rectangleClassement, Fade(BLACK, 0.5f));
+                DrawRectangleLines(coordonnesClassementX, coordonnesClassementY, longueurRectangle, hauteurRectangle,
+                                   Fade(RED, 0.8f));
 
                 // Quitter
                 DrawText("Quitter", coordonnesQuitterTexteX, coordonnesQuitterTexteY, 10, RED);
@@ -331,6 +373,18 @@ void fenetreRaylib() {
                 DrawRectangle(200, 250, (int) (timePlayedGetReady * 400.0f), 12, MAROON);
                 DrawRectangleLines(200, 250, 400, 12, GRAY);
             }
+                break;
+
+                case CLASSEMENTS:{
+                              DrawText("Classement", screenWidth/2 - 50, 30, 20, LIGHTGRAY);
+
+                                              DrawText("Retour au menu", coordonnesRetourMenuTexteX, coordonnesRetourMenuTexteY, 10,
+                         BLUE);
+                DrawRectangleRec(rectangleRetourMenu, Fade(BLACK, 0.5f));
+                DrawRectangleLines(coordonnesRetourMenuX, coordonnesRetourMenuY, longueurRectangle,
+                                   hauteurRectangle,
+                                   Fade(GREEN, 0.8f));
+                }
                 break;
 
             // Le jeu du pendu en lui-même
