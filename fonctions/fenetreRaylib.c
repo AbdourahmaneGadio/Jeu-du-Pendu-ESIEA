@@ -472,7 +472,7 @@ StopMusicStream(musicPartieJeuEnCours);
                 DrawText(devinette, 190, 200, 20, LIGHTGRAY);
 
                 // Le nombre d'essais
-                if(nombreEssais > 0 && motTrouve = 0){
+                if(nombreEssais > 0 && motTrouve == 0){
                 DrawText(TextFormat("Il te reste %01i essais", nombreEssais), 190, 220, 20, RED);}
                 else if(motTrouve == 1){
 DrawText(TextFormat("Bravo, tu as trouvé le mot et gagné le jeu !", nombreEssais), 190, 220, 20, GREEN);
