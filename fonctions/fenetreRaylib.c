@@ -298,7 +298,8 @@ void fenetreRaylib() {
             case JEU_EN_COURS: {
 
                 // La musique du jeu du pendu
-                PlayMusicStream(musicPartieJeuEnCours);
+                if(motTrouve == 0){
+                PlayMusicStream(musicPartieJeuEnCours);}
 
                 if (IsGestureDetected(GESTURE_TAP)) {
 
