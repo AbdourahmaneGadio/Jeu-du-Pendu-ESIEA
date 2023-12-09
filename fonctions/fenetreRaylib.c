@@ -208,8 +208,8 @@ void fenetreRaylib() {
     Music musicCredits = LoadMusicStream("music/credits.mp3");
     Music musicMainMenu = LoadMusicStream("music/main_menu.mp3");
 
-    Music musicGetReady = LoadMusicStream("music/loading.mp3");
-    float timePlayedGetReady = 0.0f;
+    Music musicLoading = LoadMusicStream("music/loading.mp3");
+    float timePlayedLoading = 0.0f;
 
     Music musicPartieJeuEnCours = LoadMusicStream("music/game.mp3");
     Music musicPartiePerdue = LoadMusicStream("music/lose.mp3");
@@ -233,9 +233,10 @@ void fenetreRaylib() {
         //----------------------------------------------------------------------------------
         UpdateMusicStream(musicCredits);   // Update music buffer with new stream data
         UpdateMusicStream(musicMainMenu);
-        UpdateMusicStream(musicGetReady);
+        UpdateMusicStream(musicLoading);
         UpdateMusicStream(musicPartiePerdue);
         UpdateMusicStream(musicPartieJeuEnCours);
+        UpdateMusicStream(musicClassement);
 
         switch (currentScreen) {
             case TITLE: {
@@ -272,19 +273,19 @@ void fenetreRaylib() {
             case NOUVELLE_PARTIE: {
 
                 // La musique de la nouvelle partie
-                PlayMusicStream(musicGetReady);
+                PlayMusicStream(musicLoading);
 
                 // Si la musique n'est pas finie
                 // Temps de chargement pour nouvelle partie
-                if (timePlayedGetReady < 0.9f) {
-                    timePlayedGetReady = GetMusicTimePlayed(musicGetReady) / GetMusicTimeLength(musicGetReady);
+                if (timePlayedLoading < 0.9f) {
+                    timePlayedLoading = GetMusicTimePlayed(musicLoading) / GetMusicTimeLength(musicLoading);
                 }
 
                 // Si la musique est finie
                 else {
-                    StopMusicStream(musicGetReady);
+                    StopMusicStream(musicLoading);
                     currentScreen = JEU_EN_COURS; // L'écran du jeu du pendu
-                    timePlayedGetReady = 1.0f; // On réinitialise le chargement
+                    timePlayedLoading = 1.0f; // On réinitialise le chargement
                 }
             }
                 break;
@@ -438,7 +439,7 @@ void fenetreRaylib() {
 
             case NOUVELLE_PARTIE: {
                 DrawText("La partie commence !", 190, 200, 20, LIGHTGRAY);
-                DrawRectangle(200, 250, (int) (timePlayedGetReady * 400.0f), 12, MAROON);
+                DrawRectangle(200, 250, (int) (timePlayedLoading * 400.0f), 12, MAROON);
                 DrawRectangleLines(200, 250, 400, 12, GRAY);
             }
                 break;
@@ -497,7 +498,7 @@ else{
     //--------------------------------------------------------------------------------------
     UnloadMusicStream(musicCredits);   // Unload music stream buffers from RAM
     UnloadMusicStream(musicMainMenu);
-    UnloadMusicStream(musicGetReady);
+    UnloadMusicStream(musicLoading);
     UnloadMusicStream(musicPartieJeuEnCours);
     UnloadMusicStream(musicPartiePerdue);
 
