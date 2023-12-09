@@ -215,6 +215,7 @@ void fenetreRaylib() {
 
     Music musicPartieJeuEnCours = LoadMusicStream("music/game.mp3");
     Music musicPartieGagne = LoadMusicStream("music/win.mp3");
+
     Music musicPartiePerdue = LoadMusicStream("music/lose.mp3");
 
     Music musicClassement = LoadMusicStream("music/ranking.mp3");
@@ -298,8 +299,9 @@ void fenetreRaylib() {
             case JEU_EN_COURS: {
 
                 // La musique du jeu du pendu
-                if(motTrouve == 0){
-                PlayMusicStream(musicPartieJeuEnCours);}
+                if(motTrouve == 0 && nombreEssais == 6){
+                PlayMusicStream(musicPartieJeuEnCours);
+                }
 
                 if (IsGestureDetected(GESTURE_TAP)) {
 
@@ -309,7 +311,7 @@ void fenetreRaylib() {
                         StopMusicStream(musicPartieGagne);
                         StopMusicStream(musicPartiePerdue);
                         
-                        // On réinitialise l'ensemble des variables de jeu
+                        // On réinitialise le nombre d'essais
                         nombreEssais = 6;
                         motTrouve = 0;
                         currentScreen = TITLE;
@@ -364,8 +366,6 @@ motTrouve = 1;
                             PlayMusicStream(musicPartieGagne);
 StopMusicStream(musicPartieJeuEnCours);
 
-                            // On sort de la boucle
-                            break;
                         }
 
                     }
@@ -476,7 +476,7 @@ StopMusicStream(musicPartieJeuEnCours);
                 if(nombreEssais > 0 && motTrouve == 0){
                 DrawText(TextFormat("Il te reste %01i essais", nombreEssais), 190, 220, 20, RED);}
                 else if(motTrouve == 1){
-DrawText(TextFormat("Bravo, tu as trouvé le mot et gagné le jeu !", nombreEssais), 190, 220, 20, GREEN);
+DrawText(TextFormat("Bravo, tu as trouvé le mot et gagné le jeu !", nombreEssais), 190, 240, 20, GREEN);
                 }
 else{
                 DrawText(TextFormat("Perdu... Le mot à deviner était :"), 190, 230, 20, RED);
