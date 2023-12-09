@@ -159,6 +159,8 @@ void fenetreRaylib() {
 
     devinette[longueur] = '\0';
 
+    int motTrouve = 0; // 0 si pas trouvé, 1 si trouvé
+
 
     // Fin écran JEU_EN_COURS
     //--------------------------------------------------------------------------------------
@@ -306,8 +308,9 @@ void fenetreRaylib() {
                         StopMusicStream(musicPartieGagne);
                         StopMusicStream(musicPartiePerdue);
                         
-                        // On réinitialise le nombre d'essais et le
+                        // On réinitialise l'ensemble des variables de jeu
                         nombreEssais = 6;
+                        motTrouve = 0;
                         currentScreen = TITLE;
                     }
                 }
@@ -356,8 +359,9 @@ void fenetreRaylib() {
 
                         // Si on a tout trouvé
                         if (resultat == 0) {
-
+motTrouve = 1;
                             PlayMusicStream(musicPartieGagne);
+StopMusicStream(musicPartieJeuEnCours);
 
                             // On sort de la boucle
                             break;
@@ -468,8 +472,11 @@ void fenetreRaylib() {
                 DrawText(devinette, 190, 200, 20, LIGHTGRAY);
 
                 // Le nombre d'essais
-                if(nombreEssais > 0){
+                if(nombreEssais > 0 && motTrouve = 0){
                 DrawText(TextFormat("Il te reste %01i essais", nombreEssais), 190, 220, 20, RED);}
+                else if(motTrouve == 1){
+DrawText(TextFormat("Bravo, tu as trouvé le mot et gagné le jeu !", nombreEssais), 190, 220, 20, GREEN);
+                }
 else{
                 DrawText(TextFormat("Perdu... Le mot à deviner était :"), 190, 230, 20, RED);
             DrawText(mot, 190, 270, 20, BLUE);
