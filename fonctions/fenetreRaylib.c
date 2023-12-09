@@ -212,6 +212,7 @@ void fenetreRaylib() {
     float timePlayedLoading = 0.0f;
 
     Music musicPartieJeuEnCours = LoadMusicStream("music/game.mp3");
+    Music musicPartieGagne = LoadMusicStream("music/win.mp3");
     Music musicPartiePerdue = LoadMusicStream("music/lose.mp3");
 
     Music musicClassement = LoadMusicStream("music/ranking.mp3");
@@ -234,6 +235,7 @@ void fenetreRaylib() {
         UpdateMusicStream(musicCredits);   // Update music buffer with new stream data
         UpdateMusicStream(musicMainMenu);
         UpdateMusicStream(musicLoading);
+        UpdateMusicStream(musicPartieGagne);
         UpdateMusicStream(musicPartiePerdue);
         UpdateMusicStream(musicPartieJeuEnCours);
         UpdateMusicStream(musicClassement);
@@ -301,6 +303,7 @@ void fenetreRaylib() {
                     // Retour au menu
                     if (CheckCollisionPointRec(GetMousePosition(), rectangleQuitterJeuEnCours)) {
                         StopMusicStream(musicPartieJeuEnCours);
+                        StopMusicStream(musicPartieGagne);
                         StopMusicStream(musicPartiePerdue);
                         
                         // On réinitialise le nombre d'essais et le
@@ -353,6 +356,8 @@ void fenetreRaylib() {
 
                         // Si on a tout trouvé
                         if (resultat == 0) {
+
+                            PlayMusicStream(musicPartieGagne);
 
                             // On sort de la boucle
                             break;
@@ -499,7 +504,9 @@ else{
     UnloadMusicStream(musicCredits);   // Unload music stream buffers from RAM
     UnloadMusicStream(musicMainMenu);
     UnloadMusicStream(musicLoading);
+    UnloadMusicStream(musicClassement);
     UnloadMusicStream(musicPartieJeuEnCours);
+    UnloadMusicStream(musicPartieGagne);
     UnloadMusicStream(musicPartiePerdue);
 
     CloseAudioDevice();         // Close audio device (music streaming is automatically stopped)
