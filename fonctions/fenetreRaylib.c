@@ -35,6 +35,9 @@ typedef enum GameScreen {
 //------------------------------------------------------------------------------------
 void fenetreRaylib() {
 
+
+
+
     // Initialization
     //--------------------------------------------------------------------------------------
     const int screenWidth = 800;
@@ -45,9 +48,15 @@ void fenetreRaylib() {
     const int longueurRectangle = 100;
     const int hauteurRectangle = 52;
 
+
+
+
+
+
     // Ecran TITRE
     //--------------------------------------------------------------------------------------
     
+    // Case nouvelle partie
     const int coordonnesNouvellePartieX = (screenWidth/3) - longueurRectangle;
     const int coordonnesNouvellePartieY = (screenHeight / 2) + hauteurRectangle / 2;
 
@@ -57,10 +66,63 @@ void fenetreRaylib() {
     Rectangle rectangleNouvellePartie = {coordonnesNouvellePartieX, coordonnesNouvellePartieY, longueurRectangle,
                                          hauteurRectangle};
 
-    //-------------------------------
-    // Ecran jeu en cours
+                                             // Case quitter
+    const int coordonnesQuitterX = coordonnesClassementX + longueurRectangle + espaceEntreCases;
+    const int coordonnesQuitterY = coordonnesNouvellePartieY;
 
-    const int coordonnesQuitterJeuEnCoursX = (screenWidth / 2) - (longueurRectangle / 2);
+    const int coordonnesQuitterTexteY = coordonnesQuitterY + hauteurRectangle / 2;
+    const int coordonnesQuitterTexteX = coordonnesQuitterX + longueurRectangle / 3;
+
+    Rectangle rectangleQuitter = {coordonnesQuitterX, coordonnesQuitterY, longueurRectangle, hauteurRectangle};
+
+    // Fin écran TITRE
+    //--------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+    // Ecran CLASSEMENTS
+    //--------------------------------------------------------------------------------------
+
+    // Case classements
+    const int coordonnesClassementX = coordonnesNouvellePartieX + longueurRectangle + espaceEntreCases;
+    const int coordonnesClassementY = coordonnesNouvellePartieY;
+
+    const int coordonnesClassementTexteY = coordonnesClassementY + hauteurRectangle / 2;
+    const int coordonnesClassementTexteX = coordonnesClassementX + longueurRectangle / 5;
+
+    Rectangle rectangleClassement = {coordonnesClassementX, coordonnesClassementY, longueurRectangle, hauteurRectangle};
+
+
+     // Retour au menu
+    const int coordonnesRetourMenuX = (screenWidth / 2) - (longueurRectangle / 2);
+    const int coordonnesRetourMenuY = (screenHeight) - hauteurRectangle * 2;
+
+    const int coordonnesRetourMenuTexteX = coordonnesRetourMenuX + longueurRectangle / 12;
+    const int coordonnesRetourMenuTexteY = coordonnesRetourMenuY + hauteurRectangle / 2;
+
+    Rectangle rectangleRetourMenu = {coordonnesRetourMenuX, coordonnesRetourMenuY,
+                                            longueurRectangle,
+                                            hauteurRectangle};
+
+    // Fin écran CLASSEMENTS
+    //--------------------------------------------------------------------------------------
+
+    
+
+
+
+
+
+    // Ecran JEU_EN_COURS
+    //--------------------------------------------------------------------------------------
+
+ const int coordonnesQuitterJeuEnCoursX = (screenWidth / 2) - (longueurRectangle / 2);
     const int coordonnesQuitterJeuEnCoursY = (screenHeight) - hauteurRectangle * 2;
 
     const int coordonnesQuitterJeuEnCoursTexteX = coordonnesQuitterJeuEnCoursX + longueurRectangle / 12;
@@ -70,7 +132,8 @@ void fenetreRaylib() {
                                             longueurRectangle,
                                             hauteurRectangle};
 
-    //-------------------------------
+
+
     // Lignes copiées du fichier main.c principal, et de la fonction devinetteMot
 
     // On prend un mot au hasard à trouver
@@ -93,48 +156,28 @@ void fenetreRaylib() {
 
     devinette[longueur] = '\0';
 
-    // Case crédits
-    const int coordonnesCreditsX = coordonnesNouvellePartieX + espaceEntreCases;
-    const int coordonnesCreditsY = (screenHeight / 2);
 
-    const int coordonnesCreditsTexteY = coordonnesCreditsY + hauteurRectangle / 2;
-    const int coordonnesCreditsTexteX = coordonnesCreditsX + longueurRectangle / 3;
-
-// Case classements
-    const int coordonnesClassementX = coordonnesNouvellePartieX + longueurRectangle + espaceEntreCases;
-    const int coordonnesClassementY = coordonnesNouvellePartieY;
-
-    const int coordonnesClassementTexteY = coordonnesClassementY + hauteurRectangle / 2;
-    const int coordonnesClassementTexteX = coordonnesClassementX + longueurRectangle / 5;
-
-    Rectangle rectangleClassement = {coordonnesClassementX, coordonnesClassementY, longueurRectangle, hauteurRectangle};
-
-    // Retour au menu
-        const int coordonnesRetourMenuX = (screenWidth / 2) - (longueurRectangle / 2);
-    const int coordonnesRetourMenuY = (screenHeight) - hauteurRectangle * 2;
-
-    const int coordonnesRetourMenuTexteX = coordonnesRetourMenuX + longueurRectangle / 12;
-    const int coordonnesRetourMenuTexteY = coordonnesRetourMenuY + hauteurRectangle / 2;
-
-    Rectangle rectangleRetourMenu = {coordonnesRetourMenuX, coordonnesRetourMenuY,
-                                            longueurRectangle,
-                                            hauteurRectangle};
+    // Fin écran JEU_EN_COURS
+    //--------------------------------------------------------------------------------------
 
 
-    // Case quitter
-    const int coordonnesQuitterX = coordonnesClassementX + longueurRectangle + espaceEntreCases;
-    const int coordonnesQuitterY = coordonnesNouvellePartieY;
-
-    const int coordonnesQuitterTexteY = coordonnesQuitterY + hauteurRectangle / 2;
-    const int coordonnesQuitterTexteX = coordonnesQuitterX + longueurRectangle / 3;
-
-    Rectangle rectangleQuitter = {coordonnesQuitterX, coordonnesQuitterY, longueurRectangle, hauteurRectangle};
 
 
-    // Ecran Credits
+
+
+    // Ecran CREDITS
     //--------------------------------------------------------------------------------------
     const int coordonnesEcranCreditsX = (screenWidth / 4) + 50;
     const int coordonnesEcranCreditsY = (screenHeight / 2);
+    // Fin écran CREDITS
+    //--------------------------------------------------------------------------------------
+
+
+
+
+
+
+
 
     // Paramètres de la fenêtre
     //--------------------------------------------------------------------------------------
@@ -146,19 +189,38 @@ void fenetreRaylib() {
 
     SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
 
-    // Music
-    //----------
+    // Fin des paramètres de la fenêtre
+    //--------------------------------------------------------------------------------------
+
+
+
+
+
+    // Musique
+    //--------------------------------------------------------------------------------------
+
     InitAudioDevice();              // Initialize audio device
 
     // Les musiques utilisées
-    Music musicCredits = LoadMusicStream("music/Daft Punk - Motherboard.mp3");
-    Music musicMainMenu = LoadMusicStream("music/Arcade Player - Racing Menu (From -Mario Kart Wii-).mp3");
+    Music musicCredits = LoadMusicStream("music/credits.mp3");
+    Music musicMainMenu = LoadMusicStream("music/main_menu.mp3");
 
-    Music musicGetReady = LoadMusicStream("music/get-ready.mp3");
+    Music musicGetReady = LoadMusicStream("music/loading.mp3");
     float timePlayedGetReady = 0.0f;
 
-    Music musicPartieJeuEnCours = LoadMusicStream("music/Arcade Player - Racing Menu (From -Mario Kart Wii-).mp3");
-    Music musicPartiePerdue = LoadMusicStream("music/Daft Punk - Motherboard.mp3");
+    Music musicPartieJeuEnCours = LoadMusicStream("music/game.mp3");
+    Music musicPartiePerdue = LoadMusicStream("music/lose.mp3");
+
+    Music musicClassement = LoadMusicStream("music/ranking.mp3");
+
+    // Fin de la partie musique
+    //--------------------------------------------------------------------------------------
+
+
+
+
+
+
 
 
     // Main game loop
@@ -190,6 +252,7 @@ void fenetreRaylib() {
 
                                         // Si on clique sur le rectangle Classements
                     if (CheckCollisionPointRec(GetMousePosition(), rectangleClassement)) {
+                        StopMusicStream(musicMainMenu);
                         currentScreen = CLASSEMENTS;
                     }
 
@@ -308,10 +371,12 @@ void fenetreRaylib() {
 
                 // Classement
                 case CLASSEMENTS:{
+                    PlayMusicStream(musicClassement);
                      if (IsGestureDetected(GESTURE_TAP)) {
 
                     // Retour au menu
                     if (CheckCollisionPointRec(GetMousePosition(), rectangleRetourMenu)) {
+                        StopMusicStream(musicClassement);
                         currentScreen = TITLE;
                     }
                 }
