@@ -66,7 +66,20 @@ void fenetreRaylib() {
     Rectangle rectangleNouvellePartie = {coordonnesNouvellePartieX, coordonnesNouvellePartieY, longueurRectangle,
                                          hauteurRectangle};
 
-                                             // Case quitter
+
+
+    // Case classements
+    const int coordonnesClassementX = coordonnesNouvellePartieX + longueurRectangle + espaceEntreCases;
+    const int coordonnesClassementY = coordonnesNouvellePartieY;
+
+    const int coordonnesClassementTexteY = coordonnesClassementY + hauteurRectangle / 2;
+    const int coordonnesClassementTexteX = coordonnesClassementX + longueurRectangle / 5;
+
+    Rectangle rectangleClassement = {coordonnesClassementX, coordonnesClassementY, longueurRectangle, hauteurRectangle};
+
+    
+
+    // Case quitter
     const int coordonnesQuitterX = coordonnesClassementX + longueurRectangle + espaceEntreCases;
     const int coordonnesQuitterY = coordonnesNouvellePartieY;
 
@@ -88,16 +101,6 @@ void fenetreRaylib() {
 
     // Ecran CLASSEMENTS
     //--------------------------------------------------------------------------------------
-
-    // Case classements
-    const int coordonnesClassementX = coordonnesNouvellePartieX + longueurRectangle + espaceEntreCases;
-    const int coordonnesClassementY = coordonnesNouvellePartieY;
-
-    const int coordonnesClassementTexteY = coordonnesClassementY + hauteurRectangle / 2;
-    const int coordonnesClassementTexteX = coordonnesClassementX + longueurRectangle / 5;
-
-    Rectangle rectangleClassement = {coordonnesClassementX, coordonnesClassementY, longueurRectangle, hauteurRectangle};
-
 
      // Retour au menu
     const int coordonnesRetourMenuX = (screenWidth / 2) - (longueurRectangle / 2);
