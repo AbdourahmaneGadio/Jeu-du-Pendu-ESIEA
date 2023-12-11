@@ -27,7 +27,7 @@
 // Types and Structures Definition
 //------------------------------------------------------------------------------------------
 typedef enum GameScreen {
-    TITLE, NOUVELLE_PARTIE, CLASSEMENTS, CREDITS, JEU_EN_COURS
+    TITLE, NOUVELLE_PARTIE, CLASSEMENTS, CREDITS, JEU_EN_COURS, DIFFICULTES
 } GameScreen;
 
 //------------------------------------------------------------------------------------
@@ -93,7 +93,21 @@ void fenetreRaylib() {
 
 
 
+    // Ecran DIFFICULTES
+    //--------------------------------------------------------------------------------------
 
+    const int coordonnesDifficulteFacileX = (screenWidth / 2) - (longueurRectangle / 2);
+    const int coordonnesDifficulteFacileY = (screenHeight) - hauteurRectangle * 2;
+
+    const int coordonnesDifficulteFacileTexteX = coordonnesDifficulteFacileX + longueurRectangle / 12;
+    const int coordonnesDifficulteFacileTexteY = coordonnesDifficulteFacileY + hauteurRectangle / 2;
+
+    Rectangle rectangleDifficulteFacile = {coordonnesDifficulteFacileX, coordonnesDifficulteFacileY,
+                                     longueurRectangle,
+                                     hauteurRectangle};
+
+    // Fin écran DIFFICULTES
+    //--------------------------------------------------------------------------------------
 
 
 
@@ -253,9 +267,7 @@ void fenetreRaylib() {
 
                     // Si on clique sur le rectangle Nouvelle Partie
                     if (CheckCollisionPointRec(GetMousePosition(), rectangleNouvellePartie)) {
-                        currentScreen = NOUVELLE_PARTIE;
-                        StopMusicStream(musicMainMenu);
-
+                        currentScreen = DIFFICULTES;
 
                     }
 
@@ -274,6 +286,22 @@ void fenetreRaylib() {
                 }
             }
                 break;
+
+            case DIFFICULTES:{
+                if (IsGestureDetected(GESTURE_TAP)) {
+
+                    // Retour au menu
+                    if (CheckCollisionPointRec(GetMousePosition(), rectangleRetourMenu)) {
+                        currentScreen = TITLE;
+                    }
+
+                    // Choix mode facile
+                    if (CheckCollisionPointRec(GetMousePosition(), rectangleDifficulteFacile)) {
+                        StopMusicStream(musicMainMenu);
+                        currentScreen = NOUVELLE_PARTIE;
+                    }
+                }
+            } break;
 
             case NOUVELLE_PARTIE: {
 
@@ -446,6 +474,12 @@ StopMusicStream(musicPartieJeuEnCours);
                                    Fade(RED, 0.8f));
             }
                 break;
+
+            case DIFFICULTES:{
+                DrawText("Choississez la difficulté", 190, 200, 20, LIGHTGRAY);
+                DrawRectangleRec(rectangleDifficulteFacile, Fade(GREEN, 0.5f));
+
+            } break;
 
             case NOUVELLE_PARTIE: {
                 DrawText("La partie commence !", 190, 200, 20, LIGHTGRAY);
