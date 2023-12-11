@@ -97,7 +97,7 @@ void fenetreRaylib() {
     //--------------------------------------------------------------------------------------
 
     const int coordonnesDifficulteFacileX = (screenWidth / 2) - (longueurRectangle / 2);
-    const int coordonnesDifficulteFacileY = (screenHeight) - hauteurRectangle * 2;
+    const int coordonnesDifficulteFacileY = (screenHeight) - 70 - hauteurRectangle * 2;
 
     const int coordonnesDifficulteFacileTexteX = coordonnesDifficulteFacileX + longueurRectangle / 12;
     const int coordonnesDifficulteFacileTexteY = coordonnesDifficulteFacileY + hauteurRectangle / 2;
@@ -477,7 +477,12 @@ StopMusicStream(musicPartieJeuEnCours);
 
             case DIFFICULTES:{
                 DrawText("Choississez la difficulté", 190, 200, 20, LIGHTGRAY);
+                                DrawText("Facile", coordonnesDifficulteFacileTexteX, coordonnesDifficulteFacileTexteY, 10, BLACK);
+
                 DrawRectangleRec(rectangleDifficulteFacile, Fade(GREEN, 0.5f));
+                 DrawText("Retour au menu", coordonnesRetourMenuTexteX, coordonnesRetourMenuTexteY, 10,
+                         BLUE);
+                DrawRectangleRec(rectangleRetourMenu, Fade(BLACK, 0.5f));
 
             } break;
 
