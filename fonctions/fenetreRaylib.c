@@ -22,6 +22,8 @@
 ********************************************************************************************/
 
 #include "raylib.h"
+#include <stdlib.h>
+#include <time.h>
 
 //------------------------------------------------------------------------------------------
 // Types and Structures Definition
@@ -49,8 +51,7 @@ void fenetreRaylib() {
     const int hauteurRectangle = 52;
 
 
-
-
+    bool modeSpecial = false; // false pour le mode normal, true pour le mode spécial
 
 
     // Ecran TITRE
@@ -87,6 +88,14 @@ void fenetreRaylib() {
     const int coordonnesQuitterTexteX = coordonnesQuitterX + longueurRectangle / 3;
 
     Rectangle rectangleQuitter = {coordonnesQuitterX, coordonnesQuitterY, longueurRectangle, hauteurRectangle};
+
+
+    // Mode spécial
+    
+    const int coordonneesModeSpecialTexteX = coordonnesClassementTexteX - 70;
+       const int coordonneesModeSpecialTexteY = screenHeight - 90;
+
+       Rectangle rectangleModeSpecial = {coordonneesModeSpecialTexteX + 140, coordonneesModeSpecialTexteY, 20, 20};
 
     // Fin écran TITRE
     //--------------------------------------------------------------------------------------
@@ -221,24 +230,65 @@ void fenetreRaylib() {
     InitAudioDevice();              // Initialize audio device
 
     // Les musiques utilisées
-    Music musicCredits = LoadMusicStream("music/credits.mp3");
-    Music musicMainMenu = LoadMusicStream("music/main_menu.mp3");
 
-    Music musicLoading = LoadMusicStream("music/loading.mp3");
+          Music      musicCredits;
+         Music      musicMainMenu;
+        Music       musicLoading;
+         Music      musicPartieGagne;
+         Music      musicPartiePerdue;
+           Music    musicPartieJeuEnCours;
+          Music     musicClassement;
+
+    // Mode normal
+    Music musicCreditsNormal = LoadMusicStream("music/normal/credits.mp3");
+    Music musicMainMenuNormal = LoadMusicStream("music/normal/main_menu.mp3");
+
+    Music musicLoadingNormal = LoadMusicStream("music/normal/loading.mp3");
     float timePlayedLoading = 0.0f;
 
-    Music musicPartieJeuEnCours = LoadMusicStream("music/game.mp3");
-    Music musicPartieGagne = LoadMusicStream("music/win.mp3");
+    Music musicPartieJeuEnCoursNormal = LoadMusicStream("music/normal/game.mp3");
+    Music musicPartieGagneNormal = LoadMusicStream("music/normal/win.mp3");
 
-    Music musicPartiePerdue = LoadMusicStream("music/lose.mp3");
+    Music musicPartiePerdueNormal = LoadMusicStream("music/normal/lose.mp3");
 
-    Music musicClassement = LoadMusicStream("music/ranking.mp3");
+    Music musicClassementNormal = LoadMusicStream("music/normal/ranking.mp3");
+
+
+    // Mode spécial
+        Music musicCreditsSpecial = LoadMusicStream("music/special/credits_special.mp3");
+
+    Music musicMainMenuSpecial = LoadMusicStream("music/special/main_menu_special.mp3");
+
+    Music musicLoadingSpecial = LoadMusicStream("music/special/loading_special.mp3");
+
+    Music musicPartieJeuEnCoursSpecial = LoadMusicStream("music/special/game_special.mp3");
+    Music musicPartieGagneSpecial = LoadMusicStream("music/special/win_special.mp3");
+
+    Music musicPartiePerdueSpecial1 = LoadMusicStream("music/special/lose_special.mp3");
+     Music musicPartiePerdueSpecial2 = LoadMusicStream("music/special/lose_special_2.mp3");
+
+Music musicPartiePerdueSpecialListe[] = {musicPartiePerdueSpecial1, musicPartiePerdueSpecial2};
+int tailleListeMusiquePerdues = sizeof(musicPartiePerdueSpecialListe)/sizeof(musicPartiePerdueSpecialListe[0]);
+int indiceMusique;
+
+    Music musicClassementSpecial = LoadMusicStream("music/special/ranking_special.mp3");
+
+   int nombreAleatoire;
 
     // Fin de la partie musique
     //--------------------------------------------------------------------------------------
 
 
 
+
+    // Textures
+    //--------------------------------------------------------------------------------------
+    Image image = LoadImage("textures/background_16_9.png");     // Loaded in CPU memory (RAM)
+    Texture2D texture = LoadTextureFromImage(image);          // Image converted to texture, GPU memory (VRAM)
+    UnloadImage(image);   // Once image has been converted to texture and uploaded to VRAM, it can be unloaded from RAM
+
+    // Fin des textures
+    //--------------------------------------------------------------------------------------
 
 
 
@@ -249,13 +299,43 @@ void fenetreRaylib() {
 
         // Update
         //----------------------------------------------------------------------------------
-        UpdateMusicStream(musicCredits);   // Update music buffer with new stream data
-        UpdateMusicStream(musicMainMenu);
-        UpdateMusicStream(musicLoading);
-        UpdateMusicStream(musicPartieGagne);
-        UpdateMusicStream(musicPartiePerdue);
+        UpdateMusicStream(musicCreditsNormal);   // Update music buffer with new stream data
+        UpdateMusicStream(musicMainMenuNormal);
+        UpdateMusicStream(musicLoadingNormal);
+        UpdateMusicStream(musicPartieGagneNormal);
+        UpdateMusicStream(musicPartiePerdueNormal);
+        UpdateMusicStream(musicPartieJeuEnCoursNormal);
+        UpdateMusicStream(musicClassementNormal);
+
+        UpdateMusicStream(musicCreditsSpecial);   
+        UpdateMusicStream(musicMainMenuSpecial);
+        UpdateMusicStream(musicLoadingSpecial);
+        UpdateMusicStream(musicPartieGagneSpecial);
+UpdateMusicStream(musicPartiePerdueSpecial1);
+UpdateMusicStream(musicPartiePerdueSpecial2);
         UpdateMusicStream(musicPartieJeuEnCours);
-        UpdateMusicStream(musicClassement);
+        UpdateMusicStream(musicClassementSpecial);
+
+        if(modeSpecial == 0){
+            musicCredits = musicCreditsNormal;
+            musicMainMenu = musicMainMenuNormal;
+            musicLoading = musicLoadingNormal;
+            musicPartieGagne = musicPartieGagneNormal;
+            musicPartiePerdue = musicPartiePerdueNormal;
+            musicPartieJeuEnCours = musicPartieJeuEnCoursNormal;
+            musicClassement = musicClassementNormal;
+        }
+        else{
+            nombreAleatoire = rand() % 2;
+                        //musicCredits = musicCreditsSpecial;
+            musicMainMenu = musicMainMenuSpecial;
+            // musicLoading = musicLoadingSpecial;
+            //musicPartieGagne = musicPartieGagneSpecial;
+           
+            musicPartiePerdue = musicPartiePerdueSpecialListe[nombreAleatoire];
+            // musicPartieJeuEnCours = musicPartieJeuEnCoursSpecial;
+            // musicClassement = musicClassementSpecial;
+        }
 
         switch (currentScreen) {
             case TITLE: {
@@ -282,6 +362,14 @@ void fenetreRaylib() {
                         StopMusicStream(musicMainMenu);
 
                         currentScreen = CREDITS;
+                    }
+
+                    // Si on clique sur le rectangle mode special
+                      // Si on clique sur le rectangle Quitter
+                    if (CheckCollisionPointRec(GetMousePosition(), rectangleModeSpecial)) {
+                        StopMusicStream(musicMainMenu);
+
+                        modeSpecial = !modeSpecial;
                     }
                 }
             }
@@ -449,6 +537,9 @@ StopMusicStream(musicPartieJeuEnCours);
         BeginDrawing();
 
         ClearBackground(RAYWHITE);
+
+            DrawTexture(texture, 0, 0, WHITE);
+
         switch (currentScreen) {
 
             // Menu principal du jeu
@@ -472,6 +563,22 @@ StopMusicStream(musicPartieJeuEnCours);
                 DrawRectangleRec(rectangleQuitter, Fade(BLACK, 0.5f));
                 DrawRectangleLines(coordonnesQuitterX, coordonnesQuitterY, longueurRectangle, hauteurRectangle,
                                    Fade(RED, 0.8f));
+
+                                   // Mode spécial
+                                  
+                         
+                         if(modeSpecial == 0){
+                                DrawText("Mode special", coordonneesModeSpecialTexteX, coordonneesModeSpecialTexteY, 20,
+                         WHITE);
+                              DrawRectangleRec(rectangleModeSpecial, Fade(WHITE, 0.5f));
+
+                         }
+                         else{
+                                DrawText("Mode special activé", coordonneesModeSpecialTexteX - 70, coordonneesModeSpecialTexteY, 20,
+                         RED);
+                              DrawRectangleRec(rectangleModeSpecial, Fade(RED, 0.5f));
+
+                         }
             }
                 break;
 
@@ -555,6 +662,8 @@ else{
     UnloadMusicStream(musicPartieJeuEnCours);
     UnloadMusicStream(musicPartieGagne);
     UnloadMusicStream(musicPartiePerdue);
+
+       UnloadTexture(texture);       // Texture unloading
 
     CloseAudioDevice();         // Close audio device (music streaming is automatically stopped)
 
