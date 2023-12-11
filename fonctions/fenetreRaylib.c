@@ -265,15 +265,16 @@ void fenetreRaylib() {
     Music musicPartieGagneSpecial = LoadMusicStream("music/special/win_special.mp3");
 
     Music musicPartiePerdueSpecial1 = LoadMusicStream("music/special/lose_special.mp3");
-     Music musicPartiePerdueSpecial2 = LoadMusicStream("music/special/lose_special_2.mp3");
+     Music musicPartiePerdueSpecial2 = LoadMusicStream("music/special/lose_special_2.mp3");    
+     Music musicPartiePerdueSpecial3 = LoadMusicStream("music/special/lose_special_3.mp3");
 
-Music musicPartiePerdueSpecialListe[] = {musicPartiePerdueSpecial1, musicPartiePerdueSpecial2};
+Music musicPartiePerdueSpecialListe[] = {musicPartiePerdueSpecial1, musicPartiePerdueSpecial2, musicPartiePerdueSpecial3};
 int tailleListeMusiquePerdues = sizeof(musicPartiePerdueSpecialListe)/sizeof(musicPartiePerdueSpecialListe[0]);
 int indiceMusique;
 
     Music musicClassementSpecial = LoadMusicStream("music/special/ranking_special.mp3");
 
-   int nombreAleatoire;
+   int nombreAleatoireMusiquePerdue = 0;
 
     // Fin de la partie musique
     //--------------------------------------------------------------------------------------
@@ -313,6 +314,7 @@ int indiceMusique;
         UpdateMusicStream(musicPartieGagneSpecial);
 UpdateMusicStream(musicPartiePerdueSpecial1);
 UpdateMusicStream(musicPartiePerdueSpecial2);
+UpdateMusicStream(musicPartiePerdueSpecial3);
         UpdateMusicStream(musicPartieJeuEnCours);
         UpdateMusicStream(musicClassementSpecial);
 
@@ -326,13 +328,13 @@ UpdateMusicStream(musicPartiePerdueSpecial2);
             musicClassement = musicClassementNormal;
         }
         else{
-            nombreAleatoire = rand() % 2;
+        
                         //musicCredits = musicCreditsSpecial;
             musicMainMenu = musicMainMenuSpecial;
             // musicLoading = musicLoadingSpecial;
             //musicPartieGagne = musicPartieGagneSpecial;
            
-            musicPartiePerdue = musicPartiePerdueSpecialListe[nombreAleatoire];
+            musicPartiePerdue = musicPartiePerdueSpecialListe[nombreAleatoireMusiquePerdue];
             // musicPartieJeuEnCours = musicPartieJeuEnCoursSpecial;
             // musicClassement = musicClassementSpecial;
         }
@@ -387,6 +389,7 @@ UpdateMusicStream(musicPartiePerdueSpecial2);
                     if (CheckCollisionPointRec(GetMousePosition(), rectangleDifficulteFacile)) {
                         StopMusicStream(musicMainMenu);
                         currentScreen = NOUVELLE_PARTIE;
+                        nombreAleatoireMusiquePerdue = GetRandomValue(0, 2);
                     }
                 }
             } break;
