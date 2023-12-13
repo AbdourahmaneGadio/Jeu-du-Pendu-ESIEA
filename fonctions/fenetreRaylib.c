@@ -29,7 +29,7 @@
 // Types and Structures Definition
 //------------------------------------------------------------------------------------------
 typedef enum GameScreen {
-    TITLE, NOUVELLE_PARTIE, CLASSEMENTS, CREDITS, JEU_EN_COURS, DIFFICULTES
+    TITLE, NOUVELLE_PARTIE, CLASSEMENTS, CREDITS, JEU_EN_COURS, THEMES, DIFFICULTES
 } GameScreen;
 
 //------------------------------------------------------------------------------------
@@ -56,9 +56,9 @@ void fenetreRaylib() {
 
     // Ecran TITRE
     //--------------------------------------------------------------------------------------
-    
+
     // Case nouvelle partie
-    const int coordonnesNouvellePartieX = (screenWidth/3) - longueurRectangle;
+    const int coordonnesNouvellePartieX = (screenWidth / 3) - longueurRectangle;
     const int coordonnesNouvellePartieY = (screenHeight / 2) + hauteurRectangle / 2;
 
     const int coordonnesNouvellePartieTexteY = coordonnesNouvellePartieY + hauteurRectangle / 2;
@@ -78,7 +78,7 @@ void fenetreRaylib() {
 
     Rectangle rectangleClassement = {coordonnesClassementX, coordonnesClassementY, longueurRectangle, hauteurRectangle};
 
-    
+
 
     // Case quitter
     const int coordonnesQuitterX = coordonnesClassementX + longueurRectangle + espaceEntreCases;
@@ -91,16 +91,30 @@ void fenetreRaylib() {
 
 
     // Mode spécial
-    
-    const int coordonneesModeSpecialTexteX = coordonnesClassementTexteX - 70;
-       const int coordonneesModeSpecialTexteY = screenHeight - 90;
 
-       Rectangle rectangleModeSpecial = {coordonneesModeSpecialTexteX + 140, coordonneesModeSpecialTexteY, 20, 20};
+    const int coordonneesModeSpecialTexteX = coordonnesClassementTexteX - 70;
+    const int coordonneesModeSpecialTexteY = screenHeight - 90;
+
+    Rectangle rectangleModeSpecial = {coordonneesModeSpecialTexteX + 140, coordonneesModeSpecialTexteY, 20, 20};
 
     // Fin écran TITRE
     //--------------------------------------------------------------------------------------
 
+    // Ecran THEMES
+    //--------------------------------------------------------------------------------------
 
+    const int coordonnesTheme1X = (screenWidth / 2) - (longueurRectangle / 2);
+    const int coordonnesTheme1Y = (screenHeight) - 70 - hauteurRectangle * 2;
+
+    const int coordonnesTheme1TexteX = coordonnesTheme1X + longueurRectangle / 12;
+    const int coordonnesTheme1TexteY = coordonnesTheme1Y + hauteurRectangle / 2;
+
+    Rectangle rectangleTheme1 = {coordonnesTheme1X, coordonnesTheme1Y,
+                                 longueurRectangle,
+                                 hauteurRectangle};
+
+    // Fin écranTHEMES
+    //--------------------------------------------------------------------------------------
 
     // Ecran DIFFICULTES
     //--------------------------------------------------------------------------------------
@@ -112,8 +126,8 @@ void fenetreRaylib() {
     const int coordonnesDifficulteFacileTexteY = coordonnesDifficulteFacileY + hauteurRectangle / 2;
 
     Rectangle rectangleDifficulteFacile = {coordonnesDifficulteFacileX, coordonnesDifficulteFacileY,
-                                     longueurRectangle,
-                                     hauteurRectangle};
+                                           longueurRectangle,
+                                           hauteurRectangle};
 
     // Fin écran DIFFICULTES
     //--------------------------------------------------------------------------------------
@@ -125,7 +139,7 @@ void fenetreRaylib() {
     // Ecran CLASSEMENTS
     //--------------------------------------------------------------------------------------
 
-     // Retour au menu
+    // Retour au menu
     const int coordonnesRetourMenuX = (screenWidth / 2) - (longueurRectangle / 2);
     const int coordonnesRetourMenuY = (screenHeight) - hauteurRectangle * 2;
 
@@ -133,13 +147,13 @@ void fenetreRaylib() {
     const int coordonnesRetourMenuTexteY = coordonnesRetourMenuY + hauteurRectangle / 2;
 
     Rectangle rectangleRetourMenu = {coordonnesRetourMenuX, coordonnesRetourMenuY,
-                                            longueurRectangle,
-                                            hauteurRectangle};
+                                     longueurRectangle,
+                                     hauteurRectangle};
 
     // Fin écran CLASSEMENTS
     //--------------------------------------------------------------------------------------
 
-    
+
 
 
 
@@ -148,7 +162,7 @@ void fenetreRaylib() {
     // Ecran JEU_EN_COURS
     //--------------------------------------------------------------------------------------
 
- const int coordonnesQuitterJeuEnCoursX = (screenWidth / 2) - (longueurRectangle / 2);
+    const int coordonnesQuitterJeuEnCoursX = (screenWidth / 2) - (longueurRectangle / 2);
     const int coordonnesQuitterJeuEnCoursY = (screenHeight) - hauteurRectangle * 2;
 
     const int coordonnesQuitterJeuEnCoursTexteX = coordonnesQuitterJeuEnCoursX + longueurRectangle / 12;
@@ -231,13 +245,13 @@ void fenetreRaylib() {
 
     // Les musiques utilisées
 
-          Music      musicCredits;
-         Music      musicMainMenu;
-        Music       musicLoading;
-         Music      musicPartieGagne;
-         Music      musicPartiePerdue;
-           Music    musicPartieJeuEnCours;
-          Music     musicClassement;
+    Music musicCredits;
+    Music musicMainMenu;
+    Music musicLoading;
+    Music musicPartieGagne;
+    Music musicPartiePerdue;
+    Music musicPartieJeuEnCours;
+    Music musicClassement;
 
     // Mode normal
     Music musicCreditsNormal = LoadMusicStream("music/normal/credits.mp3");
@@ -255,7 +269,7 @@ void fenetreRaylib() {
 
 
     // Mode spécial
-        Music musicCreditsSpecial = LoadMusicStream("music/special/credits_special.mp3");
+    Music musicCreditsSpecial = LoadMusicStream("music/special/credits_special.mp3");
 
     Music musicMainMenuSpecial = LoadMusicStream("music/special/main_menu_special.mp3");
 
@@ -265,16 +279,15 @@ void fenetreRaylib() {
     Music musicPartieGagneSpecial = LoadMusicStream("music/special/win_special.mp3");
 
     Music musicPartiePerdueSpecial1 = LoadMusicStream("music/special/lose_special.mp3");
-     Music musicPartiePerdueSpecial2 = LoadMusicStream("music/special/lose_special_2.mp3");    
-     Music musicPartiePerdueSpecial3 = LoadMusicStream("music/special/lose_special_3.mp3");
+    Music musicPartiePerdueSpecial2 = LoadMusicStream("music/special/lose_special_2.mp3");
+    Music musicPartiePerdueSpecial3 = LoadMusicStream("music/special/lose_special_3.mp3");
 
-Music musicPartiePerdueSpecialListe[] = {musicPartiePerdueSpecial1, musicPartiePerdueSpecial2, musicPartiePerdueSpecial3};
-int tailleListeMusiquePerdues = sizeof(musicPartiePerdueSpecialListe)/sizeof(musicPartiePerdueSpecialListe[0]);
-int indiceMusique;
+    Music musicPartiePerdueSpecialListe[] = {musicPartiePerdueSpecial1, musicPartiePerdueSpecial2,
+                                             musicPartiePerdueSpecial3};
 
     Music musicClassementSpecial = LoadMusicStream("music/special/ranking_special.mp3");
 
-   int nombreAleatoireMusiquePerdue = 0;
+    int nombreAleatoireMusiquePerdue = 0;
 
     // Fin de la partie musique
     //--------------------------------------------------------------------------------------
@@ -308,17 +321,17 @@ int indiceMusique;
         UpdateMusicStream(musicPartieJeuEnCoursNormal);
         UpdateMusicStream(musicClassementNormal);
 
-        UpdateMusicStream(musicCreditsSpecial);   
+        UpdateMusicStream(musicCreditsSpecial);
         UpdateMusicStream(musicMainMenuSpecial);
         UpdateMusicStream(musicLoadingSpecial);
         UpdateMusicStream(musicPartieGagneSpecial);
-UpdateMusicStream(musicPartiePerdueSpecial1);
-UpdateMusicStream(musicPartiePerdueSpecial2);
-UpdateMusicStream(musicPartiePerdueSpecial3);
+        UpdateMusicStream(musicPartiePerdueSpecial1);
+        UpdateMusicStream(musicPartiePerdueSpecial2);
+        UpdateMusicStream(musicPartiePerdueSpecial3);
         UpdateMusicStream(musicPartieJeuEnCours);
         UpdateMusicStream(musicClassementSpecial);
 
-        if(modeSpecial == 0){
+        if (modeSpecial == 0) {
             musicCredits = musicCreditsNormal;
             musicMainMenu = musicMainMenuNormal;
             musicLoading = musicLoadingNormal;
@@ -326,14 +339,13 @@ UpdateMusicStream(musicPartiePerdueSpecial3);
             musicPartiePerdue = musicPartiePerdueNormal;
             musicPartieJeuEnCours = musicPartieJeuEnCoursNormal;
             musicClassement = musicClassementNormal;
-        }
-        else{
-        
-                        //musicCredits = musicCreditsSpecial;
+        } else {
+
+            //musicCredits = musicCreditsSpecial;
             musicMainMenu = musicMainMenuSpecial;
             // musicLoading = musicLoadingSpecial;
             //musicPartieGagne = musicPartieGagneSpecial;
-           
+
             musicPartiePerdue = musicPartiePerdueSpecialListe[nombreAleatoireMusiquePerdue];
             // musicPartieJeuEnCours = musicPartieJeuEnCoursSpecial;
             // musicClassement = musicClassementSpecial;
@@ -349,11 +361,11 @@ UpdateMusicStream(musicPartiePerdueSpecial3);
 
                     // Si on clique sur le rectangle Nouvelle Partie
                     if (CheckCollisionPointRec(GetMousePosition(), rectangleNouvellePartie)) {
-                        currentScreen = DIFFICULTES;
+                        currentScreen = THEMES;
 
                     }
 
-                                        // Si on clique sur le rectangle Classements
+                    // Si on clique sur le rectangle Classements
                     if (CheckCollisionPointRec(GetMousePosition(), rectangleClassement)) {
                         StopMusicStream(musicMainMenu);
                         currentScreen = CLASSEMENTS;
@@ -367,7 +379,7 @@ UpdateMusicStream(musicPartiePerdueSpecial3);
                     }
 
                     // Si on clique sur le rectangle mode special
-                      // Si on clique sur le rectangle Quitter
+                    // Si on clique sur le rectangle Quitter
                     if (CheckCollisionPointRec(GetMousePosition(), rectangleModeSpecial)) {
                         StopMusicStream(musicMainMenu);
 
@@ -377,7 +389,19 @@ UpdateMusicStream(musicPartiePerdueSpecial3);
             }
                 break;
 
-            case DIFFICULTES:{
+            case THEMES: {
+                if (IsGestureDetected(GESTURE_TAP)) {
+
+                    // Si on clique sur le rectangle Nouvelle Partie
+                    if (CheckCollisionPointRec(GetMousePosition(), rectangleTheme1)) {
+                        currentScreen = DIFFICULTES;
+
+                    }
+                }
+            }
+                break;
+
+            case DIFFICULTES: {
                 if (IsGestureDetected(GESTURE_TAP)) {
 
                     // Retour au menu
@@ -392,7 +416,8 @@ UpdateMusicStream(musicPartiePerdueSpecial3);
                         nombreAleatoireMusiquePerdue = GetRandomValue(0, 2);
                     }
                 }
-            } break;
+            }
+                break;
 
             case NOUVELLE_PARTIE: {
 
@@ -405,7 +430,7 @@ UpdateMusicStream(musicPartiePerdueSpecial3);
                     timePlayedLoading = GetMusicTimePlayed(musicLoading) / GetMusicTimeLength(musicLoading);
                 }
 
-                // Si la musique est finie
+                    // Si la musique est finie
                 else {
                     StopMusicStream(musicLoading);
                     currentScreen = JEU_EN_COURS; // L'écran du jeu du pendu
@@ -414,12 +439,12 @@ UpdateMusicStream(musicPartiePerdueSpecial3);
             }
                 break;
 
-            // La partie du jeu en cours
+                // La partie du jeu en cours
             case JEU_EN_COURS: {
 
                 // La musique du jeu du pendu
-                if(motTrouve == 0 && nombreEssais == 6){
-                PlayMusicStream(musicPartieJeuEnCours);
+                if (motTrouve == 0 && nombreEssais == 6) {
+                    PlayMusicStream(musicPartieJeuEnCours);
                 }
 
                 if (IsGestureDetected(GESTURE_TAP)) {
@@ -429,7 +454,7 @@ UpdateMusicStream(musicPartiePerdueSpecial3);
                         StopMusicStream(musicPartieJeuEnCours);
                         StopMusicStream(musicPartieGagne);
                         StopMusicStream(musicPartiePerdue);
-                        
+
                         // On réinitialise le nombre d'essais
                         nombreEssais = 6;
                         motTrouve = 0;
@@ -481,9 +506,9 @@ UpdateMusicStream(musicPartiePerdueSpecial3);
 
                         // Si on a tout trouvé
                         if (resultat == 0) {
-motTrouve = 1;
+                            motTrouve = 1;
                             PlayMusicStream(musicPartieGagne);
-StopMusicStream(musicPartieJeuEnCours);
+                            StopMusicStream(musicPartieJeuEnCours);
 
                         }
 
@@ -492,7 +517,7 @@ StopMusicStream(musicPartieJeuEnCours);
 
                 } // nombreEssais > 0
 
-                // Si on a perdu
+                    // Si on a perdu
                 else {
                     StopMusicStream(musicPartieJeuEnCours);
                     PlayMusicStream(musicPartiePerdue);
@@ -503,9 +528,9 @@ StopMusicStream(musicPartieJeuEnCours);
                 break;
 
                 // Classement
-                case CLASSEMENTS:{
-                    PlayMusicStream(musicClassement);
-                     if (IsGestureDetected(GESTURE_TAP)) {
+            case CLASSEMENTS: {
+                PlayMusicStream(musicClassement);
+                if (IsGestureDetected(GESTURE_TAP)) {
 
                     // Retour au menu
                     if (CheckCollisionPointRec(GetMousePosition(), rectangleRetourMenu)) {
@@ -513,7 +538,8 @@ StopMusicStream(musicPartieJeuEnCours);
                         currentScreen = TITLE;
                     }
                 }
-                } break;
+            }
+                break;
 
             case CREDITS: {
 
@@ -541,7 +567,7 @@ StopMusicStream(musicPartieJeuEnCours);
 
         ClearBackground(RAYWHITE);
 
-            DrawTexture(texture, 0, 0, WHITE);
+        DrawTexture(texture, 0, 0, WHITE);
 
         switch (currentScreen) {
 
@@ -567,34 +593,47 @@ StopMusicStream(musicPartieJeuEnCours);
                 DrawRectangleLines(coordonnesQuitterX, coordonnesQuitterY, longueurRectangle, hauteurRectangle,
                                    Fade(RED, 0.8f));
 
-                                   // Mode spécial
-                                  
-                         
-                         if(modeSpecial == 0){
-                                DrawText("Mode special", coordonneesModeSpecialTexteX, coordonneesModeSpecialTexteY, 20,
-                         WHITE);
-                              DrawRectangleRec(rectangleModeSpecial, Fade(WHITE, 0.5f));
+                // Mode spécial
 
-                         }
-                         else{
-                                DrawText("Mode special activé", coordonneesModeSpecialTexteX - 70, coordonneesModeSpecialTexteY, 20,
-                         RED);
-                              DrawRectangleRec(rectangleModeSpecial, Fade(RED, 0.5f));
 
-                         }
+                if (modeSpecial == 0) {
+                    DrawText("Mode special", coordonneesModeSpecialTexteX, coordonneesModeSpecialTexteY, 20,
+                             WHITE);
+                    DrawRectangleRec(rectangleModeSpecial, Fade(WHITE, 0.5f));
+
+                } else {
+                    DrawText("Mode special activé", coordonneesModeSpecialTexteX - 70, coordonneesModeSpecialTexteY, 20,
+                             RED);
+                    DrawRectangleRec(rectangleModeSpecial, Fade(RED, 0.5f));
+
+                }
             }
                 break;
 
-            case DIFFICULTES:{
-                DrawText("Choississez la difficulté", 190, 200, 20, LIGHTGRAY);
-                                DrawText("Facile", coordonnesDifficulteFacileTexteX, coordonnesDifficulteFacileTexteY, 10, BLACK);
 
-                DrawRectangleRec(rectangleDifficulteFacile, Fade(GREEN, 0.5f));
-                 DrawText("Retour au menu", coordonnesRetourMenuTexteX, coordonnesRetourMenuTexteY, 10,
+            case THEMES: {
+                DrawText("Choississez le thème", 190, 200, 20, LIGHTGRAY);
+                DrawText("Animaux", coordonnesTheme1TexteX, coordonnesTheme1TexteY, 10, BLACK);
+
+                DrawRectangleRec(rectangleTheme1, Fade(GREEN, 0.5f));
+                DrawText("Retour au menu", coordonnesRetourMenuTexteX, coordonnesRetourMenuTexteY, 10,
                          BLUE);
                 DrawRectangleRec(rectangleRetourMenu, Fade(BLACK, 0.5f));
 
-            } break;
+            }
+                break;
+
+            case DIFFICULTES: {
+                DrawText("Choississez la difficulté", 190, 200, 20, LIGHTGRAY);
+                DrawText("Facile", coordonnesDifficulteFacileTexteX, coordonnesDifficulteFacileTexteY, 10, BLACK);
+
+                DrawRectangleRec(rectangleDifficulteFacile, Fade(GREEN, 0.5f));
+                DrawText("Retour au menu", coordonnesRetourMenuTexteX, coordonnesRetourMenuTexteY, 10,
+                         BLUE);
+                DrawRectangleRec(rectangleRetourMenu, Fade(BLACK, 0.5f));
+
+            }
+                break;
 
             case NOUVELLE_PARTIE: {
                 DrawText("La partie commence !", 190, 200, 20, LIGHTGRAY);
@@ -603,34 +642,34 @@ StopMusicStream(musicPartieJeuEnCours);
             }
                 break;
 
-                case CLASSEMENTS:{
-                              DrawText("Classement", screenWidth/2 - 50, 30, 20, LIGHTGRAY);
+            case CLASSEMENTS: {
+                DrawText("Classement", screenWidth / 2 - 50, 30, 20, LIGHTGRAY);
 
-                                              DrawText("Retour au menu", coordonnesRetourMenuTexteX, coordonnesRetourMenuTexteY, 10,
+                DrawText("Retour au menu", coordonnesRetourMenuTexteX, coordonnesRetourMenuTexteY, 10,
                          BLUE);
                 DrawRectangleRec(rectangleRetourMenu, Fade(BLACK, 0.5f));
                 DrawRectangleLines(coordonnesRetourMenuX, coordonnesRetourMenuY, longueurRectangle,
                                    hauteurRectangle,
                                    Fade(GREEN, 0.8f));
-                }
+            }
                 break;
 
-            // Le jeu du pendu en lui-même
+                // Le jeu du pendu en lui-même
             case JEU_EN_COURS: {
 
                 // Le mot à trouver
                 DrawText(devinette, 190, 200, 20, LIGHTGRAY);
 
                 // Le nombre d'essais
-                if(nombreEssais > 0 && motTrouve == 0){
-                DrawText(TextFormat("Il te reste %01i essais", nombreEssais), 190, 220, 20, RED);}
-                else if(motTrouve == 1){
-DrawText(TextFormat("Bravo, tu as trouvé le mot et gagné le jeu !", nombreEssais), 190, 240, 20, GREEN);
+                if (nombreEssais > 0 && motTrouve == 0) {
+                    DrawText(TextFormat("Il te reste %01i essais", nombreEssais), 190, 220, 20, RED);
+                } else if (motTrouve == 1) {
+                    DrawText(TextFormat("Bravo, tu as trouvé le mot et gagné le jeu !", nombreEssais), 190, 240, 20,
+                             GREEN);
+                } else {
+                    DrawText(TextFormat("Perdu... Le mot à deviner était :"), 190, 230, 20, RED);
+                    DrawText(mot, 190, 270, 20, BLUE);
                 }
-else{
-                DrawText(TextFormat("Perdu... Le mot à deviner était :"), 190, 230, 20, RED);
-            DrawText(mot, 190, 270, 20, BLUE);
- }
                 // Quitter
                 DrawText("Quitter la partie", coordonnesQuitterJeuEnCoursTexteX, coordonnesQuitterJeuEnCoursTexteY, 10,
                          RED);
@@ -666,7 +705,7 @@ else{
     UnloadMusicStream(musicPartieGagne);
     UnloadMusicStream(musicPartiePerdue);
 
-       UnloadTexture(texture);       // Texture unloading
+    UnloadTexture(texture);       // Texture unloading
 
     CloseAudioDevice();         // Close audio device (music streaming is automatically stopped)
 
