@@ -392,7 +392,12 @@ void fenetreRaylib() {
             case THEMES: {
                 if (IsGestureDetected(GESTURE_TAP)) {
 
-                    // Si on clique sur le rectangle Nouvelle Partie
+                    // Retour au menu
+                    if (CheckCollisionPointRec(GetMousePosition(), rectangleRetourMenu)) {
+                        currentScreen = TITLE;
+                    }
+
+                    // Si on clique sur le rectangle Theme1
                     if (CheckCollisionPointRec(GetMousePosition(), rectangleTheme1)) {
                         currentScreen = DIFFICULTES;
 
@@ -404,9 +409,9 @@ void fenetreRaylib() {
             case DIFFICULTES: {
                 if (IsGestureDetected(GESTURE_TAP)) {
 
-                    // Retour au menu
+                    // Retour au menu du choix du thème
                     if (CheckCollisionPointRec(GetMousePosition(), rectangleRetourMenu)) {
-                        currentScreen = TITLE;
+                        currentScreen = THEMES;
                     }
 
                     // Choix mode facile
@@ -628,7 +633,7 @@ void fenetreRaylib() {
                 DrawText("Facile", coordonnesDifficulteFacileTexteX, coordonnesDifficulteFacileTexteY, 10, BLACK);
 
                 DrawRectangleRec(rectangleDifficulteFacile, Fade(GREEN, 0.5f));
-                DrawText("Retour au menu", coordonnesRetourMenuTexteX, coordonnesRetourMenuTexteY, 10,
+                DrawText("Retour à la sélection du thème", coordonnesRetourMenuTexteX, coordonnesRetourMenuTexteY, 10,
                          BLUE);
                 DrawRectangleRec(rectangleRetourMenu, Fade(BLACK, 0.5f));
 
