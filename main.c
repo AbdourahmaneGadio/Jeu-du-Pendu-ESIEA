@@ -46,7 +46,7 @@ int main() {
         }
 
             // On choisit le jeu du pendu en interface graphique
-        else if (choix == 1) {
+        else if (choix == 2) {
 
             printf("\nLancement du pendu en mode graphique...\n\n");
 
