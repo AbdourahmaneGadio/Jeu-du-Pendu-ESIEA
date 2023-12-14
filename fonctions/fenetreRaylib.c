@@ -466,15 +466,15 @@ void fenetreRaylib() {
                 // Tant que l'on a pas perdu
                 if (nombreEssais > 0) {
 
-                    // Get char pressed (unicode character) on the queue
-                    int key = GetCharPressed();
+                    // On récupère la touche du clavier
+                    int toucheClavier = GetCharPressed();
 
                     // De A à Z en MAJUSCULE, et de a à z en MINUSCULE
                     // Source : https://www.ascii-code.com/
-                    if ( ((key >= 65) && (key <= 90)) || ((key >= 97) && (key <= 122)) ) {
+                    if ( ((toucheClavier >= 65) && (toucheClavier <= 90)) || ((toucheClavier >= 97) && (toucheClavier <= 122)) ) {
 
                         // On convertit la lettre en MAJUSCULE
-                        char majuscule = toupper((char) key);
+                        char majuscule = toupper((char) toucheClavier);
 
                         // Pour chaque lettre du mot
                         for (int j = 0; j < longueur; j++) {
