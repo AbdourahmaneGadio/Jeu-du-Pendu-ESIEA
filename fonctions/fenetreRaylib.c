@@ -282,12 +282,9 @@ void fenetreRaylib() {
     Music musicPartiePerdueSpecial2 = LoadMusicStream("music/special/lose_special_2.mp3");
     Music musicPartiePerdueSpecial3 = LoadMusicStream("music/special/lose_special_3.mp3");
 
-    Music musicPartiePerdueSpecialListe[] = {musicPartiePerdueSpecial1, musicPartiePerdueSpecial2,
-                                             musicPartiePerdueSpecial3};
-
     Music musicClassementSpecial = LoadMusicStream("music/special/ranking_special.mp3");
 
-    int nombreAleatoireMusiquePerdue = 0;
+    int nombreAleatoireMusiquePerdue =  GetRandomValue(0, 2); ;
 
     // Fin de la partie musique
     //--------------------------------------------------------------------------------------
@@ -346,7 +343,21 @@ void fenetreRaylib() {
             // musicLoading = musicLoadingSpecial;
             //musicPartieGagne = musicPartieGagneSpecial;
 
-            musicPartiePerdue = musicPartiePerdueSpecialListe[nombreAleatoireMusiquePerdue];
+            switch(nombreAleatoireMusiquePerdue){
+                case 0:
+                            musicPartiePerdue = musicPartiePerdueSpecial1;
+
+                break;
+                case 1:
+                                musicPartiePerdue = musicPartiePerdueSpecial2;
+
+                break;
+                case 2:
+                                        musicPartiePerdue = musicPartiePerdueSpecial3;
+
+                break;
+
+            }
             // musicPartieJeuEnCours = musicPartieJeuEnCoursSpecial;
             // musicClassement = musicClassementSpecial;
         }
