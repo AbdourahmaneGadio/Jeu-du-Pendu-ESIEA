@@ -269,6 +269,7 @@ void fenetreRaylib() {
 
 
     // Mode spécial
+    /*
     Music musicCreditsSpecial = LoadMusicStream("music/special/credits_special.mp3");
 
     Music musicMainMenuSpecial = LoadMusicStream("music/special/main_menu_special.mp3");
@@ -283,7 +284,7 @@ void fenetreRaylib() {
     Music musicPartiePerdueSpecial3 = LoadMusicStream("music/special/lose_special_3.mp3");
 
     Music musicClassementSpecial = LoadMusicStream("music/special/ranking_special.mp3");
-
+*/
     // Fin de la partie musique
     //--------------------------------------------------------------------------------------
 
@@ -316,15 +317,15 @@ void fenetreRaylib() {
         UpdateMusicStream(musicPartieJeuEnCoursNormal);
         UpdateMusicStream(musicClassementNormal);
 
-        UpdateMusicStream(musicCreditsSpecial);
-        UpdateMusicStream(musicMainMenuSpecial);
-        UpdateMusicStream(musicLoadingSpecial);
-        UpdateMusicStream(musicPartieGagneSpecial);
-        UpdateMusicStream(musicPartiePerdueSpecial1);
-        UpdateMusicStream(musicPartiePerdueSpecial2);
-        UpdateMusicStream(musicPartiePerdueSpecial3);
-        UpdateMusicStream(musicPartieJeuEnCours);
-        UpdateMusicStream(musicClassementSpecial);
+        // UpdateMusicStream(musicCreditsSpecial);
+        // UpdateMusicStream(musicMainMenuSpecial);
+        // UpdateMusicStream(musicLoadingSpecial);
+        // UpdateMusicStream(musicPartieGagneSpecial);
+        // UpdateMusicStream(musicPartiePerdueSpecial1);
+        // UpdateMusicStream(musicPartiePerdueSpecial2);
+        // UpdateMusicStream(musicPartiePerdueSpecial3);
+        // UpdateMusicStream(musicPartieJeuEnCours);
+        // UpdateMusicStream(musicClassementSpecial);
 
         if (modeSpecial == 0) {
             musicCredits = musicCreditsNormal;
@@ -337,11 +338,11 @@ void fenetreRaylib() {
         } else {
 
             //musicCredits = musicCreditsSpecial;
-            musicMainMenu = musicMainMenuSpecial;
+           // musicMainMenu = musicMainMenuSpecial;
             // musicLoading = musicLoadingSpecial;
             //musicPartieGagne = musicPartieGagneSpecial;
 
-            musicPartiePerdue = musicPartiePerdueSpecial1;
+           // musicPartiePerdue = musicPartiePerdueSpecial1;
 
             // musicPartieJeuEnCours = musicPartieJeuEnCoursSpecial;
             // musicClassement = musicClassementSpecial;
@@ -470,7 +471,7 @@ void fenetreRaylib() {
 
                     // De A à Z en MAJUSCULE, et de a à z en MINUSCULE
                     // Source : https://www.ascii-code.com/
-                    if ((key >= 65) && (key <= 90) || (key >= 97) && (key <= 122)) {
+                    if ( ((key >= 65) && (key <= 90)) || ((key >= 97) && (key <= 122)) ) {
 
                         // On convertit la lettre en MAJUSCULE
                         char majuscule = toupper((char) key);
