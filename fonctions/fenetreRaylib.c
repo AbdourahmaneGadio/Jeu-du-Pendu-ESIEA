@@ -414,7 +414,6 @@ void fenetreRaylib() {
                     if (CheckCollisionPointRec(GetMousePosition(), rectangleDifficulteFacile)) {
                         StopMusicStream(musicMainMenu);
                         currentScreen = NOUVELLE_PARTIE;
-                        nombreAleatoireMusiquePerdue = GetRandomValue(0, 2);
                     }
                 }
             }
