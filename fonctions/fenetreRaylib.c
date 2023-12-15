@@ -683,7 +683,7 @@ void fenetreRaylib() {
 
                 // Crédits
             case CREDITS: {
-                DrawText("Equipe: GADIO Abdourahmane, KADOUCHIM David, LEVY Ilona", coordonnesEcranCreditsX,
+                DrawText("Equipe: GADIO Abdourahmane, KIDOUCHIM David, LEVY Ilona", coordonnesEcranCreditsX,
                          coordonnesEcranCreditsY, 10, BLACK);
                 DrawText("https://github.com/AbdourahmaneGadio/Jeu-du-Pendu-ESIEA", coordonnesEcranCreditsX,
                          coordonnesEcranCreditsY + 30, 10, RED);
