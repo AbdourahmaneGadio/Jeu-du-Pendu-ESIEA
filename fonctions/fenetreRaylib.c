@@ -646,6 +646,11 @@ void fenetreRaylib() {
             case CLASSEMENTS: {
                 DrawText("Classement", screenWidth / 2 - 50, 30, 20, LIGHTGRAY);
 
+                // La liste des joueurs
+                for(int i = 1; i < 10; i++){
+                    DrawText(TextFormat("Joueur %0i : %0i points", i, i), coordonnesClassementTexteX - 80, 30 + i*30, 20, YELLOW);
+                }
+
                 DrawText("Retour au menu", coordonnesRetourMenuTexteX, coordonnesRetourMenuTexteY, 10,
                          BLUE);
                 DrawRectangleRec(rectangleRetourMenu, Fade(BLACK, 0.5f));
