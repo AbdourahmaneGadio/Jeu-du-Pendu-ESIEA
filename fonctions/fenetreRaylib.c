@@ -103,13 +103,58 @@ void fenetreRaylib() {
     // Ecran THEMES
     //--------------------------------------------------------------------------------------
 
-    const int coordonnesTheme1X = (screenWidth / 2) - (longueurRectangle / 2);
-    const int coordonnesTheme1Y = (screenHeight) - 70 - hauteurRectangle * 2;
+    // Animaux
+    const int coordonnesThemeAnimauxX = 190 - (longueurRectangle / 2);
+    const int coordonnesThemeAnimauxY = (screenHeight) - 70 - hauteurRectangle * 2;
 
-    const int coordonnesTheme1TexteX = coordonnesTheme1X + longueurRectangle / 12;
-    const int coordonnesTheme1TexteY = coordonnesTheme1Y + hauteurRectangle / 2;
+    const int coordonnesThemeAnimauxTexteX = coordonnesThemeAnimauxX + longueurRectangle / 12;
+    const int coordonnesThemeAnimauxTexteY = coordonnesThemeAnimauxY + hauteurRectangle / 2;
 
-    Rectangle rectangleTheme1 = {coordonnesTheme1X, coordonnesTheme1Y,
+    Rectangle rectangleThemeAnimaux = {coordonnesThemeAnimauxX, coordonnesThemeAnimauxY,
+                                 longueurRectangle,
+                                 hauteurRectangle};
+
+    // Astronomie
+        const int coordonnesThemeAstronomieX = coordonnesThemeAnimauxX + espaceEntreCases + 10;
+    const int coordonnesThemeAstronomieY = coordonnesThemeAnimauxY;
+
+    const int coordonnesThemeAstronomieTexteX = coordonnesThemeAstronomieX + longueurRectangle / 12;
+    const int coordonnesThemeAstronomieTexteY = coordonnesThemeAstronomieY + hauteurRectangle / 2;
+
+    Rectangle rectangleThemeAstronomie = {coordonnesThemeAstronomieX, coordonnesThemeAstronomieY,
+                                 longueurRectangle,
+                                 hauteurRectangle};
+    
+    // Fruits
+        const int coordonnesThemeFruitsX = coordonnesThemeAstronomieX + espaceEntreCases + 10;
+    const int coordonnesThemeFruitsY = coordonnesThemeAnimauxY;
+
+    const int coordonnesThemeFruitsTexteX = coordonnesThemeFruitsX + longueurRectangle / 12;
+    const int coordonnesThemeFruitsTexteY = coordonnesThemeFruitsY + hauteurRectangle / 2;
+
+    Rectangle rectangleThemeFruits = {coordonnesThemeFruitsX, coordonnesThemeFruitsY,
+                                 longueurRectangle,
+                                 hauteurRectangle};
+
+    // Plantes
+        const int coordonnesThemePlantesX = coordonnesThemeFruitsX + espaceEntreCases + 10;
+    const int coordonnesThemePlantesY = coordonnesThemeAnimauxY;
+
+    const int coordonnesThemePlantesTexteX = coordonnesThemePlantesX + longueurRectangle / 12;
+    const int coordonnesThemePlantesTexteY = coordonnesThemePlantesY + hauteurRectangle / 2;
+
+    Rectangle rectangleThemePlantes = {coordonnesThemePlantesX, coordonnesThemePlantesY,
+                                 longueurRectangle,
+                                 hauteurRectangle};
+
+    // Aleatoire
+        const int coordonnesThemeAleatoireX = coordonnesThemePlantesX + espaceEntreCases + 10;
+    const int coordonnesThemeAleatoireY = coordonnesThemeAnimauxY;
+
+    const int coordonnesThemeAleatoireTexteX = coordonnesThemeAleatoireX + longueurRectangle / 12;
+    const int coordonnesThemeAleatoireTexteY = coordonnesThemeAleatoireY + hauteurRectangle / 2;
+
+    Rectangle rectangleThemeAleatoire = {coordonnesThemeAleatoireX, coordonnesThemeAleatoireY,
                                  longueurRectangle,
                                  hauteurRectangle};
 
@@ -394,8 +439,8 @@ void fenetreRaylib() {
                         currentScreen = TITLE;
                     }
 
-                    // Si on clique sur le rectangle Theme1
-                    if (CheckCollisionPointRec(GetMousePosition(), rectangleTheme1)) {
+                    // Si on clique sur le rectangle ThemeAnimaux
+                    if (CheckCollisionPointRec(GetMousePosition(), rectangleThemeAnimaux)) {
                         currentScreen = DIFFICULTES;
 
                     }
@@ -574,7 +619,7 @@ void fenetreRaylib() {
 
             // Menu principal du jeu
             case TITLE: {
-                DrawText("Jeu du pendu", 190, 200, 20, LIGHTGRAY);
+                DrawText("Jeu du pendu", 190, 200, 20, GOLD);
 
                 // Nouvelle partie
                 DrawText("Nouvelle partie", coordonnesNouvellePartieTexteX, coordonnesNouvellePartieTexteY, 10, BLACK);
@@ -583,14 +628,14 @@ void fenetreRaylib() {
 
 
                 // Classements
-                DrawText("Classements", coordonnesClassementTexteX, coordonnesClassementTexteY, 10, RED);
-                DrawRectangleRec(rectangleClassement, Fade(BLACK, 0.5f));
+                DrawText("Classements", coordonnesClassementTexteX, coordonnesClassementTexteY, 10, BLACK);
+                DrawRectangleRec(rectangleClassement, Fade(SKYBLUE, 0.5f));
                 DrawRectangleLines(coordonnesClassementX, coordonnesClassementY, longueurRectangle, hauteurRectangle,
                                    Fade(RED, 0.8f));
 
                 // Quitter
-                DrawText("Quitter", coordonnesQuitterTexteX, coordonnesQuitterTexteY, 10, RED);
-                DrawRectangleRec(rectangleQuitter, Fade(BLACK, 0.5f));
+                DrawText("Quitter", coordonnesQuitterTexteX, coordonnesQuitterTexteY, 10, GOLD);
+                DrawRectangleRec(rectangleQuitter, Fade(MAROON, 0.5f));
                 DrawRectangleLines(coordonnesQuitterX, coordonnesQuitterY, longueurRectangle, hauteurRectangle,
                                    Fade(RED, 0.8f));
 
@@ -614,9 +659,27 @@ void fenetreRaylib() {
 
             case THEMES: {
                 DrawText("Choississez le thème", 190, 200, 20, LIGHTGRAY);
-                DrawText("Animaux", coordonnesTheme1TexteX, coordonnesTheme1TexteY, 10, BLACK);
 
-                DrawRectangleRec(rectangleTheme1, Fade(GREEN, 0.5f));
+                // Animaux
+                DrawText("Animaux", coordonnesThemeAnimauxTexteX, coordonnesThemeAnimauxTexteY, 10, BLACK);
+                DrawRectangleRec(rectangleThemeAnimaux, Fade(GREEN, 0.5f));
+
+                // Astronomie
+                DrawText("Astronomie", coordonnesThemeAstronomieTexteX, coordonnesThemeAstronomieTexteY, 10, BLACK);
+                DrawRectangleRec(rectangleThemeAstronomie, Fade(GREEN, 0.5f));
+
+                // Fruits
+                DrawText("Fruits", coordonnesThemeFruitsTexteX, coordonnesThemeFruitsTexteY, 10, BLACK);
+                DrawRectangleRec(rectangleThemeFruits, Fade(GREEN, 0.5f));
+
+                // Plantes
+                DrawText("Plantes", coordonnesThemePlantesTexteX, coordonnesThemePlantesTexteY, 10, BLACK);
+                DrawRectangleRec(rectangleThemePlantes, Fade(GREEN, 0.5f));
+
+                // Aleatoire
+                DrawText("Aleatoire", coordonnesThemeAleatoireTexteX, coordonnesThemeAleatoireTexteY, 10, BLACK);
+                DrawRectangleRec(rectangleThemeAleatoire, Fade(GREEN, 0.5f));
+
                 DrawText("Retour au menu", coordonnesRetourMenuTexteX, coordonnesRetourMenuTexteY, 10,
                          BLUE);
                 DrawRectangleRec(rectangleRetourMenu, Fade(BLACK, 0.5f));
