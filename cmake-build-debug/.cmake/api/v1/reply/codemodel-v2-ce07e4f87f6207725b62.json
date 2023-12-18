@@ -1,0 +1,60 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.26"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "Jeu_du_Pendu_ESIEA",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "Jeu_du_Pendu_ESIEA::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Jeu_du_Pendu_ESIEA-Debug-02d96f25481cd3b098c7.json",
+					"name" : "Jeu_du_Pendu_ESIEA",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Users/kidou/OneDrive/Documents/GitHub/Jeu-du-Pendu-ESIEA/cmake-build-debug",
+		"source" : "C:/Users/kidou/OneDrive/Documents/GitHub/Jeu-du-Pendu-ESIEA"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 5
+	}
+}
