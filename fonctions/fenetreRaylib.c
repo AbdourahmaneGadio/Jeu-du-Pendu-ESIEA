@@ -50,6 +50,19 @@ void fenetreRaylib() {
     const int longueurRectangle = 100;
     const int hauteurRectangle = 52;
 
+    // Paramètres de la fenêtre
+    //--------------------------------------------------------------------------------------
+    InitWindow(screenWidth, screenHeight, "Jeu Du Pendu ESIEA v1.0");
+
+    GameScreen currentScreen = TITLE;
+
+    bool exitWindow = false;    // Flag to set window to exit
+
+    SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
+
+    // Fin des paramètres de la fenêtre
+    //--------------------------------------------------------------------------------------
+
 
     bool modeSpecial = false; // false pour le mode normal, true pour le mode spécial
 
@@ -103,29 +116,110 @@ void fenetreRaylib() {
     // Ecran THEMES
     //--------------------------------------------------------------------------------------
 
-    const int coordonnesTheme1X = (screenWidth / 2) - (longueurRectangle / 2);
-    const int coordonnesTheme1Y = (screenHeight) - 70 - hauteurRectangle * 2;
+    // Animaux
+    const int coordonnesThemeAnimauxX = 190 - (longueurRectangle / 2);
+    const int coordonnesThemeAnimauxY = 190 + hauteurRectangle;
 
-    const int coordonnesTheme1TexteX = coordonnesTheme1X + longueurRectangle / 12;
-    const int coordonnesTheme1TexteY = coordonnesTheme1Y + hauteurRectangle / 2;
+    const int coordonnesThemeAnimauxTexteX = coordonnesThemeAnimauxX + longueurRectangle / 12;
+    const int coordonnesThemeAnimauxTexteY = coordonnesThemeAnimauxY + hauteurRectangle / 2;
 
-    Rectangle rectangleTheme1 = {coordonnesTheme1X, coordonnesTheme1Y,
+    Rectangle rectangleThemeAnimaux = {coordonnesThemeAnimauxX, coordonnesThemeAnimauxY,
                                  longueurRectangle,
                                  hauteurRectangle};
 
-    // Fin écranTHEMES
+    // Astronomie
+        const int coordonnesThemeAstronomieX = coordonnesThemeAnimauxX + espaceEntreCases + 10;
+    const int coordonnesThemeAstronomieY = coordonnesThemeAnimauxY;
+
+    const int coordonnesThemeAstronomieTexteX = coordonnesThemeAstronomieX + longueurRectangle / 12;
+    const int coordonnesThemeAstronomieTexteY = coordonnesThemeAstronomieY + hauteurRectangle / 2;
+
+    Rectangle rectangleThemeAstronomie = {coordonnesThemeAstronomieX, coordonnesThemeAstronomieY,
+                                 longueurRectangle,
+                                 hauteurRectangle};
+    
+    // Fruits
+        const int coordonnesThemeFruitsX = coordonnesThemeAstronomieX + espaceEntreCases + 10;
+    const int coordonnesThemeFruitsY = coordonnesThemeAnimauxY;
+
+    const int coordonnesThemeFruitsTexteX = coordonnesThemeFruitsX + longueurRectangle / 12;
+    const int coordonnesThemeFruitsTexteY = coordonnesThemeFruitsY + hauteurRectangle / 2;
+
+    Rectangle rectangleThemeFruits = {coordonnesThemeFruitsX, coordonnesThemeFruitsY,
+                                 longueurRectangle,
+                                 hauteurRectangle};
+
+    // Plantes
+        const int coordonnesThemePlantesX = coordonnesThemeFruitsX + espaceEntreCases + 10;
+    const int coordonnesThemePlantesY = coordonnesThemeAnimauxY;
+
+    const int coordonnesThemePlantesTexteX = coordonnesThemePlantesX + longueurRectangle / 12;
+    const int coordonnesThemePlantesTexteY = coordonnesThemePlantesY + hauteurRectangle / 2;
+
+    Rectangle rectangleThemePlantes = {coordonnesThemePlantesX, coordonnesThemePlantesY,
+                                 longueurRectangle,
+                                 hauteurRectangle};
+
+    // Aleatoire
+        const int coordonnesThemeAleatoireX = coordonnesThemePlantesX + espaceEntreCases + 10;
+    const int coordonnesThemeAleatoireY = coordonnesThemeAnimauxY;
+
+    const int coordonnesThemeAleatoireTexteX = coordonnesThemeAleatoireX + longueurRectangle / 12;
+    const int coordonnesThemeAleatoireTexteY = coordonnesThemeAleatoireY + hauteurRectangle / 2;
+
+    Rectangle rectangleThemeAleatoire = {coordonnesThemeAleatoireX, coordonnesThemeAleatoireY,
+                                 longueurRectangle,
+                                 hauteurRectangle};
+
+        // Retour au menu
+    const int coordonnesRetourThemeX = (screenWidth / 2) - (longueurRectangle / 2) - 30;
+    const int coordonnesRetourThemeY = (screenHeight) - hauteurRectangle * 2;
+
+    const int coordonnesRetourThemeTexteX = coordonnesRetourThemeX + longueurRectangle / 12;
+    const int coordonnesRetourThemeTexteY = coordonnesRetourThemeY + hauteurRectangle / 2;
+
+    Rectangle rectangleRetourTheme = {coordonnesRetourThemeX, coordonnesRetourThemeY,
+                                     longueurRectangle + 75,
+                                     hauteurRectangle};
+
+
+    // Fin écran THEMES
     //--------------------------------------------------------------------------------------
 
     // Ecran DIFFICULTES
     //--------------------------------------------------------------------------------------
 
-    const int coordonnesDifficulteFacileX = (screenWidth / 2) - (longueurRectangle / 2);
+    // Facile
+    const int coordonnesDifficulteFacileX = (screenWidth / 3) - (longueurRectangle / 3);
     const int coordonnesDifficulteFacileY = (screenHeight) - 70 - hauteurRectangle * 2;
 
     const int coordonnesDifficulteFacileTexteX = coordonnesDifficulteFacileX + longueurRectangle / 12;
     const int coordonnesDifficulteFacileTexteY = coordonnesDifficulteFacileY + hauteurRectangle / 2;
 
     Rectangle rectangleDifficulteFacile = {coordonnesDifficulteFacileX, coordonnesDifficulteFacileY,
+                                           longueurRectangle,
+                                           hauteurRectangle};
+
+
+        // Moyenne
+    const int coordonnesDifficulteMoyenneX = coordonnesDifficulteFacileX + espaceEntreCases + 10;
+    const int coordonnesDifficulteMoyenneY = (screenHeight) - 70 - hauteurRectangle * 2;
+
+    const int coordonnesDifficulteMoyenneTexteX = coordonnesDifficulteMoyenneX + longueurRectangle / 12;
+    const int coordonnesDifficulteMoyenneTexteY = coordonnesDifficulteMoyenneY + hauteurRectangle / 2;
+
+    Rectangle rectangleDifficulteMoyenne = {coordonnesDifficulteMoyenneX, coordonnesDifficulteMoyenneY,
+                                           longueurRectangle,
+                                           hauteurRectangle};
+
+    // Difficile
+    const int coordonnesDifficulteDifficileX = coordonnesDifficulteMoyenneX + espaceEntreCases + 10;
+    const int coordonnesDifficulteDifficileY = (screenHeight) - 70 - hauteurRectangle * 2;
+
+    const int coordonnesDifficulteDifficileTexteX = coordonnesDifficulteDifficileX + longueurRectangle / 12;
+    const int coordonnesDifficulteDifficileTexteY = coordonnesDifficulteDifficileY + hauteurRectangle / 2;
+
+    Rectangle rectangleDifficulteDifficile = {coordonnesDifficulteDifficileX, coordonnesDifficulteDifficileY,
                                            longueurRectangle,
                                            hauteurRectangle};
 
@@ -215,29 +309,6 @@ void fenetreRaylib() {
     //--------------------------------------------------------------------------------------
 
 
-
-
-
-
-
-
-    // Paramètres de la fenêtre
-    //--------------------------------------------------------------------------------------
-    InitWindow(screenWidth, screenHeight, "Jeu Du Pendu ESIEA v1.0");
-
-    GameScreen currentScreen = TITLE;
-
-    bool exitWindow = false;    // Flag to set window to exit
-
-    SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
-
-    // Fin des paramètres de la fenêtre
-    //--------------------------------------------------------------------------------------
-
-
-
-
-
     // Musique
     //--------------------------------------------------------------------------------------
 
@@ -296,6 +367,31 @@ void fenetreRaylib() {
     Image image = LoadImage("textures/background_16_9.png");     // Loaded in CPU memory (RAM)
     Texture2D texture = LoadTextureFromImage(image);          // Image converted to texture, GPU memory (VRAM)
     UnloadImage(image);   // Once image has been converted to texture and uploaded to VRAM, it can be unloaded from RAM
+
+    // Animaux
+    Image imageThemeAnimaux = LoadImage("textures/themes/themeAnimaux_taille_case.png");
+    Texture2D textureThemeAnimaux = LoadTextureFromImage(imageThemeAnimaux);
+    UnloadImage(imageThemeAnimaux);
+
+    // Astronomie
+    Image imageThemeAstronomie = LoadImage("textures/themes/themeAstronomie_taille_case.png");
+    Texture2D textureThemeAstronomie = LoadTextureFromImage(imageThemeAstronomie);
+    UnloadImage(imageThemeAstronomie);
+
+    // Fruits
+    Image imageThemeFruits = LoadImage("textures/themes/themeFruits_taille_case.png");
+    Texture2D textureThemeFruits = LoadTextureFromImage(imageThemeFruits);
+    UnloadImage(imageThemeFruits);
+
+    // Plantes
+    Image imageThemePlantes = LoadImage("textures/themes/themePlantes_taille_case.png");
+    Texture2D textureThemePlantes = LoadTextureFromImage(imageThemePlantes);
+    UnloadImage(imageThemePlantes);
+
+    // Aléatoire
+    Image imageThemeAleatoire = LoadImage("textures/themes/themeAleatoire_taille_case.png");
+    Texture2D textureThemeAleatoire = LoadTextureFromImage(imageThemeAleatoire);
+    UnloadImage(imageThemeAleatoire);
 
     // Fin des textures
     //--------------------------------------------------------------------------------------
@@ -376,7 +472,6 @@ void fenetreRaylib() {
                     }
 
                     // Si on clique sur le rectangle mode special
-                    // Si on clique sur le rectangle Quitter
                     if (CheckCollisionPointRec(GetMousePosition(), rectangleModeSpecial)) {
                         StopMusicStream(musicMainMenu);
 
@@ -394,8 +489,32 @@ void fenetreRaylib() {
                         currentScreen = TITLE;
                     }
 
-                    // Si on clique sur le rectangle Theme1
-                    if (CheckCollisionPointRec(GetMousePosition(), rectangleTheme1)) {
+                    // Si on clique sur le rectangle ThemeAnimaux
+                    if (CheckCollisionPointRec(GetMousePosition(), rectangleThemeAnimaux)) {
+                        currentScreen = DIFFICULTES;
+
+                    }
+
+                                        // Si on clique sur le rectangle ThemeAstronomie
+                    if (CheckCollisionPointRec(GetMousePosition(), rectangleThemeAstronomie)) {
+                        currentScreen = DIFFICULTES;
+
+                    }
+
+                                        // Si on clique sur le rectangle ThemeFruits
+                    if (CheckCollisionPointRec(GetMousePosition(), rectangleThemeFruits)) {
+                        currentScreen = DIFFICULTES;
+
+                    }
+
+                                        // Si on clique sur le rectangle ThemePlantes
+                    if (CheckCollisionPointRec(GetMousePosition(), rectangleThemePlantes)) {
+                        currentScreen = DIFFICULTES;
+
+                    }
+
+                                        // Si on clique sur le rectangle ThemeAleatoire
+                    if (CheckCollisionPointRec(GetMousePosition(), rectangleThemeAleatoire)) {
                         currentScreen = DIFFICULTES;
 
                     }
@@ -413,6 +532,18 @@ void fenetreRaylib() {
 
                     // Choix mode facile
                     if (CheckCollisionPointRec(GetMousePosition(), rectangleDifficulteFacile)) {
+                        StopMusicStream(musicMainMenu);
+                        currentScreen = NOUVELLE_PARTIE;
+                    }
+
+                    // Choix mode moyenne
+                    if (CheckCollisionPointRec(GetMousePosition(), rectangleDifficulteMoyenne)) {
+                        StopMusicStream(musicMainMenu);
+                        currentScreen = NOUVELLE_PARTIE;
+                    }
+
+                    // Choix mode difficile
+                    if (CheckCollisionPointRec(GetMousePosition(), rectangleDifficulteDifficile)) {
                         StopMusicStream(musicMainMenu);
                         currentScreen = NOUVELLE_PARTIE;
                     }
@@ -574,7 +705,7 @@ void fenetreRaylib() {
 
             // Menu principal du jeu
             case TITLE: {
-                DrawText("Jeu du pendu", 190, 200, 20, LIGHTGRAY);
+                DrawText("Jeu du pendu", 190, 200, 20, WHITE);
 
                 // Nouvelle partie
                 DrawText("Nouvelle partie", coordonnesNouvellePartieTexteX, coordonnesNouvellePartieTexteY, 10, BLACK);
@@ -583,14 +714,14 @@ void fenetreRaylib() {
 
 
                 // Classements
-                DrawText("Classements", coordonnesClassementTexteX, coordonnesClassementTexteY, 10, RED);
-                DrawRectangleRec(rectangleClassement, Fade(BLACK, 0.5f));
+                DrawText("Classements", coordonnesClassementTexteX, coordonnesClassementTexteY, 10, BLACK);
+                DrawRectangleRec(rectangleClassement, Fade(SKYBLUE, 0.5f));
                 DrawRectangleLines(coordonnesClassementX, coordonnesClassementY, longueurRectangle, hauteurRectangle,
                                    Fade(RED, 0.8f));
 
                 // Quitter
-                DrawText("Quitter", coordonnesQuitterTexteX, coordonnesQuitterTexteY, 10, RED);
-                DrawRectangleRec(rectangleQuitter, Fade(BLACK, 0.5f));
+                DrawText("Quitter", coordonnesQuitterTexteX, coordonnesQuitterTexteY, 10, GOLD);
+                DrawRectangleRec(rectangleQuitter, Fade(MAROON, 0.5f));
                 DrawRectangleLines(coordonnesQuitterX, coordonnesQuitterY, longueurRectangle, hauteurRectangle,
                                    Fade(RED, 0.8f));
 
@@ -613,41 +744,74 @@ void fenetreRaylib() {
 
 
             case THEMES: {
-                DrawText("Choississez le thème", 190, 200, 20, LIGHTGRAY);
-                DrawText("Animaux", coordonnesTheme1TexteX, coordonnesTheme1TexteY, 10, BLACK);
+                DrawText("Choississez le thème", 190, 200, 20, WHITE);
 
-                DrawRectangleRec(rectangleTheme1, Fade(GREEN, 0.5f));
+                // Animaux
+                DrawTexture(textureThemeAnimaux, coordonnesThemeAnimauxX, coordonnesThemeAnimauxY, WHITE);
+                DrawText("Animaux", coordonnesThemeAnimauxTexteX, coordonnesThemeAnimauxTexteY, 10, WHITE);
+
+                // Astronomie
+                DrawTexture(textureThemeAstronomie, coordonnesThemeAstronomieX, coordonnesThemeAstronomieY, WHITE);
+                DrawText("Astronomie", coordonnesThemeAstronomieTexteX, coordonnesThemeAstronomieTexteY, 10, WHITE);
+
+                // Fruits
+                DrawTexture(textureThemeFruits, coordonnesThemeFruitsX, coordonnesThemeFruitsY, WHITE);
+                DrawText("Fruits", coordonnesThemeFruitsTexteX, coordonnesThemeFruitsTexteY, 10, WHITE);
+
+                // Plantes
+                DrawTexture(textureThemePlantes, coordonnesThemePlantesX, coordonnesThemePlantesY, WHITE);
+                DrawText("Plantes", coordonnesThemePlantesTexteX, coordonnesThemePlantesTexteY, 10, WHITE);
+
+                // Aleatoire
+                DrawTexture(textureThemeAleatoire, coordonnesThemeAleatoireX, coordonnesThemeAleatoireY, WHITE);
+                DrawText("Aleatoire", coordonnesThemeAleatoireTexteX, coordonnesThemeAleatoireTexteY, 10, WHITE);
+
                 DrawText("Retour au menu", coordonnesRetourMenuTexteX, coordonnesRetourMenuTexteY, 10,
-                         BLUE);
+                         WHITE);
                 DrawRectangleRec(rectangleRetourMenu, Fade(BLACK, 0.5f));
 
             }
                 break;
 
             case DIFFICULTES: {
-                DrawText("Choississez la difficulté", 190, 200, 20, LIGHTGRAY);
-                DrawText("Facile", coordonnesDifficulteFacileTexteX, coordonnesDifficulteFacileTexteY, 10, BLACK);
+                DrawText("Choississez la difficulté", 190, 200, 20, WHITE);
 
+                // Facile
+                DrawText("Facile", coordonnesDifficulteFacileTexteX, coordonnesDifficulteFacileTexteY, 10, BLACK);
                 DrawRectangleRec(rectangleDifficulteFacile, Fade(GREEN, 0.5f));
-                DrawText("Retour à la sélection du thème", coordonnesRetourMenuTexteX, coordonnesRetourMenuTexteY, 10,
-                         BLUE);
-                DrawRectangleRec(rectangleRetourMenu, Fade(BLACK, 0.5f));
+
+                // Moyenne
+                DrawText("Moyenne", coordonnesDifficulteMoyenneTexteX, coordonnesDifficulteMoyenneTexteY, 10, BLACK);
+                DrawRectangleRec(rectangleDifficulteMoyenne, Fade(ORANGE, 0.5f));
+
+                // Difficile
+                DrawText("Difficile", coordonnesDifficulteDifficileTexteX, coordonnesDifficulteDifficileTexteY, 10, BLACK);
+                DrawRectangleRec(rectangleDifficulteDifficile, Fade(RED, 0.5f));
+
+                DrawText("Retour à la sélection du thème", coordonnesRetourThemeTexteX, coordonnesRetourThemeTexteY, 10,
+                         WHITE);
+                DrawRectangleRec(rectangleRetourTheme, Fade(BLACK, 0.5f));
 
             }
                 break;
 
             case NOUVELLE_PARTIE: {
-                DrawText("La partie commence !", 190, 200, 20, LIGHTGRAY);
+                DrawText("La partie commence !", 190, 200, 20, WHITE);
                 DrawRectangle(200, 250, (int) (timePlayedLoading * 400.0f), 12, MAROON);
                 DrawRectangleLines(200, 250, 400, 12, GRAY);
             }
                 break;
 
             case CLASSEMENTS: {
-                DrawText("Classement", screenWidth / 2 - 50, 30, 20, LIGHTGRAY);
+                DrawText("Classement", screenWidth / 2 - 50, 30, 20, WHITE);
+
+                // La liste des joueurs
+                for(int i = 1; i < 10; i++){
+                    DrawText(TextFormat("Joueur %0i : %0i points", i, i), coordonnesClassementTexteX - 80, 30 + i*30, 20, YELLOW);
+                }
 
                 DrawText("Retour au menu", coordonnesRetourMenuTexteX, coordonnesRetourMenuTexteY, 10,
-                         BLUE);
+                         WHITE);
                 DrawRectangleRec(rectangleRetourMenu, Fade(BLACK, 0.5f));
                 DrawRectangleLines(coordonnesRetourMenuX, coordonnesRetourMenuY, longueurRectangle,
                                    hauteurRectangle,
@@ -659,7 +823,7 @@ void fenetreRaylib() {
             case JEU_EN_COURS: {
 
                 // Le mot à trouver
-                DrawText(devinette, 190, 200, 20, LIGHTGRAY);
+                DrawText(devinette, 190, 200, 20, WHITE);
 
                 // Le nombre d'essais
                 if (nombreEssais > 0 && motTrouve == 0) {
@@ -668,12 +832,12 @@ void fenetreRaylib() {
                     DrawText(TextFormat("Bravo, tu as trouvé le mot et gagné le jeu !", nombreEssais), 190, 240, 20,
                              GREEN);
                 } else {
-                    DrawText(TextFormat("Perdu... Le mot à deviner était :"), 190, 230, 20, RED);
-                    DrawText(mot, 190, 270, 20, BLUE);
+                    DrawText(TextFormat("Perdu... Le mot à deviner était :"), 190, 230, 20, WHITE);
+                    DrawText(mot, 190, 270, 20, YELLOW);
                 }
                 // Quitter
                 DrawText("Quitter la partie", coordonnesQuitterJeuEnCoursTexteX, coordonnesQuitterJeuEnCoursTexteY, 10,
-                         RED);
+                         WHITE);
                 DrawRectangleRec(rectangleQuitterJeuEnCours, Fade(BLACK, 0.5f));
                 DrawRectangleLines(coordonnesQuitterJeuEnCoursX, coordonnesQuitterJeuEnCoursY, longueurRectangle,
                                    hauteurRectangle,
@@ -684,9 +848,9 @@ void fenetreRaylib() {
                 // Crédits
             case CREDITS: {
                 DrawText("Equipe: GADIO Abdourahmane, KIDOUCHIM David, LEVY Ilona", coordonnesEcranCreditsX,
-                         coordonnesEcranCreditsY, 10, BLACK);
+                         coordonnesEcranCreditsY, 10, WHITE);
                 DrawText("https://github.com/AbdourahmaneGadio/Jeu-du-Pendu-ESIEA", coordonnesEcranCreditsX,
-                         coordonnesEcranCreditsY + 30, 10, RED);
+                         coordonnesEcranCreditsY + 30, 10, YELLOW);
             }
 
             default:
@@ -707,6 +871,11 @@ void fenetreRaylib() {
     UnloadMusicStream(musicPartiePerdue);
 
     UnloadTexture(texture);       // Texture unloading
+    UnloadTexture(textureThemeAnimaux);
+    UnloadTexture(textureThemeAstronomie);
+    UnloadTexture(textureThemeFruits);
+    UnloadTexture(textureThemePlantes);
+    UnloadTexture(textureThemeAleatoire);
 
     CloseAudioDevice();         // Close audio device (music streaming is automatically stopped)
 

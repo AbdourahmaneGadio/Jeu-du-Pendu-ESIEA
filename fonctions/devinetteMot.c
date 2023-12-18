@@ -22,7 +22,7 @@ void devinetteMot(char *mot) {
 
     /*
      * On ajout des tirets au mot à deviner
-     * Ex : ____ pour un mot à 4 caractères
+     * Ex : _ _ _ _ pour un mot à 4 caractères
      */
     for (int i = 0; i < longueur; i++) {
         devinette[i] = '-';
