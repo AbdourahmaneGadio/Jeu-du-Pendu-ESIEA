@@ -24,6 +24,7 @@
 #include "raylib.h"
 #include <stdlib.h>
 #include <time.h>
+#include "choixMotRaylib.c"
 
 //------------------------------------------------------------------------------------------
 // Types and Structures Definition
@@ -268,28 +269,31 @@ void fenetreRaylib() {
 
 
 
-    // Lignes copiées du fichier main.c principal, et de la fonction devinetteMot
 
-    // On prend un mot au hasard à trouver
-    char *mot = choixMot();
+    char *devinette = NULL;
+    size_t longueur = 1;
+    char *mot = NULL;
 
-    // On prend le mot, et on donne la longueur de celui-ci
-    size_t longueur = strlen(mot);
-    char devinette[longueur - 1];
+    void attributionMot(int choixCategorie){
+    mot = choixMotRaylib(choixCategorie);
+
+                            // On prend le mot, et on donne la longueur de celui-ci
+                            longueur = strlen(mot);
+                            devinette = malloc ( longueur * sizeof (char *) );
+                            /*
+                            * On ajout des tirets au mot à deviner
+                            * Ex : _ _ _ _ pour un mot à 4 caractères
+                            */
+                            for (int i = 0; i < longueur; i++) {
+                                devinette[i] = '-';
+                            }
+
+                            devinette[longueur] = '\0';
+
+}
 
     int nombreEssais = 6;
     int lettreTrouvee = 1; // 0 si on la trouve, 1 si on ne la trouve pas
-
-    /*
-     * On ajout des tirets au mot à deviner
-     * Ex : ____ pour un mot à 4 caractères
-     */
-    for (int i = 0; i < longueur; i++) {
-        devinette[i] = '-';
-    }
-
-    devinette[longueur] = '\0';
-
     int motTrouve = 0; // 0 si pas trouvé, 1 si trouvé
 
 
@@ -491,30 +495,37 @@ void fenetreRaylib() {
 
                     // Si on clique sur le rectangle ThemeAnimaux
                     if (CheckCollisionPointRec(GetMousePosition(), rectangleThemeAnimaux)) {
+
+                           attributionMot(3);
                         currentScreen = DIFFICULTES;
 
                     }
 
                                         // Si on clique sur le rectangle ThemeAstronomie
                     if (CheckCollisionPointRec(GetMousePosition(), rectangleThemeAstronomie)) {
+                        attributionMot(4);
                         currentScreen = DIFFICULTES;
 
                     }
 
                                         // Si on clique sur le rectangle ThemeFruits
                     if (CheckCollisionPointRec(GetMousePosition(), rectangleThemeFruits)) {
+                        attributionMot(2);
                         currentScreen = DIFFICULTES;
 
                     }
 
                                         // Si on clique sur le rectangle ThemePlantes
                     if (CheckCollisionPointRec(GetMousePosition(), rectangleThemePlantes)) {
+                        attributionMot(1);
                         currentScreen = DIFFICULTES;
 
                     }
 
                                         // Si on clique sur le rectangle ThemeAleatoire
                     if (CheckCollisionPointRec(GetMousePosition(), rectangleThemeAleatoire)) {
+                        int nombreAleatoire = GetRandomValue(1, 4);
+                        attributionMot(nombreAleatoire);
                         currentScreen = DIFFICULTES;
 
                     }
@@ -607,11 +618,14 @@ void fenetreRaylib() {
                         // On convertit la lettre en MAJUSCULE
                         char majuscule = toupper((char) toucheClavier);
 
+                        // On convertit la lettre en minuscule
+                        char minuscule = tolower((char) toucheClavier);
+
                         // Pour chaque lettre du mot
                         for (int j = 0; j < longueur; j++) {
 
                             // Si on trouve la lettre
-                            if (majuscule == mot[j]) {
+                            if (majuscule == mot[j] || minuscule == mot[j]) {
 
                                 /*
                                  * On met celle-ci dans le mot à deviner
