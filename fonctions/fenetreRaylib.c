@@ -30,7 +30,8 @@
 // Types and Structures Definition
 //------------------------------------------------------------------------------------------
 typedef enum GameScreen {
-    TITLE, NOUVELLE_PARTIE, CLASSEMENTS, CREDITS, JEU_EN_COURS, THEMES, DIFFICULTES
+    TITLE, NOUVELLE_PARTIE, CLASSEMENTS, CREDITS, JEU_EN_COURS, THEMES, DIFFICULTES, 
+    WELCOME, CONNEXION_JOUEUR, NOUVEAU_JOUEUR, ANCIEN_JOUEUR
 } GameScreen;
 
 //------------------------------------------------------------------------------------
@@ -55,7 +56,7 @@ void fenetreRaylib() {
     //--------------------------------------------------------------------------------------
     InitWindow(screenWidth, screenHeight, "Jeu Du Pendu ESIEA v1.0");
 
-    GameScreen currentScreen = TITLE;
+    GameScreen currentScreen = WELCOME;
 
     bool exitWindow = false;    // Flag to set window to exit
 
@@ -66,6 +67,34 @@ void fenetreRaylib() {
 
 
     bool modeSpecial = false; // false pour le mode normal, true pour le mode spécial
+    int points = 8; // Les points du joueur
+    int numeroPlace = 3; // La place dans le classement du joueur
+
+
+    // Ecran WELCOME
+    //--------------------------------------------------------------------------------------
+
+    const int coordonnesCommencezJeuX = 350 - longueurRectangle;
+    const int coordonnesCommencezJeuY = (screenHeight / 2) + hauteurRectangle / 2;
+
+    const int coordonnesCommencezJeuTexteY = coordonnesCommencezJeuY + hauteurRectangle / 2;
+    const int coordonnesCommencezJeuTexteX = coordonnesCommencezJeuX + longueurRectangle / 8;
+
+    Rectangle rectangleCommencezJeu = {coordonnesCommencezJeuX, coordonnesCommencezJeuY, longueurRectangle,
+                                         hauteurRectangle};
+
+        const int coordonnesQuitterX = coordonnesCommencezJeuX + longueurRectangle + espaceEntreCases;
+    const int coordonnesQuitterY = coordonnesCommencezJeuY;
+
+    const int coordonnesQuitterTexteY = coordonnesQuitterY + hauteurRectangle / 2;
+    const int coordonnesQuitterTexteX = coordonnesQuitterX + longueurRectangle / 3;
+
+    Rectangle rectangleQuitter = {coordonnesQuitterX, coordonnesQuitterY, longueurRectangle, hauteurRectangle};
+
+
+
+    // Fin écran WELCOME
+    //--------------------------------------------------------------------------------------
 
 
     // Ecran TITRE
@@ -94,14 +123,14 @@ void fenetreRaylib() {
 
 
 
-    // Case quitter
-    const int coordonnesQuitterX = coordonnesClassementX + longueurRectangle + espaceEntreCases;
-    const int coordonnesQuitterY = coordonnesNouvellePartieY;
+    // Case retour écran
+    const int coordonnesRetourEcranBaseX = coordonnesClassementX + longueurRectangle + espaceEntreCases;
+    const int coordonnesRetourEcranBaseY = coordonnesNouvellePartieY;
 
-    const int coordonnesQuitterTexteY = coordonnesQuitterY + hauteurRectangle / 2;
-    const int coordonnesQuitterTexteX = coordonnesQuitterX + longueurRectangle / 3;
+    const int coordonnesRetourEcranBaseTexteY = coordonnesRetourEcranBaseY + hauteurRectangle / 2;
+    const int coordonnesRetourEcranBaseTexteX = coordonnesRetourEcranBaseX + longueurRectangle / 8;
 
-    Rectangle rectangleQuitter = {coordonnesQuitterX, coordonnesQuitterY, longueurRectangle, hauteurRectangle};
+    Rectangle rectangleRetourEcranBase = {coordonnesRetourEcranBaseX, coordonnesRetourEcranBaseY, longueurRectangle + 20, hauteurRectangle};
 
 
     // Mode spécial
@@ -451,9 +480,6 @@ void fenetreRaylib() {
         switch (currentScreen) {
             case TITLE: {
 
-                // La musique du menu principal
-                PlayMusicStream(musicMainMenu);
-
                 if (IsGestureDetected(GESTURE_TAP)) {
 
                     // Si on clique sur le rectangle Nouvelle Partie
@@ -469,10 +495,8 @@ void fenetreRaylib() {
                     }
 
                     // Si on clique sur le rectangle Quitter
-                    if (CheckCollisionPointRec(GetMousePosition(), rectangleQuitter)) {
-                        StopMusicStream(musicMainMenu);
-
-                        currentScreen = CREDITS;
+                    if (CheckCollisionPointRec(GetMousePosition(), rectangleRetourEcranBase)) {
+                        currentScreen = WELCOME;
                     }
 
                     // Si on clique sur le rectangle mode special
@@ -701,6 +725,28 @@ void fenetreRaylib() {
             }
                 break;
 
+            
+            case WELCOME: {
+
+                // La musique du menu principal
+                PlayMusicStream(musicMainMenu);
+
+                if (IsGestureDetected(GESTURE_TAP)) {
+
+                    // Si on clique sur le rectangle Quitter
+                    if (CheckCollisionPointRec(GetMousePosition(), rectangleCommencezJeu)) {
+                        currentScreen = TITLE;
+                    }
+
+                      // Si on clique sur le rectangle Quitter
+                    if (CheckCollisionPointRec(GetMousePosition(), rectangleQuitter)) {
+                        StopMusicStream(musicMainMenu);
+                        currentScreen = CREDITS;
+                    }
+                }
+            }
+                break;
+
             default:
 
 
@@ -733,10 +779,10 @@ void fenetreRaylib() {
                 DrawRectangleLines(coordonnesClassementX, coordonnesClassementY, longueurRectangle, hauteurRectangle,
                                    Fade(RED, 0.8f));
 
-                // Quitter
-                DrawText("Quitter", coordonnesQuitterTexteX, coordonnesQuitterTexteY, 10, GOLD);
-                DrawRectangleRec(rectangleQuitter, Fade(MAROON, 0.5f));
-                DrawRectangleLines(coordonnesQuitterX, coordonnesQuitterY, longueurRectangle, hauteurRectangle,
+                // Retournez au menu
+                DrawText("Retournez au menu", coordonnesRetourEcranBaseTexteX, coordonnesRetourEcranBaseTexteY, 10, GOLD);
+                DrawRectangleRec(rectangleRetourEcranBase, Fade(MAROON, 0.5f));
+                DrawRectangleLines(coordonnesRetourEcranBaseX, coordonnesRetourEcranBaseY, longueurRectangle + 20, hauteurRectangle,
                                    Fade(RED, 0.8f));
 
                 // Mode spécial
@@ -758,6 +804,8 @@ void fenetreRaylib() {
 
 
             case THEMES: {
+                DrawText(TextFormat("Vous avez un score de %0i points, et vous êtes à la %0ième place dans le classement", points, numeroPlace), 60, 150, 18, GOLD);
+
                 DrawText("Choississez le thème", 190, 200, 20, WHITE);
 
                 // Animaux
@@ -845,6 +893,10 @@ void fenetreRaylib() {
                 } else if (motTrouve == 1) {
                     DrawText(TextFormat("Bravo, tu as trouvé le mot et gagné le jeu !", nombreEssais), 190, 240, 20,
                              GREEN);
+                       DrawText(TextFormat("+%0i points", points), 190, 240 + 40, 20,
+                             GOLD);
+                           DrawText(TextFormat("Vous avez maintenant %0i points", points), 190, 240 + 60, 20,
+                             GOLD);
                 } else {
                     DrawText(TextFormat("Perdu... Le mot à deviner était :"), 190, 230, 20, WHITE);
                     DrawText(mot, 190, 270, 20, YELLOW);
@@ -865,7 +917,28 @@ void fenetreRaylib() {
                          coordonnesEcranCreditsY, 10, WHITE);
                 DrawText("https://github.com/AbdourahmaneGadio/Jeu-du-Pendu-ESIEA", coordonnesEcranCreditsX,
                          coordonnesEcranCreditsY + 30, 10, YELLOW);
-            }
+            } break;
+
+            // Page de bienvenue
+            case WELCOME:{
+              DrawText("Jeu du pendu", coordonnesEcranCreditsX,
+                         (screenHeight / 2) - 30, 20, WHITE);
+
+                          DrawText("Commencez", coordonnesCommencezJeuTexteX, coordonnesCommencezJeuTexteY, 10,
+                         WHITE);
+            DrawRectangleRec(rectangleCommencezJeu, Fade(BLACK, 0.5f));
+
+                // Quitter
+                DrawText("Quitter", coordonnesQuitterTexteX, coordonnesQuitterTexteY, 10, GOLD);
+                DrawRectangleRec(rectangleQuitter, Fade(MAROON, 0.5f));
+                DrawRectangleLines(coordonnesQuitterX, coordonnesQuitterY, longueurRectangle, hauteurRectangle,
+                                   Fade(RED, 0.8f));
+
+            } break;
+
+            case CONNEXION_JOUEUR:{
+                DrawText("Quitter", coordonnesQuitterTexteX, coordonnesQuitterTexteY, 10, GOLD);
+            } break;
 
             default:
                 break;
