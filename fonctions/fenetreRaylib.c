@@ -74,7 +74,8 @@ void fenetreRaylib() {
   //--------------------------------------------------------------------------------------
 
   bool modeSpecial =
-      false;           // false pour le mode normal, true pour le mode spécial
+      false; // false pour le mode normal, true pour le mode spécial
+  bool modeSpecialInactive = true;
   int points = 0;      // Les points du joueur
   int numeroPlace = 0; // La place dans le classement du joueur
 
@@ -534,8 +535,7 @@ void fenetreRaylib() {
   Music listeMusiqueCredits[] = {musicCreditsNormal, musicCreditsNormal2};
   const int tailleMusiqueCreditsNormal =
       sizeof(listeMusiqueCredits) / sizeof(listeMusiqueCredits[0]);
-  int musicCreditsAleatoire =
-      GetRandomValue(0, tailleMusiqueCreditsNormal - 1);
+  int musicCreditsAleatoire = GetRandomValue(0, tailleMusiqueCreditsNormal - 1);
 
   //-Musique de fond générale
   Music musicMainMenuNormal = LoadMusicStream("music/normal/main_menu.mp3");
@@ -752,7 +752,6 @@ void fenetreRaylib() {
           StopMusicStream(musicMainMenu);
           musicMainPause = true;
           modeSpecial = !modeSpecial;
-
         }
       }
     } break;
@@ -1054,7 +1053,7 @@ void fenetreRaylib() {
     // Menu principal du jeu
     case TITLE: {
 
-          DrawText("Jeu du pendu", 190, 200, 20, WHITE);
+      DrawText("Jeu du pendu", 190, 200, 20, WHITE);
 
       // Nouvelle partie
       DrawText("Nouvelle partie", coordonnesNouvellePartieTexteX,
@@ -1079,16 +1078,17 @@ void fenetreRaylib() {
                          Fade(RED, 0.8f));
 
       // Mode spécial
+      if (modeSpecialInactive == false) {
+        if (modeSpecial == 0) {
+          DrawText("Mode special", coordonneesModeSpecialTexteX,
+                   coordonneesModeSpecialTexteY, 20, WHITE);
+          DrawRectangleRec(rectangleModeSpecial, Fade(WHITE, 0.5f));
 
-      if (modeSpecial == 0) {
-        DrawText("Mode special", coordonneesModeSpecialTexteX,
-                 coordonneesModeSpecialTexteY, 20, WHITE);
-        DrawRectangleRec(rectangleModeSpecial, Fade(WHITE, 0.5f));
-
-      } else {
-        DrawText("Mode special activé", coordonneesModeSpecialTexteX - 70,
-                 coordonneesModeSpecialTexteY, 20, RED);
-        DrawRectangleRec(rectangleModeSpecial, Fade(RED, 0.5f));
+        } else {
+          DrawText("Mode special activé", coordonneesModeSpecialTexteX - 70,
+                   coordonneesModeSpecialTexteY, 20, RED);
+          DrawRectangleRec(rectangleModeSpecial, Fade(RED, 0.5f));
+        }
       }
     } break;
 
