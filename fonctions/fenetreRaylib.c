@@ -636,6 +636,8 @@ void fenetreRaylib() {
                     int toucheClavier = GetCharPressed();
 
                     // De A à Z en MAJUSCULE, et de a à z en MINUSCULE
+                    // A vaut 65, Z vaut 90
+                    // a vaut 97, z vaut 122
                     // Source : https://www.ascii-code.com/
                     if ( ((toucheClavier >= 65) && (toucheClavier <= 90)) || ((toucheClavier >= 97) && (toucheClavier <= 122)) ) {
 
