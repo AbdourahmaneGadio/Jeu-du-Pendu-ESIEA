@@ -388,6 +388,7 @@ void fenetreRaylib() {
     // Fin écran NOUVEAU_JOUEUR
     //--------------------------------------------------------------------------------------
 
+char *pseudo[5] = {"A","A","A","A","A"};
 
 const int coordonnesOKChoixNomX = coordonnesAncienJoueurBienvenueTexteX + 200;
 const int coordonnesOKChoixNomY = 300;
@@ -462,10 +463,32 @@ const int coordonnesOKChoixNomY = 300;
     Texture2D textureFlecheHaute = LoadTextureFromImage(imageFlecheHaute);         
     UnloadImage(imageFlecheHaute);  
 
+   
+    Rectangle rectangleFlecheHaute0 = {coordonnesAncienJoueurBienvenueTexteX - 3 + 30 * 0,  coordonnesOKChoixNomTexteY - 30, 25,
+                                         27};
+    Rectangle rectangleFlecheHaute1 = {coordonnesAncienJoueurBienvenueTexteX - 3 + 30 * 1,  coordonnesOKChoixNomTexteY - 30, 25,
+                                         27};
+    Rectangle rectangleFlecheHaute2 = {coordonnesAncienJoueurBienvenueTexteX - 3 + 30 * 2,  coordonnesOKChoixNomTexteY - 30, 25,
+                                         27};
+    Rectangle rectangleFlecheHaute3 = {coordonnesAncienJoueurBienvenueTexteX - 3 + 30 * 3,  coordonnesOKChoixNomTexteY - 30, 25,
+                                         27};
+    Rectangle rectangleFlecheHaute4 = {coordonnesAncienJoueurBienvenueTexteX - 3 + 30 * 4,  coordonnesOKChoixNomTexteY - 30, 25,
+                                         27};
+
     Image imageFlecheBasse = LoadImage("textures/fleche_basse_reduite.png");  
     Texture2D textureFlecheBasse = LoadTextureFromImage(imageFlecheBasse);          
     UnloadImage(imageFlecheBasse);  
 
+ Rectangle rectangleFlecheBasse0 = {coordonnesAncienJoueurBienvenueTexteX - 3 + 30 * 0,  coordonnesOKChoixNomTexteY + 20, 25,
+                                         27};
+    Rectangle rectangleFlecheBasse1 = {coordonnesAncienJoueurBienvenueTexteX - 3 + 30 * 1,  coordonnesOKChoixNomTexteY + 20, 25,
+                                         27};
+    Rectangle rectangleFlecheBasse2 = {coordonnesAncienJoueurBienvenueTexteX - 3 + 30 * 2,  coordonnesOKChoixNomTexteY + 20, 25,
+                                         27};
+    Rectangle rectangleFlecheBasse3 = {coordonnesAncienJoueurBienvenueTexteX - 3 + 30 * 3,  coordonnesOKChoixNomTexteY + 20, 25,
+                                         27};
+    Rectangle rectangleFlecheBasse4 = {coordonnesAncienJoueurBienvenueTexteX - 3 + 30 * 4,  coordonnesOKChoixNomTexteY + 20, 25,
+                                         27};
 
 
     // Animaux
@@ -834,6 +857,24 @@ const int coordonnesOKChoixNomY = 300;
                  case ANCIEN_JOUEUR:{
                     if (IsGestureDetected(GESTURE_TAP)) {
 
+                                        // Si on clique sur une flèche haute
+                                    if (CheckCollisionPointRec(GetMousePosition(), rectangleFlecheHaute0)) {
+pseudo[0] = "B";
+                                    }
+
+                           // Si on clique sur une flèche basse
+                                                                        if (CheckCollisionPointRec(GetMousePosition(), rectangleFlecheBasse0)) {
+pseudo[0] = "A";
+                                    }                // Si on clique sur une flèche haute
+                                    if (CheckCollisionPointRec(GetMousePosition(), rectangleFlecheHaute0)) {
+pseudo[0] = "B";
+                                    }
+
+                           // Si on clique sur une flèche basse
+                                                                        if (CheckCollisionPointRec(GetMousePosition(), rectangleFlecheBasse0)) {
+pseudo[0] = "A";
+                                    }
+
                                     // Si on clique sur le rectangle OKChoixNom
                                     if (CheckCollisionPointRec(GetMousePosition(), rectangleOKChoixNom)) {
                                         currentScreen = TITLE;
@@ -843,6 +884,16 @@ const int coordonnesOKChoixNomY = 300;
 
                   case NOUVEAU_JOUEUR:{
                     if (IsGestureDetected(GESTURE_TAP)) {
+
+                           // Si on clique sur une flèche haute
+                                    if (CheckCollisionPointRec(GetMousePosition(), rectangleFlecheHaute0)) {
+pseudo[0] = "B";
+                                    }
+
+                           // Si on clique sur une flèche basse
+                                                                        if (CheckCollisionPointRec(GetMousePosition(), rectangleFlecheBasse0)) {
+pseudo[0] = "A";
+                                    }
 
                                     // Si on clique sur le rectangle OKChoixNom
                                     if (CheckCollisionPointRec(GetMousePosition(), rectangleOKChoixNom)) {
@@ -1056,6 +1107,8 @@ const int coordonnesOKChoixNomY = 300;
                 DrawText("Bon retour !", coordonnesAncienJoueurBienvenueTexteX, coordonnesAncienJoueurBienvenueTexteY, 20, GOLD);
                 DrawText("Choisissez votre pseudo à 5 lettres", coordonnesAncienJoueurBienvenueTexteX, coordonnesAncienJoueurPseudoTexteY, 20, GOLD);
 
+                DrawRectangleRec(rectangleFlecheHaute0, Fade(GREEN, 0.0f));
+
                 // Les 5 lettres du pseudo
                 for(int i=0; i<5; i++){
 
@@ -1063,12 +1116,13 @@ const int coordonnesOKChoixNomY = 300;
                 // Flèche haute
                 DrawTexture(textureFlecheHaute, coordonnesAncienJoueurBienvenueTexteX - 3 + 30 * i,  coordonnesOKChoixNomTexteY - 30, WHITE);
 
-                    DrawText("A", coordonnesAncienJoueurBienvenueTexteX + 30 * i, coordonnesOKChoixNomTexteY - 5, 30, GOLD);
+                    DrawText(TextFormat("%s", pseudo[i]), coordonnesAncienJoueurBienvenueTexteX + 30 * i, coordonnesOKChoixNomTexteY - 5, 30, GOLD);
                
                 // Flèche basse
                 DrawTexture(textureFlecheBasse, coordonnesAncienJoueurBienvenueTexteX - 3 + 30 * i,  coordonnesOKChoixNomTexteY + 20, WHITE);
 
                 }
+                                DrawRectangleRec(rectangleFlecheBasse0, Fade(GREEN, 0.0f));
 
                 DrawText("OK", coordonnesOKChoixNomTexteX, coordonnesOKChoixNomTexteY, 20, GOLD);
                 DrawRectangleRec(rectangleOKChoixNom, Fade(MAROON, 0.5f));
@@ -1079,19 +1133,22 @@ const int coordonnesOKChoixNomY = 300;
                 DrawText("Bienvenue !", coordonnesNouveauJoueurBienvenueTexteX, coordonnesNouveauJoueurBienvenueTexteY, 20, GOLD);
                 DrawText("Choisissez votre pseudo à 5 lettres", coordonnesNouveauJoueurBienvenueTexteX, coordonnesNouveauJoueurPseudoTexteY, 20, GOLD);
                 
-                
+                                DrawRectangleRec(rectangleFlecheHaute0, Fade(GREEN, 0.0f));
+
                 // Les 5 lettres du pseudo
                 for(int i=0; i<5; i++){
 
                            // Flèche haute
                 DrawTexture(textureFlecheHaute, coordonnesAncienJoueurBienvenueTexteX - 3 + 30 * i,  coordonnesOKChoixNomTexteY - 30, WHITE);
 
-                    DrawText("A", coordonnesNouveauJoueurBienvenueTexteX + 30 * i, coordonnesOKChoixNomTexteY - 5, 30, GOLD);
+                    DrawText(TextFormat("%s", pseudo[i]), coordonnesNouveauJoueurBienvenueTexteX + 30 * i, coordonnesOKChoixNomTexteY - 5, 30, GOLD);
                 
                 // Flèche basse
                 DrawTexture(textureFlecheBasse, coordonnesAncienJoueurBienvenueTexteX - 3 + 30 * i,  coordonnesOKChoixNomTexteY + 20, WHITE);
 
                 }
+
+                                DrawRectangleRec(rectangleFlecheBasse0, Fade(GREEN, 0.0f));
 
                 DrawText("OK", coordonnesOKChoixNomTexteX, coordonnesOKChoixNomTexteY, 20, GOLD);
                 DrawRectangleRec(rectangleOKChoixNom, Fade(MAROON, 0.5f));
