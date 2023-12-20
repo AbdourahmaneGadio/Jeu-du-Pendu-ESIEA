@@ -517,6 +517,7 @@ void fenetreRaylib() {
 
   Music musicCredits;
   Music musicMainMenu;
+  int musicMainPause = true;
   Music musicLoading;
   Music musicPartieGagne;
   Music musicPartiePerdue;
@@ -533,7 +534,7 @@ void fenetreRaylib() {
   Music listeMusiqueCredits[] = {musicCreditsNormal, musicCreditsNormal2};
   const int tailleMusiqueCreditsNormal =
       sizeof(listeMusiqueCredits) / sizeof(listeMusiqueCredits[0]);
-  const int musicCreditsAleatoire =
+  int musicCreditsAleatoire =
       GetRandomValue(0, tailleMusiqueCreditsNormal - 1);
 
   //-Musique de fond générale
@@ -543,7 +544,7 @@ void fenetreRaylib() {
                                         musicMainMenuNormal2};
   const int tailleMusiqueMainMenuNormal = sizeof(listeMusiqueMainMenuNormal) /
                                           sizeof(listeMusiqueMainMenuNormal[0]);
-  const int musicMainMenuNormalAleatoire =
+  int musicMainMenuNormalAleatoire =
       GetRandomValue(0, tailleMusiqueMainMenuNormal - 1);
 
   Music musicLoadingNormal = LoadMusicStream("music/normal/loading.mp3");
@@ -720,6 +721,11 @@ void fenetreRaylib() {
     switch (currentScreen) {
     case TITLE: {
 
+      if (musicMainPause) {
+        PlayMusicStream(musicMainMenu);
+        musicMainPause = !musicMainPause;
+      }
+
       if (IsGestureDetected(GESTURE_TAP)) {
 
         // Si on clique sur le rectangle Nouvelle Partie
@@ -731,6 +737,7 @@ void fenetreRaylib() {
         // Si on clique sur le rectangle Classements
         if (CheckCollisionPointRec(GetMousePosition(), rectangleClassement)) {
           StopMusicStream(musicMainMenu);
+          musicMainPause = true;
           currentScreen = CLASSEMENTS;
         }
 
@@ -743,7 +750,7 @@ void fenetreRaylib() {
         // Si on clique sur le rectangle mode special
         if (CheckCollisionPointRec(GetMousePosition(), rectangleModeSpecial)) {
           StopMusicStream(musicMainMenu);
-
+          musicMainPause = true;
           modeSpecial = !modeSpecial;
 
         }
@@ -755,6 +762,8 @@ void fenetreRaylib() {
 
         // Retour au menu
         if (CheckCollisionPointRec(GetMousePosition(), rectangleRetourMenu)) {
+          musicMainMenuNormalAleatoire =
+              GetRandomValue(0, tailleMusiqueMainMenuNormal - 1);
           currentScreen = TITLE;
         }
 
@@ -806,6 +815,7 @@ void fenetreRaylib() {
         if (CheckCollisionPointRec(GetMousePosition(),
                                    rectangleDifficulteFacile)) {
           StopMusicStream(musicMainMenu);
+          musicMainPause = true;
           currentScreen = NOUVELLE_PARTIE;
         }
 
@@ -820,6 +830,7 @@ void fenetreRaylib() {
         if (CheckCollisionPointRec(GetMousePosition(),
                                    rectangleDifficulteDifficile)) {
           StopMusicStream(musicMainMenu);
+          musicMainPause = true;
           currentScreen = NOUVELLE_PARTIE;
         }
       }
@@ -865,6 +876,8 @@ void fenetreRaylib() {
           // On réinitialise le nombre d'essais
           nombreEssais = 6;
           motTrouve = 0;
+          musicMainMenuNormalAleatoire =
+              GetRandomValue(0, tailleMusiqueMainMenuNormal - 1);
           currentScreen = TITLE;
         }
       }
@@ -941,6 +954,8 @@ void fenetreRaylib() {
         // Retour au menu
         if (CheckCollisionPointRec(GetMousePosition(), rectangleRetourMenu)) {
           StopMusicStream(musicClassement);
+          musicMainMenuNormalAleatoire =
+              GetRandomValue(0, tailleMusiqueMainMenuNormal - 1);
           currentScreen = TITLE;
         }
       }
@@ -961,7 +976,10 @@ void fenetreRaylib() {
     case WELCOME: {
 
       // La musique du menu principal
-      PlayMusicStream(musicMainMenu);
+      if (musicMainPause) {
+        PlayMusicStream(musicMainMenu);
+        musicMainPause = !musicMainPause;
+      }
 
       if (IsGestureDetected(GESTURE_TAP)) {
 
@@ -973,6 +991,7 @@ void fenetreRaylib() {
         // Si on clique sur le rectangle Quitter
         if (CheckCollisionPointRec(GetMousePosition(), rectangleQuitter)) {
           StopMusicStream(musicMainMenu);
+          musicMainPause = true;
           currentScreen = CREDITS;
         }
       }
@@ -1034,7 +1053,8 @@ void fenetreRaylib() {
 
     // Menu principal du jeu
     case TITLE: {
-      DrawText("Jeu du pendu", 190, 200, 20, WHITE);
+
+          DrawText("Jeu du pendu", 190, 200, 20, WHITE);
 
       // Nouvelle partie
       DrawText("Nouvelle partie", coordonnesNouvellePartieTexteX,
@@ -1206,6 +1226,10 @@ void fenetreRaylib() {
 
     // Page de bienvenue
     case WELCOME: {
+      if (musicMainPause) {
+        PlayMusicStream(musicMainMenu);
+        musicMainPause = !musicMainPause;
+      }
       DrawText("Jeu du pendu", coordonnesEcranCreditsX, (screenHeight / 2) - 30,
                20, WHITE);
 
