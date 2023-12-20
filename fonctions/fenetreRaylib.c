@@ -341,6 +341,35 @@ void fenetreRaylib() {
     // Fin écran CREDITS
     //--------------------------------------------------------------------------------------
 
+  // Ecran CONNEXION_JOUEUR
+    //--------------------------------------------------------------------------------------
+    const int coordonnesConnexionJoueurTexteX = (screenWidth / 4) + 50;
+    const int coordonnesConnexionJoueurTexteY = (screenHeight / 2);
+
+
+
+     const int coordonnesNouveauJoueurY = coordonnesConnexionJoueurTexteY + 50;
+    const int coordonnesNouveauJoueurX = coordonnesConnexionJoueurTexteX + 30;
+
+         const int coordonnesNouveauJoueurTexteY = coordonnesNouveauJoueurY + hauteurRectangle/2;
+    const int coordonnesNouveauJoueurTexteX = coordonnesNouveauJoueurX + longueurRectangle/8;
+
+    Rectangle rectangleNouveauJoueur = {coordonnesNouveauJoueurX, coordonnesNouveauJoueurY, longueurRectangle,
+                                         hauteurRectangle};
+
+    
+    const int coordonnesAncienJoueurY = coordonnesNouveauJoueurY;
+    const int coordonnesAncienJoueurX = coordonnesNouveauJoueurX + longueurRectangle + 50;
+
+         const int coordonnesAncienJoueurTexteY = coordonnesAncienJoueurY + hauteurRectangle/2;
+    const int coordonnesAncienJoueurTexteX = coordonnesAncienJoueurX + longueurRectangle/8;
+
+    Rectangle rectangleAncienJoueur = {coordonnesAncienJoueurX, coordonnesAncienJoueurY, longueurRectangle,
+                                         hauteurRectangle};
+
+
+    // Fin écran CONNEXION_JOUEUR
+    //--------------------------------------------------------------------------------------
 
     // Musique
     //--------------------------------------------------------------------------------------
@@ -737,7 +766,7 @@ void fenetreRaylib() {
 
                     // Si on clique sur le rectangle Quitter
                     if (CheckCollisionPointRec(GetMousePosition(), rectangleCommencezJeu)) {
-                        currentScreen = TITLE;
+                        currentScreen = CONNEXION_JOUEUR;
                     }
 
                       // Si on clique sur le rectangle Quitter
@@ -748,6 +777,21 @@ void fenetreRaylib() {
                 }
             }
                 break;
+
+                 case CONNEXION_JOUEUR: {
+                    if (IsGestureDetected(GESTURE_TAP)) {
+
+                                    // Si on clique sur le rectangle Nouveau Joueur
+                                    if (CheckCollisionPointRec(GetMousePosition(), rectangleNouveauJoueur)) {
+                                        currentScreen = TITLE;
+                                    }
+
+                                    // Si on clique sur le rectangle Ancien Joueur
+                                    if (CheckCollisionPointRec(GetMousePosition(), rectangleAncienJoueur)) {
+                                        currentScreen = TITLE;
+                                    }
+                    }
+                 }break;
 
             default:
 
@@ -939,7 +983,14 @@ void fenetreRaylib() {
             } break;
 
             case CONNEXION_JOUEUR:{
-                DrawText("Quitter", coordonnesQuitterTexteX, coordonnesQuitterTexteY, 10, GOLD);
+                DrawText("Quel type de profil ?", coordonnesConnexionJoueurTexteX, coordonnesConnexionJoueurTexteY, 20, GOLD);
+
+                DrawText("Nouveau joueur", coordonnesNouveauJoueurTexteX, coordonnesNouveauJoueurTexteY, 10, GOLD);
+                DrawRectangleRec(rectangleNouveauJoueur, Fade(MAROON, 0.5f));
+
+                DrawText("Ancien joueur", coordonnesAncienJoueurTexteX, coordonnesAncienJoueurTexteY, 10, GOLD);
+                DrawRectangleRec(rectangleAncienJoueur, Fade(MAROON, 0.5f));
+
             } break;
 
             default:
