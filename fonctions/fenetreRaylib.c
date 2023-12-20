@@ -67,8 +67,8 @@ void fenetreRaylib() {
 
 
     bool modeSpecial = false; // false pour le mode normal, true pour le mode spécial
-    int points = 8; // Les points du joueur
-    int numeroPlace = 3; // La place dans le classement du joueur
+    int points = 0; // Les points du joueur
+    int numeroPlace = 0; // La place dans le classement du joueur
 
 
     // Ecran WELCOME
@@ -371,6 +371,33 @@ void fenetreRaylib() {
     // Fin écran CONNEXION_JOUEUR
     //--------------------------------------------------------------------------------------
 
+
+     // Ecran ANCIEN_JOUEUR
+    //--------------------------------------------------------------------------------------
+    const int coordonnesAncienJoueurBienvenueTexteY = (screenHeight/2) - 50;
+    const int coordonnesAncienJoueurBienvenueTexteX = (screenWidth/2) - 150;
+    const int coordonnesAncienJoueurPseudoTexteY = coordonnesAncienJoueurBienvenueTexteY + 50;
+    // Fin écran ANCIEN_JOUEUR
+    //--------------------------------------------------------------------------------------
+
+     // Ecran NOUVEAU_JOUEUR
+    //--------------------------------------------------------------------------------------
+    const int coordonnesNouveauJoueurBienvenueTexteY = (screenHeight/2) - 50;
+    const int coordonnesNouveauJoueurBienvenueTexteX = (screenWidth/2) - 150;
+    const int coordonnesNouveauJoueurPseudoTexteY = coordonnesNouveauJoueurBienvenueTexteY + 50;
+    // Fin écran NOUVEAU_JOUEUR
+    //--------------------------------------------------------------------------------------
+
+
+const int coordonnesOKChoixNomX = coordonnesAncienJoueurBienvenueTexteX + 200;
+const int coordonnesOKChoixNomY = 300;
+
+         const int coordonnesOKChoixNomTexteY = coordonnesOKChoixNomY + hauteurRectangle/3;
+    const int coordonnesOKChoixNomTexteX = coordonnesOKChoixNomX + longueurRectangle/3;
+
+    Rectangle rectangleOKChoixNom = {coordonnesOKChoixNomX, coordonnesOKChoixNomY, longueurRectangle,
+                                         hauteurRectangle};
+
     // Musique
     //--------------------------------------------------------------------------------------
 
@@ -429,6 +456,17 @@ void fenetreRaylib() {
     Image image = LoadImage("textures/background_16_9.png");     // Loaded in CPU memory (RAM)
     Texture2D texture = LoadTextureFromImage(image);          // Image converted to texture, GPU memory (VRAM)
     UnloadImage(image);   // Once image has been converted to texture and uploaded to VRAM, it can be unloaded from RAM
+
+    // Flèches
+        Image imageFlecheHaute = LoadImage("textures/fleche_haute_reduite.png");    
+    Texture2D textureFlecheHaute = LoadTextureFromImage(imageFlecheHaute);         
+    UnloadImage(imageFlecheHaute);  
+
+    Image imageFlecheBasse = LoadImage("textures/fleche_basse_reduite.png");  
+    Texture2D textureFlecheBasse = LoadTextureFromImage(imageFlecheBasse);          
+    UnloadImage(imageFlecheBasse);  
+
+
 
     // Animaux
     Image imageThemeAnimaux = LoadImage("textures/themes/themeAnimaux_taille_case.png");
@@ -783,15 +821,35 @@ void fenetreRaylib() {
 
                                     // Si on clique sur le rectangle Nouveau Joueur
                                     if (CheckCollisionPointRec(GetMousePosition(), rectangleNouveauJoueur)) {
-                                        currentScreen = TITLE;
+                                        currentScreen = NOUVEAU_JOUEUR;
                                     }
 
                                     // Si on clique sur le rectangle Ancien Joueur
                                     if (CheckCollisionPointRec(GetMousePosition(), rectangleAncienJoueur)) {
-                                        currentScreen = TITLE;
+                                        currentScreen = ANCIEN_JOUEUR;
                                     }
                     }
                  }break;
+
+                 case ANCIEN_JOUEUR:{
+                    if (IsGestureDetected(GESTURE_TAP)) {
+
+                                    // Si on clique sur le rectangle OKChoixNom
+                                    if (CheckCollisionPointRec(GetMousePosition(), rectangleOKChoixNom)) {
+                                        currentScreen = TITLE;
+                                    }
+                    }
+                 } break;
+
+                  case NOUVEAU_JOUEUR:{
+                    if (IsGestureDetected(GESTURE_TAP)) {
+
+                                    // Si on clique sur le rectangle OKChoixNom
+                                    if (CheckCollisionPointRec(GetMousePosition(), rectangleOKChoixNom)) {
+                                        currentScreen = TITLE;
+                                    }
+                    }
+                 } break;
 
             default:
 
@@ -850,8 +908,9 @@ void fenetreRaylib() {
 
 
             case THEMES: {
+                if(points > 0){
                 DrawText(TextFormat("Vous avez un score de %0i points, et vous êtes à la %0ième place dans le classement", points, numeroPlace), 60, 150, 18, GOLD);
-
+}
                 DrawText("Choississez le thème", 190, 200, 20, WHITE);
 
                 // Animaux
@@ -990,6 +1049,52 @@ void fenetreRaylib() {
 
                 DrawText("Ancien joueur", coordonnesAncienJoueurTexteX, coordonnesAncienJoueurTexteY, 10, GOLD);
                 DrawRectangleRec(rectangleAncienJoueur, Fade(MAROON, 0.5f));
+
+            } break;
+
+                    case ANCIEN_JOUEUR:{
+                DrawText("Bon retour !", coordonnesAncienJoueurBienvenueTexteX, coordonnesAncienJoueurBienvenueTexteY, 20, GOLD);
+                DrawText("Choisissez votre pseudo à 5 lettres", coordonnesAncienJoueurBienvenueTexteX, coordonnesAncienJoueurPseudoTexteY, 20, GOLD);
+
+                // Les 5 lettres du pseudo
+                for(int i=0; i<5; i++){
+
+                                    
+                // Flèche haute
+                DrawTexture(textureFlecheHaute, coordonnesAncienJoueurBienvenueTexteX - 3 + 30 * i,  coordonnesOKChoixNomTexteY - 30, WHITE);
+
+                    DrawText("A", coordonnesAncienJoueurBienvenueTexteX + 30 * i, coordonnesOKChoixNomTexteY - 5, 30, GOLD);
+               
+                // Flèche basse
+                DrawTexture(textureFlecheBasse, coordonnesAncienJoueurBienvenueTexteX - 3 + 30 * i,  coordonnesOKChoixNomTexteY + 20, WHITE);
+
+                }
+
+                DrawText("OK", coordonnesOKChoixNomTexteX, coordonnesOKChoixNomTexteY, 20, GOLD);
+                DrawRectangleRec(rectangleOKChoixNom, Fade(MAROON, 0.5f));
+
+            } break;
+
+             case NOUVEAU_JOUEUR:{
+                DrawText("Bienvenue !", coordonnesNouveauJoueurBienvenueTexteX, coordonnesNouveauJoueurBienvenueTexteY, 20, GOLD);
+                DrawText("Choisissez votre pseudo à 5 lettres", coordonnesNouveauJoueurBienvenueTexteX, coordonnesNouveauJoueurPseudoTexteY, 20, GOLD);
+                
+                
+                // Les 5 lettres du pseudo
+                for(int i=0; i<5; i++){
+
+                           // Flèche haute
+                DrawTexture(textureFlecheHaute, coordonnesAncienJoueurBienvenueTexteX - 3 + 30 * i,  coordonnesOKChoixNomTexteY - 30, WHITE);
+
+                    DrawText("A", coordonnesNouveauJoueurBienvenueTexteX + 30 * i, coordonnesOKChoixNomTexteY - 5, 30, GOLD);
+                
+                // Flèche basse
+                DrawTexture(textureFlecheBasse, coordonnesAncienJoueurBienvenueTexteX - 3 + 30 * i,  coordonnesOKChoixNomTexteY + 20, WHITE);
+
+                }
+
+                DrawText("OK", coordonnesOKChoixNomTexteX, coordonnesOKChoixNomTexteY, 20, GOLD);
+                DrawRectangleRec(rectangleOKChoixNom, Fade(MAROON, 0.5f));
 
             } break;
 
