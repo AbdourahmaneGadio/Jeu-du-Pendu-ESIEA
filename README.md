@@ -22,7 +22,7 @@ sudo make install
 
 ## Lancement
 
-Allez dans le répertoire du jeu, puis ouvrez une terminal pour y lancer :
+Allez dans le répertoire du jeu, ouvrez un terminal et exécutez ces instructions pour lancer le jeu :
 
 ```
 chmod +x playGame.sh

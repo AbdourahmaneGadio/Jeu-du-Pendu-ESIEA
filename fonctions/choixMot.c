@@ -37,7 +37,7 @@ char *choixMot() {
 
     // Copie le nom correspondant dans mot
     char mot[tailleMot]; // ajustez la taille selon vos besoins
-    strcpy(mot, race[nombreAleatoire1][nombreAleatoire2][nombreAleatoire3]);
+    strcpy(mot, theme[nombreAleatoire1][nombreAleatoire2][nombreAleatoire3]);
 
     // Variable pour stocker le mot
     char *motPourLeJeu = malloc(tailleMot);
