@@ -23,7 +23,9 @@
  *
  ********************************************************************************************/
 
+#include "addScorePlayer.c"
 #include "choixMotRaylib.c"
+#include "handlePlayerSave.c"
 #include "raylib.h"
 #include <stdlib.h>
 #include <time.h>
@@ -77,7 +79,16 @@ void fenetreRaylib() {
       false; // false pour le mode normal, true pour le mode spécial
   bool modeSpecialInactive = true;
   int points = 0;      // Les points du joueur
-  int numeroPlace = 0; // La place dans le classement du joueur
+  int numeroPlace; // La place dans le classement du joueur
+  char statutJoueur;
+  int statutJoueurValide;
+
+  // Pseudo par défaut avec que des "A"
+  // A vaut 65 en ASCII
+  int pseudo[5] = {65, 65, 65, 65, 65};
+
+  int themeChoisi = 0;
+  int difficulteChoisie = 0;
 
   // Ecran WELCOME
   //--------------------------------------------------------------------------------------
@@ -371,8 +382,8 @@ void fenetreRaylib() {
   size_t longueur = 1;
   char *mot = NULL;
 
-  void attributionMot(int choixCategorie) {
-    mot = choixMotRaylib(choixCategorie);
+  void attributionMot(int choixCategorie, int choixDifficulte) {
+    mot = choixMotRaylib(choixCategorie, choixDifficulte);
 
     // On prend le mot, et on donne la longueur de celui-ci
     longueur = strlen(mot);
@@ -441,10 +452,6 @@ void fenetreRaylib() {
   const int coordonnesAncienJoueurBienvenueTexteX = (screenWidth / 2) - 150;
   const int coordonnesAncienJoueurPseudoTexteY =
       coordonnesAncienJoueurBienvenueTexteY + 50;
-
-  // Pseudo par défaut avec que des "A"
-  // A vaut 65 en ASCII
-  int pseudo[5] = {65, 65, 65, 65, 65};
 
   const int coordonnesOKChoixNomX = coordonnesAncienJoueurBienvenueTexteX + 200;
   const int coordonnesOKChoixNomY = 300;
@@ -769,26 +776,26 @@ void fenetreRaylib() {
         // Si on clique sur le rectangle ThemeAnimaux
         if (CheckCollisionPointRec(GetMousePosition(), rectangleThemeAnimaux)) {
 
-          attributionMot(3);
+          themeChoisi =2;
           currentScreen = DIFFICULTES;
         }
 
         // Si on clique sur le rectangle ThemeAstronomie
         if (CheckCollisionPointRec(GetMousePosition(),
                                    rectangleThemeAstronomie)) {
-          attributionMot(4);
+          themeChoisi = 3;
           currentScreen = DIFFICULTES;
         }
 
         // Si on clique sur le rectangle ThemeFruits
         if (CheckCollisionPointRec(GetMousePosition(), rectangleThemeFruits)) {
-          attributionMot(2);
+          themeChoisi = 1;
           currentScreen = DIFFICULTES;
         }
 
         // Si on clique sur le rectangle ThemePlantes
         if (CheckCollisionPointRec(GetMousePosition(), rectangleThemePlantes)) {
-          attributionMot(1);
+          themeChoisi = 0;
           currentScreen = DIFFICULTES;
         }
 
@@ -796,7 +803,7 @@ void fenetreRaylib() {
         if (CheckCollisionPointRec(GetMousePosition(),
                                    rectangleThemeAleatoire)) {
           int nombreAleatoire = GetRandomValue(1, 4);
-          attributionMot(nombreAleatoire);
+         themeChoisi = nombreAleatoire;
           currentScreen = DIFFICULTES;
         }
       }
@@ -813,6 +820,8 @@ void fenetreRaylib() {
         // Choix mode facile
         if (CheckCollisionPointRec(GetMousePosition(),
                                    rectangleDifficulteFacile)) {
+                                    difficulteChoisie = 0;
+                                    attributionMot(themeChoisi, difficulteChoisie);
           StopMusicStream(musicMainMenu);
           musicMainPause = true;
           currentScreen = NOUVELLE_PARTIE;
@@ -821,6 +830,8 @@ void fenetreRaylib() {
         // Choix mode moyenne
         if (CheckCollisionPointRec(GetMousePosition(),
                                    rectangleDifficulteMoyenne)) {
+          difficulteChoisie = 1;
+          attributionMot(themeChoisi, difficulteChoisie);
           StopMusicStream(musicMainMenu);
           currentScreen = NOUVELLE_PARTIE;
         }
@@ -828,6 +839,8 @@ void fenetreRaylib() {
         // Choix mode difficile
         if (CheckCollisionPointRec(GetMousePosition(),
                                    rectangleDifficulteDifficile)) {
+          difficulteChoisie = 2;
+          attributionMot(themeChoisi, difficulteChoisie);
           StopMusicStream(musicMainMenu);
           musicMainPause = true;
           currentScreen = NOUVELLE_PARTIE;
@@ -930,6 +943,8 @@ void fenetreRaylib() {
           // Si on a tout trouvé
           if (resultat == 0) {
             motTrouve = 1;
+            points += 3; // On gagne 3 points
+            addScorePlayer(statutJoueur, numeroPlace, pseudo, points);
             PlayMusicStream(musicPartieGagne);
             StopMusicStream(musicPartieJeuEnCours);
           }
@@ -1019,7 +1034,13 @@ void fenetreRaylib() {
 
         // Si on clique sur le rectangle OKChoixNom
         if (CheckCollisionPointRec(GetMousePosition(), rectangleOKChoixNom)) {
-          currentScreen = TITLE;
+          statutJoueur = 'o'; // 'o' pour old
+          statutJoueurValide =
+              handlePlayerSave(statutJoueur, pseudo, numeroPlace, points);
+
+          if (statutJoueurValide == 1) {
+            currentScreen = TITLE;
+          }
         }
       }
     } break;
@@ -1030,7 +1051,13 @@ void fenetreRaylib() {
         checkRectangleFleche();
         // Si on clique sur le rectangle OKChoixNom
         if (CheckCollisionPointRec(GetMousePosition(), rectangleOKChoixNom)) {
-          currentScreen = TITLE;
+          statutJoueur = 'n'; // 'n' pour new
+          statutJoueurValide =
+              handlePlayerSave(statutJoueur, pseudo, numeroPlace, points);
+
+          if (statutJoueurValide == 1) {
+            currentScreen = TITLE;
+          }
         }
       }
     } break;
@@ -1199,8 +1226,8 @@ void fenetreRaylib() {
                             nombreEssais),
                  190, 240, 20, GREEN);
         DrawText(TextFormat("+%0i points", points), 190, 240 + 40, 20, GOLD);
-        DrawText(TextFormat("Vous avez maintenant %0i points", points), 190,
-                 240 + 60, 20, GOLD);
+        // DrawText(TextFormat("Vous avez maintenant %0i points", points), 190,
+        // 240 + 60, 20, GOLD);
       } else {
         DrawText(TextFormat("Perdu... Le mot à deviner était :"), 190, 230, 20,
                  WHITE);
@@ -1304,6 +1331,17 @@ void fenetreRaylib() {
                GOLD);
       DrawRectangleRec(rectangleOKChoixNom, Fade(MAROON, 0.5f));
 
+      if (statutJoueurValide == 2) {
+        DrawText("Ce pseudo n'est pas disponible.",
+                 coordonnesAncienJoueurBienvenueTexteX - 3,
+                 coordonnesOKChoixNomTexteY + 50, 20, RED);
+
+        if (statutJoueurValide == 3) {
+          DrawText("Erreur fichier",
+                   coordonnesAncienJoueurBienvenueTexteX - 3 + 30 * 3,
+                   coordonnesOKChoixNomTexteY + 50, 20, RED);
+        }
+      }
     } break;
 
     case NOUVEAU_JOUEUR: {
@@ -1348,6 +1386,17 @@ void fenetreRaylib() {
       DrawText("OK", coordonnesOKChoixNomTexteX, coordonnesOKChoixNomTexteY, 20,
                GOLD);
       DrawRectangleRec(rectangleOKChoixNom, Fade(MAROON, 0.5f));
+
+if(statutJoueurValide == 2){
+      DrawText("Nom déjà pris",
+               coordonnesAncienJoueurBienvenueTexteX - 3 + 30 * 3,
+               coordonnesOKChoixNomTexteY + 50, 20, RED);
+}
+if (statutJoueurValide == 3) {
+      DrawText("Erreur fichier",
+               coordonnesAncienJoueurBienvenueTexteX - 3 + 30 * 3,
+               coordonnesOKChoixNomTexteY + 50, 20, RED);
+}
 
     } break;
 

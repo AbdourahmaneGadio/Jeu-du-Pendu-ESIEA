@@ -1,163 +1,77 @@
-#include <string.h>
+#include <ctype.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 
-//Fonction pour choisir un mot au hasard
-//A FAIRE: choix de mot selon difficulte
+char *choixMotRaylib(int choixCategorie, int choixDifficulte) {
 
-char *choixmot(char (*mots)[20], int size) {
-    int randomIndex = rand() % size;
-    return mots[randomIndex];
+  srand(time(NULL));
+
+  // dictionnaire
+  char *plantesF[] = {"ROSE",      "TULIPE", "ORCHIDEE",   "LYS",
+                      "TOURNESOL", "IRIS",   "MARGUERITE", "JASMIN"};
+  char *plantesM[] = {"PIVOINE",  "HORTENESIA",   "LAVANDE",   "CAMELIA",
+                      "HIBISCUS", "CHRYSANTHEME", "JONQUILLE", "MENTHE"};
+  char *plantesD[] = {"ROMARIN", "MYOSOTIS", "FOUGERE", "PISSENLIT",
+                      "BASILIC", "BAMBOU",   "CACTUS",  "BAOBAB"};
+
+  char **plantes[] = {plantesF, plantesM, plantesD};
+
+  char *fruitsF[] = {"BANANE", "POMME", "ORANGE", "FRAISE",
+                     "RAISIN", "POIRE", "KIWI",   "MANGUE"};
+  char *fruitsM[] = {"PECHE",  "ABRICOT",   "CERISE", "GRENADE",
+                     "CITRON", "NECTARINE", "MURE",   "FRAMBOISE"};
+  char *fruitD[] = {"LITCHI", "KAKI",       "PRUNE", "DATTE",
+                    "FIGUE",  "CLEMENTINE", "COING", "PASTEQUE"};
+
+  char **fruits[] = {fruitsF, fruitsM, fruitD};
+
+  char *animauxF[] = {"CHIEN", "CHAT", "CHEVAL", "LION",
+                      "TIGRE", "ELEPHANT", "LOUP", "GIRAFE"};
+  char *animauxM[] = {
+      "PANTHERE", "GAZELLE", "RHINOCEROS", "HIPPOPOTAME",
+      "BUFFLE",   "GUEPARD", "VIPERE",     "BOA",
+  };
+  char *animauxD[] = {"RAT",   "FOURMI", "ARAIGNEE", "ABEILLE",
+                      "GUEPE", "MOUCHE", "SOURIS",   "ZEBRE"};
+
+  char **animaux[] = {animauxF, animauxM, animauxD};
+
+  char *astronomieF[] = {"SOLEIL", "LUNE", "MERCURE", "VENUS",
+                         "TERRE",  "MARS", "JUPITER", "IO"};
+  char *astronomieM[] = {
+      "PLUTON", "ERIS",   "CERES",    "MAKEMAKE",
+      "PHOBOS", "DEIMOS", "GANYMEDE", "CALLISTO",
+  };
+  char *astronomieD[] = {"EUROPE", "TITAN",   "RHEA",   "LAPPETUS",
+                         "DIONE",  "SATURNE", "URANUS", "NEPTUNE"};
+
+  char **astronomie[] = {astronomieF, astronomieM, astronomieD};
+
+  char ***categories[] = {plantes, fruits, animaux, astronomie};
+
+  // La taille du mot
+  int tailleMot = 100;
+  char motsecret[tailleMot];
+
+  // affectation du mot du dictionnaire
+  strcpy(motsecret, categories[choixCategorie][choixDifficulte][rand() % 7]);
+
+  // Variable pour stocker le mot
+  char *motPourLeJeu = malloc(tailleMot);
+
+  for (int i = 0; i < tailleMot; ++i) {
+    motPourLeJeu[i] = toupper(motsecret[i]);
+  }
+
+  // On retourne le mot
+  return motPourLeJeu;
 }
 
-
-char *choixMotRaylib(int choixCategorie) {
-
-    srand(time(NULL));
-
-    char *motsecret;
-
-    char plantes[25][20] = {
-            "rose",
-            "tulipe",
-            "jonquille",
-            "orchidee",
-            "lilas",
-            "jasmin",
-            "tournesol",
-            "iris",
-            "lavande",
-            "pissenlit",
-            "fougere",
-            "marguerite",
-            "cactus",
-            "baobab",
-            "basilic",
-            "menthe",
-            "thym",
-            "romarin",
-            "bambou",
-            "myosotis",
-            "camelia",
-            "hibiscus",
-            "pivoine",
-            "gerbera",
-            "chrysantheme"
-    };
-
-    char fruits[25][20] = {
-            "pomme",
-            "banane",
-            "kiwi",
-            "peche",
-            "poire",
-            "abricot",
-            "orange",
-            "clementine",
-            "nectarine",
-            "datte",
-            "grenade",
-            "figue",
-            "raisin",
-            "litchi",
-            "kaki",
-            "prune",
-            "mangue",
-            "coing",
-            "fraise",
-            "framboise",
-            "myrtille",
-            "mure",
-            "pamplemousse",
-            "ananas",
-            "pastheque"
-    };
-
-    char animaux[25][20] = {
-            "elephant",
-            "lion",
-            "tigre",
-            "guepard",
-            "gazelle",
-            "giraffe",
-            "zebre",
-            "cheval",
-            "panthere",
-            "buffle",
-            "vipere",
-            "pyhton",
-            "boa",
-            "rhinoceros",
-            "hippopotame",
-            "chat",
-            "chien",
-            "loup",
-            "souris",
-            "rat",
-            "fourmie",
-            "araignee",
-            "abeille",
-            "guepe",
-            "mouche"
-    };
-
-    char astronomie[25][20] = {
-           "soleil",
-           "mercure",
-           "venus",
-           "terre",
-           "mars",
-           "jupiter",
-           "saturne",
-           "uranus",
-           "neptune",
-           "pluton",
-           "eris",
-           "ceres",
-           "makemake",
-           "haumea",
-           "lune",
-           "phobos",
-           "deimos",
-           "ganymede",
-           "callisto",
-           "io",
-           "europe",
-           "titan",
-           "rhea",
-           "japet",
-           "dione"
-           };
-
-    switch (choixCategorie) {
-        case 1:
-            motsecret = choixmot(plantes, 25);
-            break;
-        case 2:
-            motsecret = choixmot(fruits, 25);
-            break;
-        case 3:
-            motsecret = choixmot(animaux, 25);
-            break;
-        case 4:
-            motsecret = choixmot(astronomie, 25);
-            break;
-    }
-
-    // La taille du mot
-    size_t tailleMot = strlen(motsecret);
-
-    // Variable pour stocker le mot
-    char *motPourLeJeu = malloc(tailleMot);
-
-    for (int i = 0; i < tailleMot; ++i) {
-        motPourLeJeu[i] = toupper(motsecret[i]);
-    }
-
-    // On retourne le mot
-    return motPourLeJeu;
-
-
+/*
+int main() {
+  char *mot = choixMotRaylib(1, 0);
+  printf("%s", mot);
 }
-
-
+*/
