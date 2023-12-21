@@ -11,16 +11,18 @@
 char *choixMot() {
 
     // Les mots que l'on a défini pour le jeu
-    char *capitaine[] = {"BYAKUYA", "KYORAKU", "MAYURI"};
-    char *viceCapitaine[] = {"IZURU", "SHUHEI", "RENJI"};
-    char *sansGrade[] = {"ICHIGO", "AIZEN", "ISSHIN"};
+    char *facileF[] = {"BYAKUYA", "KYORAKU", "MAYURI"};
+    char *moyenF[] = {"IZURU", "SHUHEI", "RENJI"};
+    char *difficileF[] = {"ICHIGO", "AIZEN", "ISSHIN"};
 
-    char *espada[] = {"GRIMMJOW", "ULQUIORRA", "STARRK"};
-    char *simpleArrancar[] = {"CIRUCCI", "DORDONIE", "ILLFORT"};
+    char *facileL[] = {"GRIMMJOW", "ULQUIORRA", "STARRK"};
+    char *moyenL[] = {"CIRUCCI", "DORDONIE", "ILLFORT"};
+    char *difficileL[] = {"CIRUCCI", "DORDONIE", "ILLFORT"};
 
-    char **shinigami[] = {capitaine, viceCapitaine, sansGrade};
-    char **arrancar[] = {espada, simpleArrancar};
-    char ***race[] = {shinigami, arrancar};
+
+    char **fruits[] = {facileF, moyenF, difficileF};
+    char **legume[] = {facileL, moyenL, difficileL};
+    char ***theme[] = {fruits, legume};
 
     // La taille du mot
     int tailleMot = 100;

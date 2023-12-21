@@ -152,6 +152,30 @@ main.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Jeu_du_Pendu_ESIEA.dir\build.make CMakeFiles/Jeu_du_Pendu_ESIEA.dir/main.c.s
 .PHONY : main.c.s
 
+partie1.obj: partie1.c.obj
+.PHONY : partie1.obj
+
+# target to build an object file
+partie1.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Jeu_du_Pendu_ESIEA.dir\build.make CMakeFiles/Jeu_du_Pendu_ESIEA.dir/partie1.c.obj
+.PHONY : partie1.c.obj
+
+partie1.i: partie1.c.i
+.PHONY : partie1.i
+
+# target to preprocess a source file
+partie1.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Jeu_du_Pendu_ESIEA.dir\build.make CMakeFiles/Jeu_du_Pendu_ESIEA.dir/partie1.c.i
+.PHONY : partie1.c.i
+
+partie1.s: partie1.c.s
+.PHONY : partie1.s
+
+# target to generate assembly for a file
+partie1.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Jeu_du_Pendu_ESIEA.dir\build.make CMakeFiles/Jeu_du_Pendu_ESIEA.dir/partie1.c.s
+.PHONY : partie1.c.s
+
 # Help Target
 help:
 	@echo The following are some of the valid targets for this Makefile:
@@ -164,6 +188,9 @@ help:
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s
+	@echo ... partie1.obj
+	@echo ... partie1.i
+	@echo ... partie1.s
 .PHONY : help
 
 

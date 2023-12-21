@@ -79,6 +79,9 @@
 		<Unit filename="C:/Users/kidou/OneDrive/Documents/GitHub/Jeu-du-Pendu-ESIEA/main.c">
 			<Option target="Jeu_du_Pendu_ESIEA"/>
 		</Unit>
+		<Unit filename="C:/Users/kidou/OneDrive/Documents/GitHub/Jeu-du-Pendu-ESIEA/partie1.c">
+			<Option target="Jeu_du_Pendu_ESIEA"/>
+		</Unit>
 		<Unit filename="C:/Users/kidou/OneDrive/Documents/GitHub/Jeu-du-Pendu-ESIEA/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
