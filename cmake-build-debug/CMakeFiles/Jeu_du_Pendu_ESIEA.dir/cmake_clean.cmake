@@ -1,6 +1,8 @@
 file(REMOVE_RECURSE
   "CMakeFiles/Jeu_du_Pendu_ESIEA.dir/main.c.obj"
   "CMakeFiles/Jeu_du_Pendu_ESIEA.dir/main.c.obj.d"
+  "CMakeFiles/Jeu_du_Pendu_ESIEA.dir/partie1.c.obj"
+  "CMakeFiles/Jeu_du_Pendu_ESIEA.dir/partie1.c.obj.d"
   "Jeu_du_Pendu_ESIEA.exe"
   "Jeu_du_Pendu_ESIEA.exe.manifest"
   "Jeu_du_Pendu_ESIEA.pdb"
