@@ -9,6 +9,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "C:/Users/kidou/OneDrive/Documents/GitHub/Jeu-du-Pendu-ESIEA/main.c" "CMakeFiles/Jeu_du_Pendu_ESIEA.dir/main.c.obj" "gcc" "CMakeFiles/Jeu_du_Pendu_ESIEA.dir/main.c.obj.d"
+  "C:/Users/kidou/OneDrive/Documents/GitHub/Jeu-du-Pendu-ESIEA/partie1.c" "CMakeFiles/Jeu_du_Pendu_ESIEA.dir/partie1.c.obj" "gcc" "CMakeFiles/Jeu_du_Pendu_ESIEA.dir/partie1.c.obj.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

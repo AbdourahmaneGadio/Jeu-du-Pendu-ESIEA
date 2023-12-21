@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <time.h>
 #include <ctype.h>
+
+
 //void du pendu
 void pendu(int w)
 {
@@ -55,161 +57,282 @@ void pendu(int w)
 // fonction qui permet de limiter le faite d'utiliser d'autres caractère que l'alphabet
 char verification(char s)
 {
-    char result = 'k';
+    char verite = 'k';
     char alphabet[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     size_t longueur = strlen(alphabet);
     for(int i = 0; i <= longueur; i++)
     {
         if(s == alphabet[i])
         {
-            result = 'o';
+            verite = 'o';
         }
 
     }
 
-    return result;
+    return verite;
+};
+struct Player
+{
+    char name[15];
+    int score;
 };
 
-int main() {
-    int c;
+int main()
+{
+    //dictionnaire
+    //
+    //
+    //
+    //
+    //
+
+    //ouverture du fichier en mode lecture
+    //si le fichier ne mène a rien, code annulé
+    FILE *fip = fopen("scores.txt", "r");
+    if (fip == NULL) {
+        return 1;
+    }
+
+    int d;
+    int c; //variable c utile pour le while qui empêche la lecture du retour a la ligne
+    char joueurActuelle[10];//variable du joueur
+    struct Player players[100] = {}; //collection de tout les joeurs recuperer dans le fichier text
+    char nom[10];//nom du joueur connecter
+    int present = 0;
+    int game = 0;
+    int score;// score du joueur connecter
+    int place;
 
 
-    char joueur[100];
 
-    int score = 0;
-    char continu = 'o';
-    while(continu != 'n')
+    //boucle affective qui lira le fichier et le mettra
+    while (fscanf(fip, "%s %d", nom, &score) != EOF && d < 100)
     {
-        //variable du score
-        // grand dictionnaire. à améliorer
-        char *capitaine[] = {"BYAKUYA", "KYORAKU", "MAYURI"};
-        char *viceCapitaine[] = {"IZURU", "SHUHEI", "RENJI"};
-        char *sansGrade[] = {"ICHIGO", "AIZEN", "ISSHIN"};
+        struct Player player = {0};
+        strcpy(player.name, nom);
+        player.score = score;
 
-        char *espada[] = {"GRIMMJOW", "ULQUIORRA", "STARRK"};
-        char *simpleArrancar[] = {"CIRUCCI", "DORDONIE", "ILLFORT"};
-
-        char **shinigami[] = {capitaine, viceCapitaine, sansGrade};
-        char **arrancar[] = {espada, simpleArrancar};
-        char ***race[] = {shinigami, arrancar};
-
-        // code qui permet de choisir un nombre aléatoire et a les afféctés dans différente variables
-        srand(time(NULL));
-
-        int nombreAleatoire1 = rand() % 2;
-        int nombreAleatoire2 = rand() % 2;
-        int nombreAleatoire3 = rand() % 3;
-
-        //mot long relié et affectation des différentes aléatoire
-        char mot[100];
-        strcpy(mot, race[nombreAleatoire1][nombreAleatoire2][nombreAleatoire3]);
-
-        //longueur du mot
-        size_t longueur = strlen(mot);
-
-        //devinette la variable du pendu. une variable ou il y aura autant de - que de lettre qui compose $mot
-        char devinette[longueur - 1];
-
-        // l'entré utilisateur
-        char motus;
+        players[d] = player;
+        d++;
+    }
 
 
-        for (int i = 0; i < longueur; i++) {
-            devinette[i] = '-';
-        }
-
-        devinette[longueur] = '\0';
-
-        //le nombre de vie
-        int vie = 7;
-        char lettre[100];
-        size_t longueur2 = strlen(lettre);
-        // la boucle de jeu
-        while (vie > 0)
+    //on ferme le fichier pour l'instant. on le rouvrira pour modifier le classement
+    fclose(fip);
+    //boucle d'entre de jeu
+    while (1)
+    {
+        //boucle utilisateur
+        while (1)
         {
-            //lettre est la variable des mauvaise lettre et a une grande longueur
-
-
-            //un boolean k pour faux et o pour vrai. elle servira a voir si la lettre a deja etait rentré
-            char place = 'k';
-
-            //un petit etat des lieu du jeux. cad le nmbre de vie, les trou du mot et le pendu
-            printf("il te reste %d", vie);
-            printf("essai\n");
-            printf("%s\n", devinette);
-            pendu(vie);
-            //l'entré utilisateur
-            motus = getchar();
-
-            //verification de la lettre. Si c'est de l'alphabet, si elle est bonne ou fausse, si elle a déjà était utilisé
-            if (verification(motus) == 'o')
+            game = 0;
+            //connexion au joueur
+            char ancien = 'r';
+            while (ancien == 'r')
             {
+                //1er utilisation du suppresseur de retour a la ligne
 
-                //conversion de la lettre en majuscule
-                char majuscule = toupper(motus);
-
-                //problème d'affichage. le code d'entré s'afficher 2 fois
+                printf("Etes vous un ancien joueur? o pour oui n pour non\n");
+                ancien = getchar();
                 while ((c = getchar()) != '\n' && c != EOF);
-
-                //affectation de la lettre à devinette et retiré le -
-                for (int j = 0; j < longueur; j++)
+                while (game != 1)
                 {
-                    if (majuscule == mot[j])
-                    {
-                        devinette[j] = majuscule;
-                        place = 'o';
-                    }
-                }
+                    printf("Veillez saisir votre nom de joueur: (maximum 10 lettre pas d'importance entre minuscule et majuscule)\n");
+                    scanf("%s", joueurActuelle);
 
-                //si la lettre est fausse
-                if (place == 'k') {
-                    //verifier si elle a déjà était rentré en verifiant le tableau $lettre.
-                    for (int k = 0; k <= longueur2; k++) {
-                        //empeché le fait de perdre une vie
-                        if (lettre[k] == majuscule) {
-                            printf("vous avez deja saisi ce caractere\n");
-                            place = 'o';
+                    while ((c = getchar()) != '\n' && c != EOF);
+                    for (int i = 0; i < 11; ++i)
+                    {
+                        joueurActuelle[i] = toupper(joueurActuelle[i]);
+                    }
+
+                    for (int i = 0; i < 100; ++i)
+                    {
+                        if (strcmp(players[i].name, joueurActuelle) == 0)
+                        {
+                            present = 1;
+                            place = i;
                             break;
                         }
                     }
-                    //si la lettre n'a jamais était rentré, affectation de la lettre dans $lettre
-                    if (place == 'k') {
-                        strcat(lettre, &majuscule);
-                        vie -= 1;
+
+
+                    if (ancien == 'o')
+                    {
+                        if (present == 1)
+                        {
+                            printf("\nVous etes bien present dans la base des joueurs. Bon jeu!\n");
+                            game = 1;
+                        }
+                        else if(present == 0)
+                        {
+                            printf("\nVous n'etes pas present dans la base joueur. Veuillez saisir un nom ou redemarez pour creer un nouveau joueur\n");
+                            game = 0;
+                        }
+                    }
+                    else if (ancien == 'n')
+                    {
+
+                        if (present == 0)
+                        {
+                            printf("\nVotre nom n'a pas encore etait utilise. Bienvenue\n");
+                            struct Player newPlayer = {};
+                            strcpy(newPlayer.name, joueurActuelle);
+                            newPlayer.score = 0;
+                            players[99] = newPlayer;
+                            game = 1;
+                        }
+                        else if(present == 1)
+                        {
+                            printf("\nVotre nom est deja utiliser\n");
+                            game = 0;
+                            present = 0;
+                        }
+
+                    }
+
+                }
+
+            }
+            while(1)
+            {
+                int continuite = 0;
+                char lettreDejaSaisi[] = "-------";
+                char mot[] = "BANANE";
+                size_t longueur = strlen(mot);
+                char devinette[longueur];
+                for (int i = 0; i < longueur; ++i) {
+                    devinette[i] = '-';
+                }
+
+                int vie = 7;
+
+                //boucle de partie
+                while (vie > 0) {
+                    printf("\nnombre de vie: %d\n", vie);
+                    printf("\n avance de votre jeu: %s\n", devinette);
+                    char lettre = getchar();
+                    char majuscule = toupper(lettre);
+                    int dejaSaisi = 0;
+                    int dansMot = 0;
+                    size_t longueur2 = strlen(lettreDejaSaisi);
+                    while ((c = getchar()) != '\n' && c != EOF);
+                    char vrai = verification(lettre);
+                    if (vrai == 'o') {
+                        for (int i = 0; i <= longueur; i++) {
+                            if (mot[i] == majuscule) {
+                                devinette[i] = majuscule;
+                                dansMot = 1;
+                            } else if (mot[i] != majuscule) {
+                                for (int i = 0; i <= longueur2; i++) {
+                                    if (lettreDejaSaisi[i] == majuscule) {
+                                        dejaSaisi = 1;
+                                        break;
+                                    }
+                                }
+
+                                if (dejaSaisi == 0)
+                                {
+                                    for (int i = 0; i <= longueur; i++)
+                                    {
+                                        if (mot[i] == majuscule)
+                                        {
+                                            lettreDejaSaisi[continuite] = majuscule;
+                                            continuite += 1;
+                                            dansMot = 1;
+                                            break;
+                                        }
+                                    }
+                                    if (dansMot == 0) {
+                                        lettreDejaSaisi[continuite] = majuscule;
+                                        continuite += 1;
+                                        vie -= 1;
+                                        pendu(vie);
+                                    }
+                                }
+                            }
+                        }
+
+                        int verification = strcmp(devinette, mot);
+                        if (verification == 0)
+                        {
+                            printf("Victory\n");
+                            score += 3;
+                            printf("%d", score);
+                            break;
+                        }
+                        printf("lettre deja saisi: ");
+
+                        for (int j = 0; j < continuite; j++)
+                            printf("%c", lettreDejaSaisi[j]);
+
+                    }
+                    else if (vrai == 'k')
+                    {
+                        printf("saisi non valide\n");
                     }
                 }
 
-                //sortir de la fonction si le mot est bon
-                int resultat = strcmp(devinette, mot);
-                if (resultat == 0)
+                printf("Voulez-vous continuer sur le meme compte? n pour non\n");
+                char continu = getchar();
+                while ((c = getchar()) != '\n' && c != EOF);
+                if (continu == 'n')
                 {
-                    printf("\nbravo\n");
-                    score = score + 1;
-                    vie = 0;
+                    break;
+                }
+
+            }
+            if(ancien == 'o')
+            {
+                players[place].score += score;
+            }
+            else if(ancien == 'n')
+            {
+                players[99].score += score;
+            }
+            for (int i = 0; i <= 100 ; ++i)
+            {
+                for(int j = 0; j <= 100; j++)
+                {
+                    if(players[j].score < players[j + 1].score)
+                    {
+                        players[100] = players[j];
+                        players[j] = players[j+1];
+                        players[j+1] = players[100];
+
+                    }
                 }
             }
-                //ne pas perdre de vie si tu mets 1 % ou !
-            else
+
+            for (int i = 0; i < 10; i++)
             {
-                printf("saisi non valide\n");
-                while ((c = getchar()) != '\n' && c != EOF);
+                printf("%d: ", i + 1);
+                printf( "%s %d\n", players[i].name, players[i].score);
             }
 
+            printf("Voulez vous continuer sur un autre nom? n pour non\n");
+            char continu = getchar();
+            while ((c = getchar()) != '\n' && c != EOF);
+            if(continu == 'n')
+            {
+                break;
+            }
         }
 
-        //retour du vrai mot
-        printf("%s",mot);
-        //impression du score
-        printf("\ntu es a %d", score);
-        printf(" points.\n");
-        lettre[0] = '\0';
-        //impression du mot
-        printf("voulez vous continuer? \nsi vous voulez arretez, appuyez sur n\n");
-        continu = getchar();
+        printf("Voulez vous continuer a jouer?");
+        char last = getchar();
+        if(last == 'n')
+            break;
 
+    }
+    fip = fopen("scores.txt", "w");
 
+    for (int i = 1; i < 100; i++)
+    {
+        fprintf(fip, "%s %d\n", players[i].name, players[i].score);
     }
 
     printf("Bye Bye");
+    fclose(fip);
     return 0;
 }
