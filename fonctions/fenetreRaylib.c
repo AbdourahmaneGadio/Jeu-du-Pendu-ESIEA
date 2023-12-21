@@ -1252,11 +1252,11 @@ void fenetreRaylib() {
 
       DrawText("Nouveau joueur", coordonnesNouveauJoueurTexteX,
                coordonnesNouveauJoueurTexteY, 10, GOLD);
-      DrawRectangleRec(rectangleNouveauJoueur, Fade(MAROON, 0.5f));
+      DrawRectangleRec(rectangleNouveauJoueur, Fade(WHITE, 0.5f));
 
       DrawText("Ancien joueur", coordonnesAncienJoueurTexteX,
                coordonnesAncienJoueurTexteY, 10, GOLD);
-      DrawRectangleRec(rectangleAncienJoueur, Fade(MAROON, 0.5f));
+      DrawRectangleRec(rectangleAncienJoueur, Fade(WHITE, 0.5f));
 
     } break;
 
