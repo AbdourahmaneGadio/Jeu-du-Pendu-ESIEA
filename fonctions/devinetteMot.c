@@ -22,7 +22,7 @@ void devinetteMot(char *mot) {
 
     /*
      * On ajout des tirets au mot à deviner
-     * Ex : ____ pour un mot à 4 caractères
+     * Ex : _ _ _ _ pour un mot à 4 caractères
      */
     for (int i = 0; i < longueur; i++) {
         devinette[i] = '-';
@@ -41,6 +41,9 @@ void devinetteMot(char *mot) {
         // On convertit la lettre en MAJUSCULE
         char majuscule = toupper(motus);
 
+        // On convertit la lettre en MINUSCULE
+        char minuscule = tolower(motus);
+
         // Vider le tampon d'entrée
         int c;
         while ((c = getchar()) != '\n' && c != EOF);
@@ -49,7 +52,7 @@ void devinetteMot(char *mot) {
         for (int j = 0; j < longueur; j++) {
 
             // Si on trouve la lettre
-            if (majuscule == mot[j]) {
+            if (majuscule == mot[j] || minuscule == mot[j]) {
 
                 /*
                  * On met celle-ci dans le mot à deviner

@@ -3,46 +3,19 @@
 #include <time.h>
 
 
-//Fonction pour choisir la categorie
-
-int choisirCategorie() {
-    const char* categories[] = {
-            "plantes",
-            "fruits",
-            "animaux",
-            "astronomie",
-            "toutes categories confondues"
-    };
-
-    int categ;
-    printf("\nChoisissez une categorie:\n");
-    for (int i = 0; i < 5; ++i) {
-        printf("%d. %s\n", i+1, categories[i]);
-    }
-    printf("\nEntrez le numero de la categorie:  ");
-    scanf("%d", &categ);
-    if (categ < 1 || categ > 9) {
-        printf("Choix invalide\n");
-    }
-    return categ;
-    //A FAIRE: relier nb a liste
-}
-
-
 //Fonction pour choisir un mot au hasard
 //A FAIRE: choix de mot selon difficulte
 
-const char* choixmot(const char (*mots)[20], int size) {
+const char *choixmot(const char *mots[], int size) {
     int randomIndex = rand() % size;
     return mots[randomIndex];
 }
-
 
 int main() {
 
     srand(time(NULL));
 
-    const char plantes[25][20] = {
+    const char *plantes[] = {
             "rose",
             "tulipe",
             "jonquille",
@@ -70,7 +43,7 @@ int main() {
             "chrysantheme"
     };
 
-    const char fruits[25][20] = {
+    const char *fruits[] = {
             "pomme",
             "banane",
             "kiwi",
@@ -98,7 +71,7 @@ int main() {
             "pastheque"
     };
 
-    const char animaux[25][20] = {
+    const char *animaux[] = {
             "elephant",
             "lion",
             "tigre",
@@ -126,61 +99,81 @@ int main() {
             "mouche"
     };
 
-    const char astronomie[25][20] = {
-           "soleil",
-           "mercure",
-           "venus",
-           "terre",
-           "mars",
-           "jupiter",
-           "saturne",
-           "uranus",
-           "neptune",
-           "pluton",
-           "eris",
-           "ceres",
-           "makemake",
-           "haumea",
-           "lune",
-           "phobos",
-           "deimos",
-           "ganymede",
-           "callisto",
-           "io",
-           "europe",
-           "titan",
-           "rhea",
-           "japet",
-           "dione"
-           };
+    const char *astronomie[] = {
+            "soleil",
+            "mercure",
+            "venus",
+            "terre",
+            "mars",
+            "jupiter",
+            "saturne",
+            "uranus",
+            "neptune",
+            "pluton",
+            "eris",
+            "ceres",
+            "makemake",
+            "haumea",
+            "lune",
+            "phobos",
+            "deimos",
+            "ganymede",
+            "callisto",
+            "io",
+            "europe",
+            "titan",
+            "rhea",
+            "japet",
+            "dione"
+    };
+
+
+    const char *categories[] = {
+            plantes,
+            fruits,
+            animaux,
+            astronomie
+    };
+
+
+    const char categoriesNom[5][50] = {
+            "plantes",
+            "fruits",
+            "animaux",
+            "astronomie",
+            "Toutes categories confondues"
+    };
 
 
 
-    int categ = choisirCategorie();
-
-
-    const char *motsecret;
-
-
-    switch (categ) {
-        case 1:
-            motsecret = choixmot(plantes, 25);
-            printf("La plante est: %s\n", motsecret);
-            break;
-        case 2:
-            motsecret = choixmot(fruits, 25);
-            printf("Le fruit est: %s\n", motsecret);
-            break;
-        case 3:
-            motsecret = choixmot(animaux, 25);
-            printf("L'animal est: %s\n", motsecret);
-            break;
-        case 4:
-            motsecret = choixmot(astronomie, 25);
-            printf("Le mot est: %s\n", motsecret);
-            break;
+    int categ;
+    int categRentree;
+    printf("\nChoisissez une categorie:\n");
+    for (int i = 0; i < 5; ++i) {
+        printf("%d. %s\n", i+1, categoriesNom[i]);
     }
 
+    printf("\nEntrez le numero de la categorie: ");
+    scanf("%d", &categRentree);
+    while (categRentree < 1 || categRentree > 5) {
+        printf("Choix invalide\nVeuillez choisir un chiffre entre 1 et 5: ");
+        scanf("%d", &categRentree);
+    }
+    if (categRentree != 5) {
+        categ = categRentree - 1;
+    } else {
+        categ = rand() % 4;
+    }
+
+
+
+
+
+    const char *motsecret = choixmot(categories[categ],25);
+
+    printf("La categorie est %s et le mot est %s.\n", categoriesNom[categ], motsecret);
+
+    return 0;
 
 }
 
