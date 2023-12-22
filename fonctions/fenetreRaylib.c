@@ -803,7 +803,7 @@ void fenetreRaylib() {
         // Si on clique sur le rectangle ThemeAleatoire
         if (CheckCollisionPointRec(GetMousePosition(),
                                    rectangleThemeAleatoire)) {
-          int nombreAleatoire = GetRandomValue(1, 4);
+          int nombreAleatoire = GetRandomValue(0, 3);
           themeChoisi = nombreAleatoire;
           currentScreen = DIFFICULTES;
         }
