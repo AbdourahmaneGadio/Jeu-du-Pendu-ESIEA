@@ -15,7 +15,7 @@ int main() {
   int score = 0;
   int place = 99;
   char statutJoueur = 'n';
-  char joueurActuelle[10]; // variable du joueur
+  char joueurActuelle[5]; // variable du joueur
   // Pseudo par défaut avec que des "A"
   // A vaut 65 en ASCII
   int pseudo[5] = {65, 65, 65, 65, 65};
@@ -46,13 +46,13 @@ int main() {
       while ((c = getchar()) != '\n' && c != EOF)
         ;
 
-      printf("Veillez saisir votre nom de joueur: (10 lettres maximum )\n");
+      printf("Veillez saisir votre nom de joueur: (5 lettres maximum)\n");
       scanf("%s", joueurActuelle);
 
       while ((c = getchar()) != '\n' && c != EOF)
         ;
       // On met le nom en majuscule
-      for (int i = 0; i < 11; ++i) {
+      for (int i = 0; i < 5; ++i) {
         pseudo[i] = (int)joueurActuelle[i];
       }
 
@@ -79,11 +79,18 @@ int main() {
         // On prend un mot au hasard à trouver
         char *mot = choixMotRaylib(theme, difficulte);
 
-        score += devinetteMot(mot, difficulte);
+        int scoreTmp = devinetteMot(mot, difficulte);
 
-        printf("Votre score : %d\n", score);
+        // Si on a gagné
+        if (scoreTmp != 0) {
+          score+=scoreTmp;
+          addScorePlayer(statutJoueur, place, pseudo, score);
+          printf("Votre score : %d\n", score);
+          statutJoueur = 'o';
+          score = 0;
+        }
 
-        addScorePlayer(statutJoueur, place, pseudo, score);
+       
 
         printf("Voulez-vous continuer à jouer ? [o/n]\n");
         char continu = getchar(); // variable de continuite

@@ -1005,6 +1005,7 @@ void fenetreRaylib() {
 
     case WELCOME: {
 
+points = 0;
       // La musique du menu principal
       if (musicMainPause) {
         PlayMusicStream(musicMainMenu);

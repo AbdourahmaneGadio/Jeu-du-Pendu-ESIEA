@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <unistd.h>
 
 struct PlayerScore {
   char name[5];
@@ -65,6 +66,7 @@ void addScorePlayer(char statutJoueur, int placeJoueur, int nom[],
       }
     }
 
+// Si ancien joueur
     if (statutJoueur == 'o') {
       players[placeJoueur].score += scoreTotal;
 
@@ -72,7 +74,10 @@ void addScorePlayer(char statutJoueur, int placeJoueur, int nom[],
         players[placeJoueur].name[i] = nomTraduitEnChar[i];
       }
 
-    } else if (statutJoueur == 'n') {
+    } 
+    
+    // Si nouveau joueur
+    else if (statutJoueur == 'n') {
       placeJoueur = 99;
       players[placeJoueur].score += scoreTotal;
 
@@ -81,24 +86,31 @@ void addScorePlayer(char statutJoueur, int placeJoueur, int nom[],
       }
     }
 
-    printf("Nom joueur : %s\n", players[placeJoueur].name);
-
     // Pour chaque ligne
-    for (int i = 0; i <= 100; ++i) {
-
+    for (int i = 0; i < 100; ++i) {
       // Pour chaque colonne
-      for (int j = 0; j <= 100; j++) {
+      for (int j = 0; j < 100; j++) {
         if (players[j].score < players[j + 1].score) {
-          newPlayerList[100] = players[j];
-          newPlayerList[j] = players[j + 1];
-          newPlayerList[j + 1] = players[100];
+
+          // On trie le classement avec une variable temporaire
+          struct PlayerScore playerTmp = {"empty", 0};
+          playerTmp = players[j];
+          players[j] = players[j + 1];
+          players[j + 1] = playerTmp;
         }
       }
     }
 
-    fip = fopen("scores.txt", "w");
-    for (int i = 1; i < 100; i++) {
+// On réattribue le nouveau classement à la nouvelle liste
+    for (int i = 0; i < 100; ++i) {
+      newPlayerList[i] = players[i];
+    }
 
+    fip = fopen("scores.txt", "w");
+
+    for (int i = 0; i < 100; i++) {
+
+      // On réécrit le fichier des scores
       fprintf(fip, "%s %d\n", newPlayerList[i].name, newPlayerList[i].score);
     }
   }
@@ -108,11 +120,10 @@ void addScorePlayer(char statutJoueur, int placeJoueur, int nom[],
 
 /*
 int main() {
-  char statutJoueur = 'o';
+  char statutJoueur = 'n';
   int pseudo[5] = {65, 65, 65, 65, 65};
   int numeroPlace;
-  int points = 7;
+  int points = 50;
   addScorePlayer(statutJoueur, numeroPlace, pseudo, points);
 }
-
 */
