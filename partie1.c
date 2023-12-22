@@ -144,7 +144,7 @@ int main() {
             "titan",
             "rhea",
             "desdemone",
-            "hippocampe"
+            "psamathee"
     };
 
 
@@ -220,6 +220,25 @@ int main() {
     const char *motsecret  = choixmot(categories[categ],25, longu);
 
 
+    printf("\nLe mot est %s.\n", motsecret);
+
+    int score = 0;
+
+    if(longu == 0)
+    {
+        score += 3;
+    }
+    else if(longu == 1)
+    {
+        score += 5;
+    }
+    else if(longu == 2)
+    {
+        score += 10;
+    }
+    printf("Votre score est %d\n", score);
+
+    return 0;
 
 }
 
