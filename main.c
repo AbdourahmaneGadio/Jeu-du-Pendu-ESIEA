@@ -13,7 +13,7 @@ int main() {
   int difficulte = 0;
 
   int score = 0;
-  int place = 0;
+  int place = 99;
   char statutJoueur = 'n';
   char joueurActuelle[10]; // variable du joueur
   // Pseudo par défaut avec que des "A"

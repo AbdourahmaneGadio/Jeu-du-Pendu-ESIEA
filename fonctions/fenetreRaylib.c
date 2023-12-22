@@ -960,6 +960,7 @@ void fenetreRaylib() {
               break;
             }
             addScorePlayer(statutJoueur, numeroPlace, pseudo, points);
+            statutJoueur = 'o'; // Comme le joueur est enregistré, il est considéré comme un ancien
             PlayMusicStream(musicPartieGagne);
             StopMusicStream(musicPartieJeuEnCours);
           }
