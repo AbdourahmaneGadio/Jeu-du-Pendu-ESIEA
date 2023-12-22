@@ -220,10 +220,6 @@ int main() {
     const char *motsecret  = choixmot(categories[categ],25, longu);
 
 
-    printf("\nLe mot est %s.\n", motsecret);
-
-
-    return 0;
 
 }
 
