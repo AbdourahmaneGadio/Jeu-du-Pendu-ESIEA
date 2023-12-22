@@ -5,7 +5,7 @@
 #include <time.h>
 
 struct Player {
-  char name[15];
+  char name[5];
   int score;
 };
 
