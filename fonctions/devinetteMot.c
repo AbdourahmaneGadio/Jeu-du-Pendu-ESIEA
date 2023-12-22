@@ -7,9 +7,11 @@
  * Retire un essai à chaque faute, jusqu'à ce que le score atteigne 0
  *
  * ENTREE : le mot sélectionné au hasard
- * SORTIE : rien
+ * SORTIE : le score
  */
-void devinetteMot(char *mot) {
+int devinetteMot(char *mot, int difficulteChoisie) {
+
+  int score = 0;
 
   // On prend le mot, et on donne la longueur de celui-ci
   size_t longueur = strlen(mot);
@@ -83,6 +85,17 @@ void devinetteMot(char *mot) {
       printf(mot);
       printf("\nBravo, vous avez gagné !\n");
 
+      switch (difficulteChoisie) {
+      case 0:
+        score += 3;
+        break;
+      case 1:
+        score += 5;
+        break;
+      case 2:
+        score += 10;
+        break;
+      }
       // On sort de la boucle
       break;
     }
@@ -93,6 +106,8 @@ void devinetteMot(char *mot) {
     pendu(nombreEssais);
     printf("\nPerdu...\nLe mot à deviner était : %s\n", mot);
   }
+
+  return score;
 }
 
 void pendu(int w) {
