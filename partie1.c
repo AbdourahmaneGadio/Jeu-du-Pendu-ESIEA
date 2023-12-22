@@ -1,14 +1,34 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 
 
 //Fonction pour choisir un mot au hasard
-//A FAIRE: choix de mot selon difficulte
 
-const char *choixmot(const char *mots[], int size) {
-    int randomIndex = rand() % size;
-    return mots[randomIndex];
+const char *choixmot(const char *mots[], int size, int longu) {
+    const char *motsecret;
+    switch (longu) {
+        case 0:
+            do {
+                int randomIndex = rand() % size;
+                motsecret = mots[randomIndex];
+            } while (strlen(motsecret) > 5);
+            break;
+        case 1:
+            do {
+                int randomIndex = rand() % size;
+                motsecret = mots[randomIndex];
+            } while (strlen(motsecret) < 6 || strlen(motsecret) > 8);
+            break;
+        case 2:
+            do {
+                int randomIndex = rand() % size;
+                motsecret= mots[randomIndex];
+            } while (strlen(motsecret) < 9);
+            break;
+    }
+    return motsecret;
 }
 
 int main() {
@@ -123,8 +143,8 @@ int main() {
             "europe",
             "titan",
             "rhea",
-            "japet",
-            "dione"
+            "desdemone",
+            "hippocampe"
     };
 
 
@@ -145,6 +165,13 @@ int main() {
     };
 
 
+    const char longueur[4][50] = {
+            "2 a 5 lettres",
+            "6 a 8 lettres",
+            "9 lettres ou plus",
+            "aleatoire",
+    };
+
 
     int categ;
     int categRentree;
@@ -152,7 +179,6 @@ int main() {
     for (int i = 0; i < 5; ++i) {
         printf("%d. %s\n", i+1, categoriesNom[i]);
     }
-
     printf("\nEntrez le numero de la categorie: ");
     scanf("%d", &categRentree);
     while (categRentree < 1 || categRentree > 5) {
@@ -161,17 +187,41 @@ int main() {
     }
     if (categRentree != 5) {
         categ = categRentree - 1;
+        printf("\nLa categorie est %s.\n", categoriesNom[categ]);
     } else {
         categ = rand() % 4;
+        printf("\nFaisons confiance au hasard!\n");
     }
 
 
 
 
+    int longu;
+    int longuRentree;
+    printf("\nChoisissez la longueur du mot:\n");
+    for (int i = 0; i < 4; ++i) {
+        printf("%d. %s\n", i+1, longueur[i]);
+    }
+    printf("\nEntrez le numero correspondant a la longueur souhaitee: ");
+    scanf("%d", &longuRentree);
+    while (longuRentree < 1 || longuRentree > 4) {
+        printf("Choix invalide\nVeuillez choisir un chiffre entre 1 et 4: ");
+        scanf("%d", &longuRentree);
+    }
+    if (longuRentree != 4) {
+        longu = longuRentree - 1;
+    } else {
+        longu = rand() % 3;
+    }
+    printf("\nLa longueur choisie est %s.\n", longueur[longu]);
 
-    const char *motsecret = choixmot(categories[categ],25);
 
-    printf("La categorie est %s et le mot est %s.\n", categoriesNom[categ], motsecret);
+
+    const char *motsecret  = choixmot(categories[categ],25, longu);
+
+
+    printf("\nLe mot est %s.\n", motsecret);
+
 
     return 0;
 
