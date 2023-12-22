@@ -59,13 +59,11 @@ int handlePlayerSave(char statutJoueur, int pseudo[], int place, int score) {
 
       // Si on trouve rien
       if (present == 0) {
-        printf("Ancien joueur pseudo incorrect");
         present = 2;
       }
 
       // Si on retrouve le profil
       else {
-        printf("Ancien joueur pseudo valide");
         present = 1;
       }
 
@@ -77,7 +75,6 @@ int handlePlayerSave(char statutJoueur, int pseudo[], int place, int score) {
       // Si on ne trouve rien
       if (present == 0) {
         present = 1;
-        printf("Nouveau joueur à ajouter");
         struct Player newPlayer = {};
         strcpy(newPlayer.name, joueurActuelle);
         newPlayer.score = 0;
@@ -86,7 +83,6 @@ int handlePlayerSave(char statutJoueur, int pseudo[], int place, int score) {
 
       // Si le nom est pris par un autre joueur
       else if (present == 1) {
-        printf("Nom déjà pris.");
         present = 2;
       }
     }
