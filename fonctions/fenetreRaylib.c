@@ -77,7 +77,7 @@ void fenetreRaylib() {
 
   bool modeSpecial =
       false; // false pour le mode normal, true pour le mode spécial
-  bool modeSpecialInactive = true;
+  bool modeSpecialInactive = false;
   int points = 0; // Les points du joueur
   int scoreGagne = 0;
   int numeroPlace; // La place dans le classement du joueur
